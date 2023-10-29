@@ -1,0 +1,49 @@
+<h4 class="area-title">Shippers</h4>
+
+<form [formGroup]="shipperForm">
+  <div class="row g-2" id="row-shipperId">
+    <div class="col-md-1">
+      <div class="form-group">
+        <label for="exampleShipperId">Shipper Id</label>
+        <input
+          type="text"
+          class="form-control"
+          id="shipperId"
+          formControlName="shipperId"
+          placeholder="Shipper Id"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="row g-2">
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="companyName">Company Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="companyName"
+          formControlName="companyName"
+          placeholder="Company Name"
+        />
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="phone">Phone</label>
+        <input
+          type="phone"
+          class="form-control"
+          id="phone"
+          formControlName="phone"
+          placeholder="Phone Number"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="row g-2">
+    <div class="col-md-1">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </div>
+</form>

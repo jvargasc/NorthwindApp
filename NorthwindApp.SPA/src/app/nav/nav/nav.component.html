@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+  <div class="container-fluid">
+    <div class="hamburger-menu">
+      <input
+        id="menu__toggle"
+        type="checkbox"
+        (click)="checkboxClicked()"
+        [checked]="checkboxMenu"
+      />
+      <label class="menu__btn" for="menu__toggle">
+        <span></span>
+      </label>
+
+      <ul class="menu__box">
+        <li class="nav-item">
+          <a
+            class="nav-link menu__item"
+            routerLink="/customers/customer-list"
+            outerLinkActive="active"
+            (click)="checkboxClicked()"
+            >Customers</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link menu__item"
+            routerLink="/shippers/shipper-list"
+            outerLinkActive="active"
+            (click)="checkboxClicked()"
+            >Shippers</a
+          >
+        </li>
+      </ul>
+    </div>
+
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li class="nav-item">
+        <a class="navbar-brand" href="#">
+          <img src="../../../assets/Logo.png" alt="" class="logo" />
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>

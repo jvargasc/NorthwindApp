@@ -1,0 +1,150 @@
+<h4 class="area-title">Customers</h4>
+
+<form [formGroup]="customerForm">
+  <div class="row g-2" id="row-shipperId">
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="exampleShipperId">Customer Id</label>
+        <input
+          type="email"
+          class="form-control"
+          id="exampleShipperId"
+          formControlName="customerId"
+          aria-describedby="emailHelp"
+          placeholder="Shipper Id"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="row g-2">
+    <div class="col-md-5">
+      <div class="form-group">
+        <label for="exampleCompanyName">Company Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="exampleCompanyName"
+          formControlName="companyName"
+          placeholder="Company Name"
+        />
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div class="form-group">
+        <label for="examplePhone">Contact Name</label>
+        <input
+          type="phone"
+          class="form-control"
+          id="examplePhone"
+          formControlName="contactName"
+          placeholder="Contact Name"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="row g-2">
+    <div class="col-md-5">
+      <div class="form-group">
+        <label for="examplePhone">Contact Title</label>
+        <input
+          type="phone"
+          class="form-control"
+          id="examplePhone"
+          formControlName="contactTitle"
+          placeholder="Contact Title"
+        />
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div class="form-group">
+        <label for="examplePhone">Address</label>
+        <input
+          type="phone"
+          class="form-control"
+          id="examplePhone"
+          formControlName="address"
+          placeholder="Address"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="row g-2">
+    <div class="col-md-5">
+      <div class="form-group">
+        <label for="examplePhone">City</label>
+        <input
+          type="phone"
+          class="form-control"
+          id="examplePhone"
+          formControlName="city"
+          placeholder="City"
+        />
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div class="form-group">
+        <label for="examplePhone">Region Id</label>
+        <input
+          type="phone"
+          class="form-control"
+          id="examplePhone"
+          formControlName="regionId"
+          placeholder="regionId"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="row g-2">
+    <div class="col-md-5">
+      <div class="form-group">
+        <label for="examplePhone">Postal Code</label>
+        <input
+          type="phone"
+          class="form-control"
+          formControlName="postalCode"
+          placeholder="postalCode"
+        />
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div class="form-group">
+        <label for="examplePhone">Country</label>
+        <input
+          type="phone"
+          class="form-control"
+          id="examplePhone"
+          formControlName="country"
+          placeholder="Country"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="row g-2">
+    <div class="col-md-5">
+      <div class="form-group">
+        <label for="examplePhone">Phone</label>
+        <input
+          type="phone"
+          class="form-control"
+          id="examplePhone"
+          formControlName="phone"
+          placeholder="phone"
+        />
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div class="form-group">
+        <label for="examplePhone">Fax</label>
+        <input
+          type="phone"
+          class="form-control"
+          id="examplePhone"
+          formControlName="fax"
+          placeholder="Fax"
+        />
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
