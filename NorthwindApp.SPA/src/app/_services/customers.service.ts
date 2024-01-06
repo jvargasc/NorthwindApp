@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CustomersService {
 
-  baseUrl = "https://localhost:5002/api/Customers/";
+  baseUrl = "http://localhost:5001/api/Customers/";
   private customersSource = new BehaviorSubject<Customer[]>([]);
   customers$ = this.customersSource.asObservable();
 
