@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "aIOOwAFaTG7WtyDco0qF+/MtJ/Af29nPIQkZGlWLtpeSxl9myWixOrAhRBeMPTYdjH4MZr9eFEioec9Tct1Sxw==",
+  "dgSpecHash": "my7TlT/XgLtqoMLYBVmAUhEFpyFx/K3ysfcduO5DvYE6u23o/ZKP2gH7tdwcyzu6AQa5qpIo2elVAggnWQrFPg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\manager\\source\\repos\\NorthwindApp\\NorthwindApp.api\\NorthwindApp.API.csproj",
+  "projectFilePath": "C:\\Users\\manager\\source\\repos\\NorthwindApp\\NorthwindApp.API\\NorthwindApp.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\manager\\.nuget\\packages\\aspnetcore.healthchecks.sqlserver\\6.0.2\\aspnetcore.healthchecks.sqlserver.6.0.2.nupkg.sha512",
     "C:\\Users\\manager\\.nuget\\packages\\aspnetcore.healthchecks.ui.client\\6.0.5\\aspnetcore.healthchecks.ui.client.6.0.5.nupkg.sha512",

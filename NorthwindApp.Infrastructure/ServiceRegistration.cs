@@ -27,6 +27,7 @@ namespace NorthwindApp.Infrastructure
             // Add services to the container.
             services.AddScoped<IShippersRepository, ShippersRepository>();
             services.AddScoped<ICustomersRepository, CustomersRepository>();
+            services.AddScoped<IRegionsRepository, RegionsRepository>();
         }
     }
 }

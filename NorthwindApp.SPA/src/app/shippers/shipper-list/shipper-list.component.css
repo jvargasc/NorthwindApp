@@ -1,3 +1,7 @@
 .fas, .fa-edit {
   color: blue;
 }
+
+.page-title {
+  display: flex;
+}

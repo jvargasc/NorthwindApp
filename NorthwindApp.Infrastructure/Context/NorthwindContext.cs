@@ -18,6 +18,7 @@ public partial class NorthwindContext : DbContext
 
     public virtual DbSet<Shipper> Shippers { get; set; }
     public virtual DbSet<Customer> Customers { get; set; }
+    public virtual DbSet<Region> Regions { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -54,7 +55,22 @@ public partial class NorthwindContext : DbContext
             entity.Property(e => e.PostalCode).HasMaxLength(10);
         });
 
+        modelBuilder.Entity<Region>(entity =>
+        {
+            entity.HasKey(e => e.RegionId)
+                .HasName("PK_Region")
+                .IsClustered(false);
 
+            entity.Property(e => e.RegionId)
+                .ValueGeneratedNever()
+                .HasColumnName("RegionID");
+            entity.Property(e => e.RegionDescription)
+                .HasMaxLength(50)
+                .IsFixedLength();
+        });
+
+        OnModelCreatingPartial(modelBuilder);
     }
 
+    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }
