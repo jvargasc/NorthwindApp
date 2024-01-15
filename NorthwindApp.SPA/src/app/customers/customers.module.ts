@@ -2,8 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CustomerEditComponent } from './customer-edit/customer-edit.component';
 import { CustomerListComponent } from './customer-list/customer-list.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../_shared/shared.module';
+import { AppRoutingModule } from '../app-routing.module';
+import { ToolbarsModule } from '../_shared/toolbars/toolbars.module';
 
 @NgModule({
   declarations: [
@@ -12,8 +14,10 @@ import { SharedModule } from '../_shared/shared.module';
   ],
   imports: [
     CommonModule,
+    AppRoutingModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    ToolbarsModule
   ],
   exports: [
     CustomerEditComponent,

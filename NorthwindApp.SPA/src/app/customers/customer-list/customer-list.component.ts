@@ -14,6 +14,7 @@ export class CustomerListComponent {
   constructor(private customersService: CustomersService) { }
 
   ngOnInit() {
+    console.log("ngOnInit()");
     this.customersService.getCustomers().subscribe(
       {
         next: customersResult => { this.customers = customersResult; }

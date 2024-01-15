@@ -1,6 +1,12 @@
-<h4 class="area-title">Customers</h4>
-
 <div class="container mt-3">
+  <div class="page-title mb-2">
+    <div class="w-75">
+      <h4 class="area-title">Customers</h4>
+    </div>
+    <div class="w-25">
+      <app-toolbarlist></app-toolbarlist>
+    </div>
+  </div>
   <table class="table">
     <thead>
       <tr class="table-success">
@@ -38,10 +44,11 @@
         </td>
       </tr>
     </tbody>
-    <tfoot></tfoot>
-    Total Records:
-    {{
+    <tfoot>
+      Total Records:
+      {{
       customers.length
-    }}
+      }}
+    </tfoot>
   </table>
 </div>

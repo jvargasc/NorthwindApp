@@ -14,7 +14,6 @@ export class ShipperListComponent implements OnInit {
   constructor(private shippersService: ShippersService) { }
 
   ngOnInit() {
-    console.log('Found!!!');
     this.shippersService.getShippers().subscribe(
       {
         next: shippersResult => { this.shippers = shippersResult; }

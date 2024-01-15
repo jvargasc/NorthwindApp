@@ -7,15 +7,15 @@ import { ToolbarlistComponent } from './toolbarlist/toolbarlist.component';
 
 @NgModule({
   declarations: [
-    // ToolbarCrudComponent,
-    // ToolbarlistComponent
+    ToolbarCrudComponent,
+    ToolbarlistComponent
   ],
   imports: [
     CommonModule
   ],
   exports: [
-    // ToolbarCrudComponent,
-    // ToolbarlistComponent
+    ToolbarCrudComponent,
+    ToolbarlistComponent
   ]
 })
 export class ToolbarsModule { }

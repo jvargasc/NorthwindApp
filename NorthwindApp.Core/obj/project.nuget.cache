@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "MypgvqCTb+FUFLwlgdOhI2SGfDZFjX6Zx95IB+gPHyH0fpFjXNHrZFehPSPJNSiVykkTWqJg3IwriK9jsv2SKQ==",
+  "dgSpecHash": "/jKYYSZcT+XkfH+D1cVfrbcQAlUu64u7Ya9dhyxbzJkSWdh68gg5jGd2WwXOZ8JgZzxSX+ujBiOWsmm7En3OZw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\manager\\source\\repos\\NorthwindApp\\NorthwindApp.Core\\NorthwindApp.Core.csproj",
+  "projectFilePath": "C:\\Users\\jvargas\\source\\Git\\NorthwindApp\\NorthwindApp.Core\\NorthwindApp.Core.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

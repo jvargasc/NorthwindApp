@@ -1,3 +1,7 @@
 tfoot {
-  text-align: left;
+  text-align: right;
+}
+
+.page-title {
+  display: flex;
 }
