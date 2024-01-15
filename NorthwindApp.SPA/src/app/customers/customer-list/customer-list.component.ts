@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Customer } from 'src/app/_models/customer';
 import { CustomersService } from 'src/app/_services/customers.service';
 
@@ -14,11 +14,23 @@ export class CustomerListComponent {
   constructor(private customersService: CustomersService) { }
 
   ngOnInit() {
-    console.log("ngOnInit()");
     this.customersService.getCustomers().subscribe(
       {
         next: customersResult => { this.customers = customersResult; }
       }
     );
   }
+
+  toolbarButtonWasClicked(buttonName: string) {
+    switch(buttonName)
+    {
+      case "refresh":
+        console.log(buttonName);
+        break;
+      case "search":
+        console.log(buttonName);
+        break;
+    }
+  }
+
 }

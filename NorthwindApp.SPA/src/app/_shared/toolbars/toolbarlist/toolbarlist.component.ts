@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-toolbarlist',
@@ -6,8 +6,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./toolbarlist.component.css']
 })
 export class ToolbarlistComponent {
+
+  @Output() toolbarButtonWasClicked = new EventEmitter<string>();
+
   buttonClicked(event: MouseEvent) {
     const elementId: string = (event.target as Element).id;
+    this.toolbarButtonWasClicked.emit(elementId);
     console.log((event.target as Element).id);
 // console.log(event);
   }

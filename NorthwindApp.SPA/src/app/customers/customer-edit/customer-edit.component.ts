@@ -24,6 +24,10 @@ export class CustomerEditComponent {
     this.SetCustomer();
   }
 
+  buttonWasClicked(buttonName: string) {
+    console.log(buttonName);
+  }
+
   private getParameters() {
     this.regionsService.getRegions().subscribe(
       {
@@ -66,7 +70,7 @@ export class CustomerEditComponent {
 
     // 'regionId' : new FormControl(this.customer?.regionId),
     this.customerForm.controls['customerId'].disable();
-    console.log(this.customerForm);
+    // console.log(this.customerForm);
   }
 
 }
