@@ -9,8 +9,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
 
   containerClicked() {
-    console.log('containerClicked()');
-
+    // console.log('containerClicked()');
   }
 
 }

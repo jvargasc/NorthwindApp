@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Region } from '../_models/region';
 import { HttpClient } from '@angular/common/http';
@@ -9,18 +9,18 @@ import { HttpClient } from '@angular/common/http';
 })
 export class RegionsService {
 
-  baseUrl = environment.apiUrl + "/api/Regions/";
+  private baseUrl = environment.apiUrl + '/api/Regions/';
   private regionsSource = new BehaviorSubject<Region[]>([]);
   regions$ = this.regionsSource.asObservable();
 
   constructor(private http: HttpClient) { }
 
-  getRegions() {
+  getRegions(): Observable<Region[]> {
     return this.http.get<Region[]>(this.baseUrl + 'getregions');
   }
 
-  getRegion(customerId: string) {
-    return this.http.get<Region>(this.baseUrl + `getregion/${customerId}`);
+  getRegion(regionId: number): Observable<Region> {
+    return this.http.get<Region>(this.baseUrl + `getregion/${regionId}`);
   }
 
 }

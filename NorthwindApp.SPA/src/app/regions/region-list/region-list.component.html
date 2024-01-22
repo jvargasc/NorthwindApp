@@ -1,0 +1,38 @@
+<div class="container mt-3">
+  <div class="page-title mb-2">
+    <div class="w-75">
+      <h4 class="area-title">regions</h4>
+    </div>
+    <div class="w-25">
+      <app-toolbarlist
+        (toolbarButtonWasClicked)="buttonWasClicked($event)"
+      ></app-toolbarlist>
+    </div>
+  </div>
+  <table class="table">
+    <thead>
+      <tr class="table-success">
+        <th scope="col">Region Id</th>
+        <th scope="col">Region Description</th>
+        <th scope="col"><i class="fa-solid fa-gear"></i></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let region of regions">
+        <th scope="row">{{ region.regionId }}</th>
+        <td>{{ region.regionDescription }}</td>
+        <td>
+          <a routerLink="/regions/region-edit/{{ region.regionId }}">
+            <i class="fas fa-edit"></i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      Total Records:
+      {{
+        regions.length
+      }}
+    </tfoot>
+  </table>
+</div>

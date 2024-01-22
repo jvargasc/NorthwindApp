@@ -4,7 +4,9 @@
       <h4 class="area-title">Customers</h4>
     </div>
     <div class="w-25">
-      <app-toolbarlist></app-toolbarlist>
+      <app-toolbarlist
+        (toolbarButtonWasClicked)="buttonWasClicked($event)"
+      ></app-toolbarlist>
     </div>
   </div>
   <table class="table">
@@ -47,7 +49,7 @@
     <tfoot>
       Total Records:
       {{
-      customers.length
+        customers.length
       }}
     </tfoot>
   </table>

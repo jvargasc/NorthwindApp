@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+
 import { ShippersService } from 'src/app/_services/shippers.service';
 import { Shipper } from 'src/app/_models/shipper';
 
@@ -19,6 +20,18 @@ export class ShipperListComponent implements OnInit {
         next: shippersResult => { this.shippers = shippersResult; }
       }
     );
+  }
+
+  buttonWasClicked(buttonName: string) {
+    switch(buttonName)
+    {
+      case "refresh":
+        location.reload();
+        break;
+      case "search":
+        console.log(buttonName);
+        break;
+    }
   }
 
 }

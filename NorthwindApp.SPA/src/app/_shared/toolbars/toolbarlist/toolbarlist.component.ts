@@ -12,8 +12,6 @@ export class ToolbarlistComponent {
   buttonClicked(event: MouseEvent) {
     const elementId: string = (event.target as Element).id;
     this.toolbarButtonWasClicked.emit(elementId);
-    console.log((event.target as Element).id);
-// console.log(event);
   }
 
 }

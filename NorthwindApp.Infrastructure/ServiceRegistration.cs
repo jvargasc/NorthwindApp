@@ -25,9 +25,15 @@ namespace NorthwindApp.Infrastructure
             services.AddHealthChecks().AddSqlServer(NorthwindConnectionsString, "Select 1;", "Northwind");
 
             // Add services to the container.
-            services.AddScoped<IShippersRepository, ShippersRepository>();
+            services.AddScoped<ICategoriesRepository, CategoriesRepository>();
             services.AddScoped<ICustomersRepository, CustomersRepository>();
+            services.AddScoped<IEmployeesRepository, EmployeesRepository>();
+            services.AddScoped<IOrdersRepository, OrdersRepository>();
+            services.AddScoped<IProductsRepository, ProductsRepository>();
             services.AddScoped<IRegionsRepository, RegionsRepository>();
+            services.AddScoped<IShippersRepository, ShippersRepository>();
+            services.AddScoped<ISuppliersRepository, SuppliersRepository>();
+            services.AddScoped<ITerritoriesRepository, TerritoriesRepository>();
         }
     }
 }

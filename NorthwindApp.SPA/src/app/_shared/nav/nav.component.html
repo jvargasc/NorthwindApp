@@ -12,6 +12,17 @@
       </label>
 
       <ul class="menu__box">
+        <!-- Categories -->
+        <li class="nav-item">
+          <a
+            class="nav-link menu__item"
+            routerLink="/categories/category-list"
+            outerLinkActive="active"
+            (click)="checkboxClicked()"
+            >Categories</a
+          >
+        </li>
+        <!-- Customers -->
         <li class="nav-item">
           <a
             class="nav-link menu__item"
@@ -21,6 +32,47 @@
             >Customers</a
           >
         </li>
+        <!-- Employees -->
+        <li class="nav-item">
+          <a
+            class="nav-link menu__item"
+            routerLink="/employees/employee-list"
+            outerLinkActive="active"
+            (click)="checkboxClicked()"
+            >Employees</a
+          >
+        </li>
+        <!-- Orders -->
+        <li class="nav-item">
+          <a
+            class="nav-link menu__item"
+            routerLink="/orders/order-list"
+            outerLinkActive="active"
+            (click)="checkboxClicked()"
+            >Orders</a
+          >
+        </li>
+        <!-- Products -->
+        <li class="nav-item">
+          <a
+            class="nav-link menu__item"
+            routerLink="/products/product-list"
+            outerLinkActive="active"
+            (click)="checkboxClicked()"
+            >Products</a
+          >
+        </li>
+        <!-- Regions -->
+        <li class="nav-item">
+          <a
+            class="nav-link menu__item"
+            routerLink="/regions/region-list"
+            outerLinkActive="active"
+            (click)="checkboxClicked()"
+            >Regions</a
+          >
+        </li>
+        <!-- Shippers -->
         <li class="nav-item">
           <a
             class="nav-link menu__item"
@@ -28,6 +80,26 @@
             outerLinkActive="active"
             (click)="checkboxClicked()"
             >Shippers</a
+          >
+        </li>
+        <!-- Suppliers -->
+        <li class="nav-item">
+          <a
+            class="nav-link menu__item"
+            routerLink="/suppliers/supplier-list"
+            outerLinkActive="active"
+            (click)="checkboxClicked()"
+            >Suppliers</a
+          >
+        </li>
+        <!-- Territories -->
+        <li class="nav-item">
+          <a
+            class="nav-link menu__item"
+            routerLink="/territories/territory-list"
+            outerLinkActive="active"
+            (click)="checkboxClicked()"
+            >Territories</a
           >
         </li>
       </ul>

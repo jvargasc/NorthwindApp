@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../_shared/shared.module';
-import { ToolbarsModule } from '../_shared/toolbars/toolbars.module';
-import { AppRoutingModule } from '../app-routing.module';
 import { ShipperEditComponent } from './shipper-edit/shipper-edit.component';
 import { ShipperListComponent } from './shipper-list/shipper-list.component';
+import { ShippersRoutingModule } from './shippers-routing.module';
 
 @NgModule({
   declarations: [
@@ -14,14 +14,9 @@ import { ShipperListComponent } from './shipper-list/shipper-list.component';
   ],
   imports: [
     CommonModule,
-    AppRoutingModule,
     ReactiveFormsModule,
     SharedModule,
-    ToolbarsModule
-  ],
-  exports: [
-    ShipperEditComponent,
-    ShipperListComponent
+    ShippersRoutingModule
   ]
 })
 export class ShippersModule { }

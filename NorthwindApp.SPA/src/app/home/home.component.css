@@ -1,0 +1,11 @@
+.container {
+  width: 600px;
+  height: 600px;
+  /* background-color: #0a0a23; */
+}
+
+.container img {
+  /* width: 100px; */
+  margin: auto;
+  display: block;
+}

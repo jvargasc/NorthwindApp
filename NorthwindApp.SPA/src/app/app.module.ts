@@ -1,29 +1,43 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { SharedModule } from './_shared/shared.module';
-import { ShippersModule } from './shippers/shippers.module';
-import { ToolbarsModule } from './_shared/toolbars/toolbars.module';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 import { CustomersModule } from './customers/customers.module';
+import { ShippersModule } from './shippers/shippers.module';
+import { SharedModule } from './_shared/shared.module';
+import { HomeComponent } from './home/home.component';
+import { CategoriesModule } from './categories/categories.module';
+import { EmployeesModule } from './employees/employees.module';
+import { OrdersModule } from './orders/orders.module';
+import { ProductsModule } from './products/products.module';
+import { RegionsModule } from './regions/regions.module';
+import { SuppliersModule } from './suppliers/suppliers.module';
+import { TerritoriesModule } from './territories/territories.module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule,
     HttpClientModule,
+    AppRoutingModule,
     SharedModule,
-    ToolbarsModule,
+    CategoriesModule,
     CustomersModule,
-    ShippersModule
+    EmployeesModule,
+    OrdersModule,
+    ProductsModule,
+    RegionsModule,
+    ShippersModule,
+    SuppliersModule,
+    TerritoriesModule
+  ],
+  declarations: [
+    AppComponent,
+    HomeComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

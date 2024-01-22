@@ -20,14 +20,14 @@ public class CustomersController : ControllerBase
     }
 
     [HttpGet("getcustomers")]
-    public async Task<ActionResult<List<Shipper>>> GetCustomers()
+    public async Task<ActionResult<List<Customer>>> GetCustomers()
     {
         var customers = await _customersRepository.GetCustomers();
         return Ok(customers);
     }
 
     [HttpGet("getcustomer/{customerId}")]
-    public async Task<ActionResult<Shipper>> GetCustomer(string customerId)
+    public async Task<ActionResult<Customer>> GetCustomer(string customerId)
     {
         var customer = await _customersRepository.GetCustomer(customerId);
         if (customer == null) return NotFound();

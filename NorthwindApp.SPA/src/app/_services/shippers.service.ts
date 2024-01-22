@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-
-import { Shipper } from '../_models/shipper';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+
+import { Shipper } from '../_models/shipper';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShippersService {
 
-  baseUrl = environment.apiUrl + "/api/Shippers/";
+  private baseUrl = environment.apiUrl + '/api/Shippers/';
   private shippersSource = new BehaviorSubject<Shipper[]>([]);
   shippers$ = this.shippersSource.asObservable();
 

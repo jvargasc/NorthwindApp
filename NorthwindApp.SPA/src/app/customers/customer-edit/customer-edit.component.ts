@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Customer } from 'src/app/_models/customer';
 import { Region } from 'src/app/_models/region';
 import { CustomersService } from 'src/app/_services/customers.service';
@@ -16,7 +16,8 @@ export class CustomerEditComponent {
   customerForm: FormGroup = new FormGroup({});
   regions: Region[] = [];
 
-  constructor(private customersService: CustomersService, private regionsService: RegionsService, private route: ActivatedRoute) { }
+  constructor(private customersService: CustomersService, private regionsService: RegionsService, private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {
     this.getParameters();
@@ -25,7 +26,17 @@ export class CustomerEditComponent {
   }
 
   buttonWasClicked(buttonName: string) {
-    console.log(buttonName);
+    switch(buttonName){
+      case "new":
+        console.log(buttonName);
+        break;
+      case "save":
+        console.log(buttonName);
+        break;
+      case "return":
+        this.router.navigate(['/customers/customer-list']);
+        break;
+    }
   }
 
   private getParameters() {
@@ -39,10 +50,13 @@ export class CustomerEditComponent {
   }
 
   private SetCustomer() {
+    let myClass : { id: number, name: string } [] = [];
+
     const customerId = this.route.snapshot.paramMap.get('customerId');
     this.customersService.getCustomer(customerId!).subscribe(
       {
         next: customerResult => {
+          console.log(customerResult);
           this.customer = customerResult;
           this.initializeForm();
         }

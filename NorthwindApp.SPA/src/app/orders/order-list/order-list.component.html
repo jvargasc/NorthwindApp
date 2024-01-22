@@ -1,0 +1,62 @@
+<div class="container mt-3">
+  <div class="page-title mb-2">
+    <div class="w-75">
+      <h4 class="area-title">Orders</h4>
+    </div>
+    <div class="w-25">
+      <app-toolbarlist
+        (toolbarButtonWasClicked)="buttonWasClicked($event)"
+      ></app-toolbarlist>
+    </div>
+  </div>
+  <table class="table">
+    <thead>
+      <tr class="table-success">
+        <th scope="col">Order Id</th>
+        <th scope="col">Customer Id</th>
+        <th scope="col">Employee Id</th>
+        <th scope="col">Order Date</th>
+        <th scope="col">Required Date</th>
+        <th scope="col">Shipped Date</th>
+        <th scope="col">Shipper Id</th>
+        <th scope="col">Freight</th>
+        <th scope="col">Ship Name</th>
+        <th scope="col">Ship Address</th>
+        <th scope="col">Ship City</th>
+        <th scope="col">Region Id</th>
+        <th scope="col">Ship PostalCode</th>
+        <th scope="col">Ship Country</th>
+        <th scope="col"><i class="fa-solid fa-gear"></i></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders">
+        <th scope="row">{{ order.orderId }}</th>
+        <td>{{ order.customerId }}</td>
+        <td>{{ order.employeeId }}</td>
+        <td>{{ order.orderDate }}</td>
+        <td>{{ order.requiredDate }}</td>
+        <td>{{ order.shippedDate }}</td>
+        <td>{{ order.shipperId }}</td>
+        <td>{{ order.freight }}</td>
+        <td>{{ order.shipName }}</td>
+        <td>{{ order.shipAddress }}</td>
+        <td>{{ order.shipCity }}</td>
+        <td>{{ order.regionId }}</td>
+        <td>{{ order.shipPostalCode }}</td>
+        <td>{{ order.shipCountry }}</td>
+        <td>
+          <a routerLink="/orderss/orders-edit/{{ order.orderId }}">
+            <i class="fas fa-edit"></i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      Total Records:
+      {{
+        orders.length
+      }}
+    </tfoot>
+  </table>
+</div>

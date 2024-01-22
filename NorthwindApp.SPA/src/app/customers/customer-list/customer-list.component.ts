@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
 import { Customer } from 'src/app/_models/customer';
 import { CustomersService } from 'src/app/_services/customers.service';
 
@@ -7,7 +8,7 @@ import { CustomersService } from 'src/app/_services/customers.service';
   templateUrl: './customer-list.component.html',
   styleUrls: ['./customer-list.component.css']
 })
-export class CustomerListComponent {
+export class CustomerListComponent implements OnInit {
 
   customers: Customer[] = [];
 
@@ -21,11 +22,11 @@ export class CustomerListComponent {
     );
   }
 
-  toolbarButtonWasClicked(buttonName: string) {
+  buttonWasClicked(buttonName: string) {
     switch(buttonName)
     {
       case "refresh":
-        console.log(buttonName);
+        location.reload();
         break;
       case "search":
         console.log(buttonName);
