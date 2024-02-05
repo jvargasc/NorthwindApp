@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Category } from 'src/app/_models/category';
 import { CategoriesService } from 'src/app/_services/categories.service';
+import { PhotosService } from 'src/app/_services/photos.service';
 
 @Component({
   selector: 'app-category-edit',
@@ -14,10 +15,10 @@ export class CategoryEditComponent implements OnInit {
   category:  Category = {} as Category;
   categoryForm: FormGroup = new FormGroup({});
   picture?: string;
-  modalTitle: string = "modal Title!!";
-  modalBody: string = "modal Body!!";
+  modalTitle = "Category";
+  modalBody = "";
 
-  constructor( private categoriesService: CategoriesService, private route: ActivatedRoute,
+  constructor( private categoriesService: CategoriesService, private route: ActivatedRoute, public photosService: PhotosService,
     private router: Router ) { }
 
   ngOnInit() {
@@ -26,12 +27,15 @@ export class CategoryEditComponent implements OnInit {
   }
 
   toolbarButtonWasClicked(buttonName: string) {
+    let modalBody = "";
     switch(buttonName){
       case "new":
-        this.displayYesNoModal();
+        modalBody = "Do you wish to clear this Category?";
+        this.displayYesNoModal(modalBody);
         break;
       case "save":
-        console.log(buttonName);
+        modalBody = "Do you wish to save this Category?";
+        this.displayYesNoModal(modalBody);
         break;
       case "return":
         this.router.navigate(['/categories/category-list']);
@@ -40,19 +44,23 @@ export class CategoryEditComponent implements OnInit {
   }
 
   modalButtonWasClicked(button: string) {
+    console.log(button);
+    const modalYesNo = document.getElementById("modalyesno");
+    if(modalYesNo)
+      modalYesNo.style.display = 'none';
+    this.clearForm();
     switch(button) {
       case "btnYes":
-        const modalYesNo = document.getElementById("modalyesno");
-        if(modalYesNo)
-          modalYesNo.style.display = 'none';
-        this.clearForm();
         break;
       case "btnNo":
         break;
     }
+    this.getPicture();
+    // console.log(this.picture);
   }
 
-  private displayYesNoModal() {
+  private displayYesNoModal(modalBody: string) {
+    this.modalBody = modalBody;
     const btnShowModal = document.getElementById("showModal");
     if(btnShowModal)
       btnShowModal.click();
@@ -60,7 +68,9 @@ export class CategoryEditComponent implements OnInit {
 
   private clearForm() {
     this.category = {} as Category;
+    this.picture = '';
     this.initializeForm();
+    this.setPicture();
     this.router.navigate(['/categories/category-edit']);
   }
 
@@ -72,6 +82,7 @@ export class CategoryEditComponent implements OnInit {
           next: categoryResult => {
             this.category = categoryResult;
             this.initializeForm();
+            this.setPicture();
           }
         }
       );
@@ -86,10 +97,29 @@ export class CategoryEditComponent implements OnInit {
     });
 
     this.categoryForm.controls['categoryId'].disable();
+  }
+
+  setPicture() {
+
     if(Object.keys(this.category).length >0)
       this.picture = 'data:image/jpg;base64,' + this.category?.picture;
     else
       this.picture = '../../../assets/Blank.png';
+
+    this.photosService.setPhoto(this.picture);
+  }
+
+  getPicture() {
+
+    this.photosService.getPhoto().subscribe({
+      next: photoResult => {
+        if(photoResult.length > 0)
+        {
+          this.picture = photoResult;
+        }
+      }
+    })
+
   }
 
 }
