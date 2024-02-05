@@ -7,6 +7,7 @@ import { CustomerEditComponent } from './customer-edit/customer-edit.component';
 const routes: Routes = [
   { path: 'customers', component: CustomerListComponent},
   { path: 'customers/customer-list', component: CustomerListComponent},
+  { path: 'customers/customer-edit', component: CustomerEditComponent },
   { path: 'customers/customer-edit/:customerId', component: CustomerEditComponent }
 ];
 

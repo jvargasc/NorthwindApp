@@ -7,6 +7,7 @@ import { TerritoryEditComponent } from './territory-edit/territory-edit.componen
 const routes: Routes = [
   { path: 'territories', component: TerritoryListComponent},
   { path: 'territories/territory-list', component: TerritoryListComponent},
+  { path: 'territories/territory-edit', component: TerritoryEditComponent },
   { path: 'territories/territory-edit/:territoryId', component: TerritoryEditComponent }
 ];
 

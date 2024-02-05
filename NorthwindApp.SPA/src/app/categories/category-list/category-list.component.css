@@ -5,3 +5,12 @@ tfoot {
 .page-title {
   display: flex;
 }
+
+img {
+  height: 100px;
+  width: 200px;
+}
+
+.toolbarlist {
+  float: left;
+}

@@ -1,13 +1,11 @@
 <div class="container mt-3">
   <div class="page-title mb-2">
-    <div class="w-75">
+    <div class="col-11">
       <h4 class="area-title">Shippers</h4>
     </div>
-    <div class="w-25">
-      <app-toolbarlist
-        (toolbarButtonWasClicked)="buttonWasClicked($event)"
-      ></app-toolbarlist>
-    </div>
+    <app-toolbarlist
+      (toolbarButtonWasClicked)="buttonWasClicked($event)"
+    ></app-toolbarlist>
   </div>
   <table class="table">
     <thead>

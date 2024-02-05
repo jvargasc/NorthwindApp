@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\manager\\source\\repos\\NorthwindApp\\NorthwindApp.Api\\NorthwindApp.API.csproj": {}
+    "C:\\Users\\manager\\source\\repos\\NorthwindApp\\NorthwindApp.API\\NorthwindApp.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\manager\\source\\repos\\NorthwindApp\\NorthwindApp.Api\\NorthwindApp.API.csproj": {
+    "C:\\Users\\manager\\source\\repos\\NorthwindApp\\NorthwindApp.API\\NorthwindApp.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\manager\\source\\repos\\NorthwindApp\\NorthwindApp.Api\\NorthwindApp.API.csproj",
+        "projectUniqueName": "C:\\Users\\manager\\source\\repos\\NorthwindApp\\NorthwindApp.API\\NorthwindApp.API.csproj",
         "projectName": "NorthwindApp.API",
-        "projectPath": "C:\\Users\\manager\\source\\repos\\NorthwindApp\\NorthwindApp.Api\\NorthwindApp.API.csproj",
+        "projectPath": "C:\\Users\\manager\\source\\repos\\NorthwindApp\\NorthwindApp.API\\NorthwindApp.API.csproj",
         "packagesPath": "C:\\Users\\manager\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\manager\\source\\repos\\NorthwindApp\\NorthwindApp.Api\\obj\\",
+        "outputPath": "C:\\Users\\manager\\source\\repos\\NorthwindApp\\NorthwindApp.API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -144,6 +144,12 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
+          "dependencies": {
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[8.0.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

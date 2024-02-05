@@ -7,6 +7,7 @@ import { ShipperEditComponent } from './shipper-edit/shipper-edit.component';
 export const routes: Routes = [
   { path: 'shippers', component: ShipperListComponent},
   { path: 'shippers/shipper-list', component: ShipperListComponent},
+  { path: 'shippers/shipper-edit', component: ShipperEditComponent },
   { path: 'shippers/shipper-edit/:shipperId', component: ShipperEditComponent },
 ];
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { ShippersService } from 'src/app/_services/shippers.service';
 import { Shipper } from 'src/app/_models/shipper';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-shipper-list',
@@ -12,7 +13,7 @@ export class ShipperListComponent implements OnInit {
 
   shippers: Shipper[] = [];
 
-  constructor(private shippersService: ShippersService) { }
+  constructor(private shippersService: ShippersService, private router: Router) { }
 
   ngOnInit() {
     this.shippersService.getShippers().subscribe(
@@ -25,6 +26,9 @@ export class ShipperListComponent implements OnInit {
   buttonWasClicked(buttonName: string) {
     switch(buttonName)
     {
+      case "new":
+        this.router.navigate(['/shippers/shipper-edit']);
+        break;
       case "refresh":
         location.reload();
         break;

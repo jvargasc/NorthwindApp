@@ -6,6 +6,7 @@ import { CategoryEditComponent } from './category-edit/category-edit.component';
 const routes: Routes = [
   { path: 'categories', component: CategoryListComponent},
   { path: 'categories/category-list', component: CategoryListComponent},
+  { path: 'categories/category-edit', component: CategoryEditComponent },
   { path: 'categories/category-edit/:categoryId', component: CategoryEditComponent }
 ];
 

@@ -1,13 +1,11 @@
 <div class="container mt-3">
   <div class="page-title mb-2">
-    <div class="w-75">
+    <div class="col-11">
       <h4 class="area-title">Customers</h4>
     </div>
-    <div class="w-25">
-      <app-toolbarlist
-        (toolbarButtonWasClicked)="buttonWasClicked($event)"
-      ></app-toolbarlist>
-    </div>
+    <app-toolbarlist
+      (toolbarButtonWasClicked)="buttonWasClicked($event)"
+    ></app-toolbarlist>
   </div>
   <table class="table">
     <thead>
@@ -18,7 +16,7 @@
         <th scope="col">Contact Title</th>
         <th scope="col">Address</th>
         <th scope="col">City</th>
-        <th scope="col">Region Id</th>
+        <th scope="col">Region</th>
         <th scope="col">Postal Code</th>
         <th scope="col">Country</th>
         <th scope="col">Phone</th>
@@ -34,7 +32,7 @@
         <td>{{ customer.contactTitle }}</td>
         <td>{{ customer.address }}</td>
         <td>{{ customer.city }}</td>
-        <td>{{ customer.regionId }}</td>
+        <td>{{ getRegion(customer.regionId) }}</td>
         <td>{{ customer.postalCode }}</td>
         <td>{{ customer.country }}</td>
         <td>{{ customer.phone }}</td>

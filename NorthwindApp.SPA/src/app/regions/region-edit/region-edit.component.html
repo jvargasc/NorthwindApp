@@ -1,1 +1,55 @@
-<p>region-edit works!</p>
+<div class="card shadow">
+  <div class="card-header p-3 bg-white d-flex justify-content-between">
+    <div class="card-title">
+      <h4>Region</h4>
+    </div>
+    <div class="card-toolbar">
+      <app-toolbarcrud
+        (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"
+      ></app-toolbarcrud>
+    </div>
+  </div>
+  <div class="card-body mx-2">
+    <form [formGroup]="regionForm">
+      <div class="row">
+        <div class="col-3 form-group">
+          <label for="regionId">Region</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="regionId"
+            placeholder="Region"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3 form-group">
+          <label for="regionDescription">Region Description</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="regionDescription"
+            placeholder="Region Description"
+          />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<button
+  style="display: none"
+  type="button"
+  class="btn btn-primary"
+  data-bs-toggle="modal"
+  data-bs-target="#yesNoModal"
+  id="showModal"
+>
+  Open modal
+</button>
+<app-modalyesno
+  [modalTitle]="modalTitle"
+  [modalBody]="modalBody"
+  (modalButtonWasClicked)="modalButtonWasClicked($event)"
+  id="modalyesno"
+></app-modalyesno>

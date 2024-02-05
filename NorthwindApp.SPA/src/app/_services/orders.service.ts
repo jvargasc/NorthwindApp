@@ -10,8 +10,6 @@ import { BehaviorSubject } from 'rxjs';
 export class OrdersService {
 
   private baseUrl = environment.apiUrl + '/api/Orders/';
-  private ordersSource = new BehaviorSubject<Order[]>([]);
-  orders$ = this.ordersSource.asObservable();
 
   constructor(private http: HttpClient) { }
 

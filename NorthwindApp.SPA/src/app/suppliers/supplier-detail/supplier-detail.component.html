@@ -1,1 +1,151 @@
-<p>supplier-detail works!</p>
+<div class="card shadow">
+  <div class="card-header p-3 bg-white d-flex justify-content-between">
+    <div class="card-title">
+      <h4>Supplier</h4>
+    </div>
+    <div class="card-toolbar">
+      <app-toolbarcrud
+        (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"
+      ></app-toolbarcrud>
+    </div>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="supplierForm">
+      <div class="row">
+        <div class="col-3 form-group">
+          <label for="supplierId">Supplier Id</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="supplierId"
+            placeholder="Supplier Id"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3 form-group">
+          <label for="companyName">Company Name</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="companyName"
+            placeholder="Company Name"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="contactName">Contact Name</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="contactName"
+            placeholder="Contact Name"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="contactTitle">Contact Title</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="contactTitle"
+            placeholder="Contact Title"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="address">Address</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="address"
+            placeholder="Address"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3 form-group">
+          <label for="city">City</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="city"
+            placeholder="City"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="regionId">Region Id</label>
+          <select class="form-control" formControlName="regionId">
+            <option
+              *ngFor="let region of regions"
+              [ngValue]="supplier?.regionId"
+            >
+              {{ region.regionDescription }}
+            </option>
+          </select>
+        </div>
+        <div class="col-3 form-group">
+          <label for="postalCode">Postal Code</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="postalCode"
+            placeholder="Postal Code"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="country">Country</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="country"
+            placeholder="Country"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3 form-group">
+          <label for="phone">Phone</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="phone"
+            placeholder="Phone"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="fax">Fax</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="fax"
+            placeholder="Fax"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="homePage">HomePage</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="homePage"
+            placeholder="HomePage"
+          />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<button
+  style="display: none"
+  type="button"
+  class="btn btn-primary"
+  data-bs-toggle="modal"
+  data-bs-target="#yesNoModal"
+  id="showModal"
+>
+  Open modal
+</button>
+<app-modalyesno
+  [modalTitle]="modalTitle"
+  [modalBody]="modalBody"
+  (modalButtonWasClicked)="modalButtonWasClicked($event)"
+  id="modalyesno"
+></app-modalyesno>

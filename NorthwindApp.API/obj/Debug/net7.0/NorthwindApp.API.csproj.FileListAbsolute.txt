@@ -54,10 +54,7 @@ C:\Users\manager\source\repos\NorthwindApp\NorthwindApp.API\bin\Debug\net7.0\run
 C:\Users\manager\source\repos\NorthwindApp\NorthwindApp.API\bin\Debug\net7.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\manager\source\repos\NorthwindApp\NorthwindApp.API\bin\Debug\net7.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\manager\source\repos\NorthwindApp\NorthwindApp.API\bin\Debug\net7.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
-C:\Users\manager\source\repos\NorthwindApp\NorthwindApp.API\bin\Debug\net7.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
 C:\Users\manager\source\repos\NorthwindApp\NorthwindApp.API\bin\Debug\net7.0\runtimes\win\lib\netcoreapp2.0\System.Diagnostics.PerformanceCounter.dll
-C:\Users\manager\source\repos\NorthwindApp\NorthwindApp.API\bin\Debug\net7.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
-C:\Users\manager\source\repos\NorthwindApp\NorthwindApp.API\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 C:\Users\manager\source\repos\NorthwindApp\NorthwindApp.API\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 C:\Users\manager\source\repos\NorthwindApp\NorthwindApp.API\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\manager\source\repos\NorthwindApp\NorthwindApp.API\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
@@ -174,3 +171,4 @@ C:\Users\jvargas\source\Git\NorthwindApp\NorthwindApp.API\obj\Debug\net7.0\refin
 C:\Users\jvargas\source\Git\NorthwindApp\NorthwindApp.API\obj\Debug\net7.0\NorthwindApp.API.pdb
 C:\Users\jvargas\source\Git\NorthwindApp\NorthwindApp.API\obj\Debug\net7.0\NorthwindApp.API.genruntimeconfig.cache
 C:\Users\jvargas\source\Git\NorthwindApp\NorthwindApp.API\obj\Debug\net7.0\ref\NorthwindApp.API.dll
+C:\Users\manager\source\repos\NorthwindApp\NorthwindApp.Api\bin\Debug\net7.0\runtimes\win\lib\net7.0\Microsoft.Win32.SystemEvents.dll

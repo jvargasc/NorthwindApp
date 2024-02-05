@@ -19,7 +19,7 @@ export class SuppliersService {
     return this.http.get<Supplier[]>(this.baseUrl + `getsuppliers`);
   }
 
-  getSupplier(supplierId: string): Observable<Supplier> {
+  getSupplier(supplierId: number): Observable<Supplier> {
     return this.http.get<Supplier>(this.baseUrl + `getsupplier/${supplierId}`);
   }
 

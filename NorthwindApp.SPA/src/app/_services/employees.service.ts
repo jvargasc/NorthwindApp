@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, interval } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 
@@ -14,14 +14,28 @@ export class EmployeesService {
   private employeesSource = new BehaviorSubject<Employee[]>([]);
   employees$ = this.employeesSource.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.setEmployees();
+    const timeLapse = (1 * 60 * 1000); // minutes * seconds * miliseconds
+    interval(timeLapse).subscribe(
+      t => (this.setEmployees())
+      );
+   }
 
   getEmployees() {
-return this.http.get<Employee[]>(this.baseUrl + `getemployees`);
+    return this.http.get<Employee[]>(this.baseUrl + `getemployees`);
   }
 
   getEmployee(employeeId: number) {
-return this.http.get<Employee>(this.baseUrl + `getemployee/${employeeId}`);
+    return this.http.get<Employee>(this.baseUrl + `getemployee/${employeeId}`);
+  }
+
+  private setEmployees() {
+    this.getEmployees().subscribe({
+      next: employeessResult => {
+        this.employeesSource.next(employeessResult);
+      }
+    });
   }
 
 }

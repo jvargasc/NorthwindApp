@@ -5,23 +5,20 @@
     </div>
     <div class="card-toolbar">
       <app-toolbarcrud
-        (toolbarButtonWasClicked)="buttonWasClicked($event)"
+        (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"
       ></app-toolbarcrud>
     </div>
   </div>
   <div class="card-body mx-2">
     <form [formGroup]="customerForm">
-      <div class="row" id="row-shipperId">
+      <div class="row">
         <div class="col-3">
           <div class="form-group">
-            <label for="exampleShipperId">Customer Id</label>
+            <label for="customerId">Customer Id</label>
             <input
-              type="email"
               class="form-control"
-              id="exampleShipperId"
               formControlName="customerId"
-              aria-describedby="emailHelp"
-              placeholder="Shipper Id"
+              placeholder="Customer Id"
             />
           </div>
         </div>
@@ -29,11 +26,10 @@
       <div class="row">
         <div class="col-6">
           <div class="form-group">
-            <label for="exampleCompanyName">Company Name</label>
+            <label for="companyName">Company Name</label>
             <input
               type="text"
               class="form-control"
-              id="exampleCompanyName"
               formControlName="companyName"
               placeholder="Company Name"
             />
@@ -41,11 +37,10 @@
         </div>
         <div class="col-6">
           <div class="form-group">
-            <label for="examplePhone">Contact Name</label>
+            <label for="contactName">Contact Name</label>
             <input
               type="phone"
               class="form-control"
-              id="examplePhone"
               formControlName="contactName"
               placeholder="Contact Name"
             />
@@ -55,11 +50,10 @@
       <div class="row">
         <div class="col-6">
           <div class="form-group">
-            <label for="examplePhone">Contact Title</label>
+            <label for="contactTitle">Contact Title</label>
             <input
               type="phone"
               class="form-control"
-              id="examplePhone"
               formControlName="contactTitle"
               placeholder="Contact Title"
             />
@@ -67,11 +61,10 @@
         </div>
         <div class="col-6">
           <div class="form-group">
-            <label for="examplePhone">Address</label>
+            <label for="address">Address</label>
             <input
               type="phone"
               class="form-control"
-              id="examplePhone"
               formControlName="address"
               placeholder="Address"
             />
@@ -81,11 +74,10 @@
       <div class="row">
         <div class="col-6">
           <div class="form-group">
-            <label for="examplePhone">City</label>
+            <label for="city">City</label>
             <input
               type="phone"
               class="form-control"
-              id="examplePhone"
               formControlName="city"
               placeholder="City"
             />
@@ -93,16 +85,12 @@
         </div>
         <div class="col-6">
           <div class="form-group">
-            <label for="examplePhone">Region</label>
-            <!-- <input
-              type="phone"
-              class="form-control"
-              id="examplePhone"
-              formControlName="regionId"
-              placeholder="regionId"
-            /> -->
+            <label for="regionId">Region</label>
             <select class="form-control" formControlName="regionId">
-              <option *ngFor="let region of regions" [ngValue]="region">
+              <option
+                *ngFor="let region of regions"
+                [ngValue]="region.regionId"
+              >
                 {{ region.regionDescription }}
               </option>
             </select>
@@ -112,7 +100,7 @@
       <div class="row">
         <div class="col-6">
           <div class="form-group">
-            <label for="examplePhone">Postal Code</label>
+            <label for="postalCode">Postal Code</label>
             <input
               type="phone"
               class="form-control"
@@ -123,11 +111,10 @@
         </div>
         <div class="col-6">
           <div class="form-group">
-            <label for="examplePhone">Country</label>
+            <label for="country">Country</label>
             <input
               type="phone"
               class="form-control"
-              id="examplePhone"
               formControlName="country"
               placeholder="Country"
             />
@@ -137,11 +124,10 @@
       <div class="row">
         <div class="col-6">
           <div class="form-group">
-            <label for="examplePhone">Phone</label>
+            <label for="phone">Phone</label>
             <input
               type="phone"
               class="form-control"
-              id="examplePhone"
               formControlName="phone"
               placeholder="phone"
             />
@@ -149,11 +135,10 @@
         </div>
         <div class="col-6">
           <div class="form-group">
-            <label for="examplePhone">Fax</label>
+            <label for="fax">Fax</label>
             <input
               type="phone"
               class="form-control"
-              id="examplePhone"
               formControlName="fax"
               placeholder="Fax"
             />
@@ -163,3 +148,20 @@
     </form>
   </div>
 </div>
+
+<button
+  style="display: none"
+  type="button"
+  class="btn btn-primary"
+  data-bs-toggle="modal"
+  data-bs-target="#yesNoModal"
+  id="showModal"
+>
+  Open modal
+</button>
+<app-modalyesno
+  [modalTitle]="modalTitle"
+  [modalBody]="modalBody"
+  (modalButtonWasClicked)="modalButtonWasClicked($event)"
+  id="modalyesno"
+></app-modalyesno>

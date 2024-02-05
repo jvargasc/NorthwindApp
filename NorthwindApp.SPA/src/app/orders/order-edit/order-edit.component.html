@@ -1,1 +1,173 @@
-<p>order-edit works!</p>
+<div class="card shadow">
+  <div class="card-header p-3 bg-white d-flex justify-content-between">
+    <div class="card-title">
+      <h4>Order</h4>
+    </div>
+    <div class="card-toolbar">
+      <app-toolbarcrud
+        (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"
+      ></app-toolbarcrud>
+    </div>
+  </div>
+  <div class="card-body mx-2">
+    <form [formGroup]="orderForm">
+      <div class="row">
+        <div class="col-3">
+          <div class="form-group">
+            <label for="categoryId">Order Id</label>
+            <input
+              class="form-control"
+              formControlName="orderId"
+              placeholder="orderId"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3 form-group">
+          <label for="customerId">Customer Id</label>
+          <select class="form-control" formControlName="customerId">
+            <option
+              *ngFor="let customer of customers"
+              [ngValue]="order.customerId"
+            >
+              {{ customer.companyName }}
+            </option>
+          </select>
+        </div>
+        <div class="col-3 form-group">
+          <label for="employeeId">Employee</label>
+          <select class="form-control" formControlName="employeeId">
+            <option
+              *ngFor="let employee of employees"
+              [ngValue]="order.employeeId"
+            >
+              {{ employee.firstName + " " + employee.lastName }}
+            </option>
+          </select>
+        </div>
+        <div class="col-3 form-group">
+          <label for="orderDate">Order Date</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="orderDate"
+            placeholder="Order Date"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="requiredDate">Required Date</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="requiredDate"
+            placeholder="Required Date"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3 form-group">
+          <label for="shippedDate">Shipped Date</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="shippedDate"
+            placeholder="Shipped Date"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="shipperId">Shipper Id</label>
+          <select class="form-control" formControlName="shipperId">
+            <option
+              *ngFor="let shipper of shippers"
+              [ngValue]="order.shipperId"
+            >
+              {{ shipper.companyName }}
+            </option>
+          </select>
+        </div>
+        <div class="col-3 form-group">
+          <label for="freight">Freight</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="freight"
+            placeholder="Freight"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="shipName">Ship Name</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="shipName"
+            placeholder="Ship Name"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3 form-group">
+          <label for="shipAddress">Ship Address</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="shipAddress"
+            placeholder="Ship Address"
+          />
+        </div>
+        <div class="col-2 form-group">
+          <label for="shipCity">Ship City</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="shipCity"
+            placeholder="Ship City"
+          />
+        </div>
+        <div class="col-2 form-group">
+          <label for="regionId">Region Id</label>
+          <select class="form-control" formControlName="regionId">
+            <option *ngFor="let region of regions" [ngValue]="region.regionId">
+              {{ region.regionDescription }}
+            </option>
+          </select>
+        </div>
+        <div class="col-2 form-group">
+          <label for="shipPostalCode">Ship PostalCode</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="shipPostalCode"
+            placeholder="Ship PostalCode"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="shipCountry">Ship Country</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="shipCountry"
+            placeholder="Ship Country"
+          />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<button
+  style="display: none"
+  type="button"
+  class="btn btn-primary"
+  data-bs-toggle="modal"
+  data-bs-target="#yesNoModal"
+  id="showModal"
+>
+  Open modal
+</button>
+<app-modalyesno
+  [modalTitle]="modalTitle"
+  [modalBody]="modalBody"
+  (modalButtonWasClicked)="modalButtonWasClicked($event)"
+  id="modalyesno"
+></app-modalyesno>

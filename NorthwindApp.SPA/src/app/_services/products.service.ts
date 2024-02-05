@@ -10,8 +10,6 @@ import { HttpClient } from '@angular/common/http';
 export class ProductsService {
 
   private baseUrl = environment.apiUrl + '/api/Products/';
-  private productsSource = new BehaviorSubject<Product[]>([]);
-  products$ = this.productsSource.asObservable();
 
   constructor(private http: HttpClient) { }
 

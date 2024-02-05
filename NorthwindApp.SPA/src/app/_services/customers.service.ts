@@ -11,8 +11,6 @@ import { Customer } from '../_models/customer';
 export class CustomersService {
 
   private baseUrl = environment.apiUrl + '/api/Customers/';
-  private customersSource = new BehaviorSubject<Customer[]>([]);
-  customers$ = this.customersSource.asObservable();
 
   constructor(private http: HttpClient) { }
 

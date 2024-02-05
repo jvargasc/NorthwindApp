@@ -6,6 +6,7 @@ import { OrderEditComponent } from './order-edit/order-edit.component';
 const routes: Routes = [
   { path: 'orders', component: OrderListComponent},
   { path: 'orders/order-list', component: OrderListComponent},
+  { path: 'orders/order-edit', component: OrderEditComponent },
   { path: 'orders/order-edit/:orderId', component: OrderEditComponent }
 ];
 

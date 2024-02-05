@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Supplier } from 'src/app/_models/supplier';
 import { SuppliersService } from 'src/app/_services/suppliers.service';
@@ -12,13 +13,12 @@ export class SupplierListComponent implements OnInit {
 
   suppliers: Supplier[] = [];
 
-  constructor(private suppliersService: SuppliersService) {  }
+  constructor(private suppliersService: SuppliersService, private router: Router) {  }
 
   ngOnInit() {
     this.suppliersService.getSuppliers().subscribe(
       {
-        next: suppliersService => { this.suppliers = suppliersService;
-        console.log(this.suppliers); }
+        next: suppliersService => { this.suppliers = suppliersService; }
       }
     )
   }
@@ -26,6 +26,9 @@ export class SupplierListComponent implements OnInit {
   buttonWasClicked(buttonName: string) {
     switch(buttonName)
     {
+      case "new":
+        this.router.navigate(['/suppliers/supplier-edit']);
+        break;
       case "refresh":
         location.reload();
         break;

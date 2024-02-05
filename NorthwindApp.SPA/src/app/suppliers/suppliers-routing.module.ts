@@ -6,7 +6,8 @@ import { SupplierDetailComponent } from './supplier-detail/supplier-detail.compo
 const routes: Routes = [
   { path: 'suppliers', component: SupplierListComponent},
   { path: 'suppliers/supplier-list', component: SupplierListComponent},
-  { path: 'suppliers/supplier-edit/:territoryId', component: SupplierDetailComponent }
+  { path: 'suppliers/supplier-edit', component: SupplierDetailComponent },
+  { path: 'suppliers/supplier-edit/:supplierId', component: SupplierDetailComponent }
 ];
 
 @NgModule({

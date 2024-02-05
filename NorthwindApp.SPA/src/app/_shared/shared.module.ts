@@ -9,18 +9,22 @@ import { ToolbarlistComponent } from './toolbars/toolbarlist/toolbarlist.compone
 import { ModalyesnoComponent } from './modals/modalyesno/modalyesno.component';
 import { ModalsearchComponent } from './modals/modalsearch/modalsearch.component';
 import { RouterLink } from '@angular/router';
+import { PhotoUploadComponent } from './photo-upload/photo-upload.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     NavComponent,
     FooterComponent,
     ModalyesnoComponent,
-    ModalsearchComponent
+    ModalsearchComponent,
+    PhotoUploadComponent
   ],
   imports: [
     CommonModule,
     ToolbarsModule,
-    RouterLink
+    RouterLink,
+    ReactiveFormsModule
   ],
   exports: [
     NavComponent,
@@ -28,7 +32,8 @@ import { RouterLink } from '@angular/router';
     ToolbarCrudComponent,
     ToolbarlistComponent,
     ModalyesnoComponent,
-    ModalsearchComponent
+    ModalsearchComponent,
+    PhotoUploadComponent
   ],
 })
 export class SharedModule { }
