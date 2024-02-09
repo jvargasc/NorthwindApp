@@ -26,5 +26,20 @@ namespace NorthwindApp.Infrastructure.Repositories
             return await _northwindContext.Customers
                     .Where(c => c.CustomerId == customerId).FirstOrDefaultAsync();
         }
+
+        public void CreateCustomer(Customer customer)
+        {
+            _northwindContext.Customers.Add(customer);
+        }
+
+        public void UpdateCustomer(Customer customer)
+        {
+            _northwindContext.Entry(customer).State = EntityState.Modified;
+        }
+
+        public async Task<bool> SaveAllAsync()
+        {
+            return await _northwindContext.SaveChangesAsync() > 0;
+        }
     }
 }

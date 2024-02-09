@@ -5,6 +5,6 @@ import { Component } from '@angular/core';
   templateUrl: './modalsearch.component.html',
   styleUrls: ['./modalsearch.component.css']
 })
-export class ModalsearchComponent {
+export class ModalSearchComponent {
 
 }

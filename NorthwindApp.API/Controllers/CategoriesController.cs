@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,24 @@ public class CategoriesController : ControllerBase
         if (Category == null) return NotFound();
 
         return Ok(Category);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<Category>> CreateCategory([FromBody] Category categoryToCreate)
+    {
+        _categoriesRepository.CreateCategory(categoryToCreate);
+        if (await _categoriesRepository.SaveAllAsync()) return Ok(categoryToCreate);
+
+        return BadRequest("Failed to save Category");
+    }
+
+    [HttpPut]
+    public async Task<ActionResult<Category>> UpdateCategory([FromBody] Category categoryToUpdate)
+    {
+        _categoriesRepository.UpdateCategory(categoryToUpdate);
+        if (await _categoriesRepository.SaveAllAsync()) return Ok(categoryToUpdate);
+
+        return BadRequest("Failed to update Category");
     }
 
 }

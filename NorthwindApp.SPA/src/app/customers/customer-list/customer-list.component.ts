@@ -32,7 +32,7 @@ export class CustomerListComponent implements OnInit {
     switch(buttonName)
     {
       case "new":
-        this.router.navigate(['/categories/category-edit']);
+        this.router.navigate(['/customers/customer-edit']);
         break;
       case "refresh":
         location.reload();

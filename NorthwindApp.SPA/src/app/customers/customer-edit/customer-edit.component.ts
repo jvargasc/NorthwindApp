@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Customer } from 'src/app/_models/customer';
@@ -16,11 +16,25 @@ export class CustomerEditComponent implements OnInit {
   customer?: Customer;
   customerForm: FormGroup = new FormGroup({});
   regions: Region[] = [];
-  modalTitle: string = "modal Title!!";
-  modalBody: string = "modal Body!!";
+  modalTitle = "Customer";
+  modalYesNoBody = "";
+  modalMessageBody = "";
+  toolbarButtonPressed = "";
+  headerToast = "Customer";
+  bodyToast = "Record successfully saved!!!";
 
-  constructor(private customersService: CustomersService, private regionsService: RegionsService, private route: ActivatedRoute,
-    private router: Router) { }
+  @ViewChild('companyName') companyName: ElementRef;
+  @ViewChild('contactName') contactName: ElementRef;
+  @ViewChild('contactTitle') contactTitle: ElementRef;
+  @ViewChild('address') address: ElementRef;
+  @ViewChild('city') city: ElementRef;
+  @ViewChild('regionId') regionId: ElementRef;
+  @ViewChild('postalCode') postalCode: ElementRef;
+  @ViewChild('country') country: ElementRef;
+  @ViewChild('phone') phone: ElementRef;
+  @ViewChild('fax') fax: ElementRef;
+
+  constructor(private customersService: CustomersService, private regionsService: RegionsService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.getParameters();
@@ -28,13 +42,18 @@ export class CustomerEditComponent implements OnInit {
     this.SetCustomer();
   }
 
+//#region Buttons
   toolbarButtonWasClicked(buttonName: string) {
+    this.toolbarButtonPressed = buttonName;
+    let modalBody = "";
     switch(buttonName){
       case "new":
-        this.displayYesNoModal();
+        modalBody = "Do you wish to clear this Customer and create a new one?";
+        this.displayModalYesNo(modalBody);
         break;
       case "save":
-        console.log(buttonName);
+        modalBody = "Do you wish to save this Customer?";
+        this.displayModalYesNo(modalBody);
         break;
       case "return":
         this.router.navigate(['/customers/customer-list']);
@@ -45,28 +64,109 @@ export class CustomerEditComponent implements OnInit {
   modalButtonWasClicked(button: string) {
     switch(button) {
       case "btnYes":
-        const modalYesNo = document.getElementById("modalyesno");
-        if(modalYesNo)
-          modalYesNo.style.display = 'none';
-        this.clearForm();
-        break;
+        if (this.toolbarButtonPressed == "new")
+          this.clearForm();
+        if (this.toolbarButtonPressed == "save") {
+            if(this.requiredFieldsValid())
+              this.createOrUpdateCustomer();
+        }
+      break;
       case "btnNo":
-
         break;
-    }
+      }
+
+    this.toolbarButtonPressed = ""
   }
+//#endregion
 
+//#region Handle Form
+  private initializeForm() {
+    let regionId = 0
+    if(this.customer?.regionId) regionId = this.customer?.regionId;
 
-  private displayYesNoModal() {
-    const btnShowModal = document.getElementById("showModal");
-    if(btnShowModal)
-      btnShowModal.click();
+    this.customerForm = new FormGroup({
+      'customerId' : new FormControl(this.customer?.customerId, Validators.required),
+      'companyName' : new FormControl(this.customer?.companyName, Validators.required),
+      'contactName' : new FormControl(this.customer?.contactName, Validators.required),
+      'contactTitle' : new FormControl(this.customer?.contactTitle, Validators.required),
+      'address' : new FormControl(this.customer?.address, Validators.required),
+      'city' : new FormControl(this.customer?.city, Validators.required),
+      'regionId': new FormControl(this.customer?.regionId, Validators.required),
+      'postalCode' : new FormControl(this.customer?.postalCode, Validators.required),
+      'country' : new FormControl(this.customer?.country, Validators.required),
+      'phone' : new FormControl(this.customer?.phone, Validators.required),
+      'fax' : new FormControl(this.customer?.fax, Validators.required)
+    })
+
+    this.customerForm.controls['customerId'].disable();
   }
 
   private clearForm() {
     this.customer = {} as Customer;
     this.initializeForm();
     this.router.navigate(['/customers/customer-edit']);
+  }
+
+  private requiredFieldsValid(): boolean {
+    let tmpValue = false;
+    let displayModalMessage = false;
+    if(!this.customerForm.valid) {
+      for (const field in this.customerForm.controls) { // 'field' is a string
+        const tmpControl = this.customerForm.get(field); // 'control' is a FormControl
+        if(tmpControl.invalid) {
+          switch(field) {
+            case "companyName":
+              this.companyName.nativeElement.classList.add('ng-touched');
+              displayModalMessage = true;
+              break;
+            case "contactName":
+              this.contactName.nativeElement.classList.add('ng-touched');
+              displayModalMessage = true;
+              break;
+            case "contactTitle":
+              this.contactTitle.nativeElement.classList.add('ng-touched');
+              displayModalMessage = true;
+              break;
+            case "address":
+              this.address.nativeElement.classList.add('ng-touched');
+              displayModalMessage = true;
+              break;
+            case "city":
+              this.city.nativeElement.classList.add('ng-touched');
+              displayModalMessage = true;
+              break;
+            case "regionId":
+              this.regionId.nativeElement.classList.add('ng-touched');
+              displayModalMessage = true;
+              break;
+            case "postalCode":
+              this.postalCode.nativeElement.classList.add('ng-touched');
+              displayModalMessage = true;
+              break;
+            case "country":
+              this.country.nativeElement.classList.add('ng-touched');
+              displayModalMessage = true;
+              break;
+            case "phone":
+              this.phone.nativeElement.classList.add('ng-touched');
+              displayModalMessage = true;
+              break;
+            case "fax":
+              this.fax.nativeElement.classList.add('ng-touched');
+              displayModalMessage = true;
+              break;
+            }
+          }
+        }
+
+     }
+
+    if(displayModalMessage) {
+      this.modalMessageBody = "There are required fields that you must complete.";
+      this.displayModalMessage();
+    }
+
+    return !displayModalMessage;
   }
 
   private getParameters() {
@@ -78,42 +178,99 @@ export class CustomerEditComponent implements OnInit {
       }
     );
   }
+//#endregion
+
+//#region Handle Customer
+  private createOrUpdateCustomer() {
+    let categoryId = this.customerForm.controls['categoryId'].value;
+    console.log('createOrUpdateCustomer()');
+    this.setValuesForCustomer(categoryId);
+    if (categoryId == null)
+      this.customersService.createCustomer(this.customer)
+          .subscribe({
+            next: customerResult => {
+              this.reloadSavedCustomer(customerResult);
+              this.toastClick();
+            },
+            error: errorResult => {
+              this.modalMessageBody = JSON.stringify(errorResult);
+              this.displayModalMessage();
+            }
+          });
+    else
+        this.customersService.updateCustomer(this.customer)
+        .subscribe({
+          next: customerResult => {
+            this.reloadSavedCustomer(customerResult);
+            this.toastClick();
+          },
+            error: errorResult => {
+              this.modalMessageBody = JSON.stringify(errorResult);
+              this.displayModalMessage();
+            }
+        });
+  }
+
+  private setValuesForCustomer(customerId: string) {
+
+      this.customer = {
+          companyName: this.customerForm.controls['companyName'].value,
+          contactName: this.customerForm.controls['contactName'].value,
+          contactTitle: this.customerForm.controls['contactTitle'].value,
+          address: this.customerForm.controls['address'].value,
+          city: this.customerForm.controls['city'].value,
+          regionId: this.customerForm.controls['regionId'].value,
+          postalCode: this.customerForm.controls['postalCode'].value,
+          country: this.customerForm.controls['country'].value,
+          phone: this.customerForm.controls['phone'].value,
+          fax: this.customerForm.controls['fax'].value
+            } as Customer ;
+
+    if (customerId != null)
+      this.customer.customerId = customerId;
+  }
 
   private SetCustomer() {
-    let myClass : { id: number, name: string } [] = [];
-
     const customerId = this.route.snapshot.paramMap.get('customerId');
-    this.customersService.getCustomer(customerId!).subscribe(
-      {
-        next: customerResult => {
-          this.customer = customerResult;
-          this.initializeForm();
+    if(customerId)
+      this.customersService.getCustomer(customerId!).subscribe(
+        {
+          next: customerResult => {
+            this.customer = customerResult;
+            this.initializeForm();
+          }
         }
-      }
-    );
+      );
   }
 
-  private initializeForm() {
-    let regionId = 0
-    if(this.customer?.regionId) regionId = this.customer?.regionId;
-
-    this.customerForm = new FormGroup({
-      'customerId' : new FormControl(this.customer?.customerId),
-      'companyName' : new FormControl(this.customer?.companyName),
-      'contactName' : new FormControl(this.customer?.contactName),
-      'contactTitle' : new FormControl(this.customer?.contactTitle),
-      'address' : new FormControl(this.customer?.address),
-      'city' : new FormControl(this.customer?.city),
-      'regionId': new FormControl(this.customer?.regionId),
-      'postalCode' : new FormControl(this.customer?.postalCode),
-      'country' : new FormControl(this.customer?.country),
-      'phone' : new FormControl(this.customer?.phone),
-      'fax' : new FormControl(this.customer?.fax)
-    })
-
-    // 'regionId' : new FormControl(this.customer?.regionId),
-    this.customerForm.controls['customerId'].disable();
-    // console.log(this.customerForm);
+  private reloadSavedCustomer(customer: Customer) {
+    if(customer) {
+      const customerId = customer.customerId;
+      this.router.navigate([`/customers/customer-edit/${customerId}`]);
+    }
   }
+
+//#endregion
+
+//#region Modals and Toasts
+  private displayModalYesNo(modalBody: string) {
+    this.modalYesNoBody = modalBody;
+    const btnShowModalYesNo = document.getElementById("showModalYesNo");
+    if(btnShowModalYesNo)
+      btnShowModalYesNo.click();
+  }
+
+  private displayModalMessage() {
+    const btnShowModalMessage = document.getElementById("showModalMessage");
+    if(btnShowModalMessage)
+      btnShowModalMessage.click();
+  }
+
+  private toastClick() {
+    const btnToast = document.getElementById("liveToastBtn");
+    if(btnToast)
+      btnToast.click();
+  }
+//#endregion
 
 }

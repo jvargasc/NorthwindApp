@@ -5,7 +5,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   templateUrl: './modalyesno.component.html',
   styleUrls: ['./modalyesno.component.css']
 })
-export class ModalyesnoComponent {
+export class ModalYesNoComponent {
   @Input() modalTitle: string = '';
   @Input() modalBody: string = '';
 

@@ -26,5 +26,20 @@ namespace NorthwindApp.Infrastructure.Repositories
             return await _northwindContext.Categories
                     .Where(c => c.CategoryId == categoryId).FirstOrDefaultAsync();
         }
+
+        public void CreateCategory(Category category)
+        {
+            _northwindContext.Categories.Add(category);
+        }
+
+        public void UpdateCategory(Category category)
+        {
+            _northwindContext.Entry(category).State = EntityState.Modified;
+        }
+
+        public async Task<bool> SaveAllAsync()
+        {
+            return await _northwindContext.SaveChangesAsync() > 0;
+        }
     }
 }

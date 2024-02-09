@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
@@ -20,22 +20,31 @@ export class CustomersService {
 
   getCustomer(customerId: string): Observable<Customer> {
     return this.http.get<Customer>(this.baseUrl + `getcustomer/${customerId}`);
-
-    // return this.http.get<Customer>(this.baseUrl + `getcustomer/${customerId}`)
-    // .pipe(
-    //   map(result => {
-    //     return { customerId: result.customerId, companyName: '', contactName: '', contactTitle: '', address: result.address, city: '', regionId: 1, postalCode: '', country: '', phone: '', fax: ''}
-    //   })
-    // );
-    // let resultData = this.http.get<Customer>(this.baseUrl + `getcustomer/${customerId}`)
-    //   .pipe(map(res => { return res[Customer] }));
-
-    // this.displayData(resultData);
-    // return resultData;
   }
 
-  private displayData(dataResult: any) {
-    console.log(dataResult);
+  createCustomer(customer: Customer): Observable<Customer> {
+    console.log(customer);
+    customer.customerId = this.generateCustomerId(customer.contactName);
+    console.log(customer);
+    return this.http.post<Customer>(this.baseUrl, customer)
+      .pipe(
+        tap(resData => { return resData; })
+      );
+  }
+
+  updateCustomer(customer: Customer): Observable<Customer> {
+    return this.http.put<Customer>(this.baseUrl, customer)
+      .pipe(
+        tap(resData => { return resData; })
+      );
+  }
+
+  private generateCustomerId(customerName: string): string {
+    let index = customerName.indexOf(' ');
+    let custName = customerName.replace(' ', '');
+    custName = custName.substr(0, 3) + custName.substr(index, 3);
+
+    return custName.toLocaleLowerCase();
   }
 
 }

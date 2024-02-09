@@ -16,6 +16,7 @@ import { ProductsModule } from './products/products.module';
 import { RegionsModule } from './regions/regions.module';
 import { SuppliersModule } from './suppliers/suppliers.module';
 import { TerritoriesModule } from './territories/territories.module';
+import { ToastComponent } from './_shared/toast/toast.component';
 
 @NgModule({
   imports: [

@@ -10,13 +10,18 @@ public interface ICategoriesRepository
 {
     Task<List<Category>> GetCategories();
     Task<Category> GetCategory(int categoryId);
+    void CreateCategory(Category category);
+    void UpdateCategory(Category category);
+    Task<bool> SaveAllAsync();
 }
 
 public interface ICustomersRepository
 {
     Task<List<Customer>> GetCustomers();
     Task<Customer> GetCustomer(string customerId);
-
+    void CreateCustomer(Customer customer);
+    void UpdateCustomer(Customer customer);
+    Task<bool> SaveAllAsync();
 }
 
 public interface IEmployeesRepository

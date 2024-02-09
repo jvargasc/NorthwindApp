@@ -1,24 +1,28 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 import { FooterComponent } from './footer/footer.component';
 import { NavComponent } from './nav/nav.component';
 import { ToolbarsModule } from './toolbars/toolbars.module';
 import { ToolbarCrudComponent } from './toolbars/toolbarcrud/toolbarcrud.component';
 import { ToolbarlistComponent } from './toolbars/toolbarlist/toolbarlist.component';
-import { ModalyesnoComponent } from './modals/modalyesno/modalyesno.component';
-import { ModalsearchComponent } from './modals/modalsearch/modalsearch.component';
-import { RouterLink } from '@angular/router';
+import { ModalYesNoComponent } from './modals/modalyesno/modalyesno.component';
+import { ModalSearchComponent } from './modals/modalsearch/modalsearch.component';
+import { ModalMessageComponent } from './modals/modalmessage/modalmessage.component';
 import { PhotoUploadComponent } from './photo-upload/photo-upload.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ToastComponent } from './toast/toast.component';
 
 @NgModule({
   declarations: [
     NavComponent,
     FooterComponent,
-    ModalyesnoComponent,
-    ModalsearchComponent,
-    PhotoUploadComponent
+    ModalYesNoComponent,
+    ModalSearchComponent,
+    ModalMessageComponent,
+    PhotoUploadComponent,
+    ToastComponent
   ],
   imports: [
     CommonModule,
@@ -31,9 +35,11 @@ import { ReactiveFormsModule } from '@angular/forms';
     FooterComponent,
     ToolbarCrudComponent,
     ToolbarlistComponent,
-    ModalyesnoComponent,
-    ModalsearchComponent,
-    PhotoUploadComponent
+    ModalYesNoComponent,
+    ModalSearchComponent,
+    ModalMessageComponent,
+    PhotoUploadComponent,
+    ToastComponent
   ],
 })
 export class SharedModule { }

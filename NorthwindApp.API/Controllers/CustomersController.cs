@@ -35,4 +35,21 @@ public class CustomersController : ControllerBase
         return Ok(customer);
     }
 
+    [HttpPost]
+    public async Task<ActionResult<Category>> CreateCustomer([FromBody] Customer customerToCreate)
+    {
+        _customersRepository.CreateCustomer(customerToCreate);
+        if (await _customersRepository.SaveAllAsync()) return Ok(customerToCreate);
+
+        return BadRequest("Failed to save Category");
+    }
+
+    [HttpPut]
+    public async Task<ActionResult<Category>> UpdateCustomer([FromBody] Customer customerToUpdate)
+    {
+        _customersRepository.UpdateCustomer(customerToUpdate);
+        if (await _customersRepository.SaveAllAsync()) return Ok(customerToUpdate);
+
+        return BadRequest("Failed to update Category");
+    }
 }
