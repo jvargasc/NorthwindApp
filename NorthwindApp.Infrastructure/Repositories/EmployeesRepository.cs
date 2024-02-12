@@ -16,14 +16,30 @@ public class EmployeesRepository : IEmployeesRepository
         _northwindContext = northwindContext;
     }
 
+    public async Task<List<Employee>> GetEmployees()
+    {
+        return await _northwindContext.Employees.ToListAsync();
+    }
+
     public async Task<Employee> GetEmployee(int employeeId)
     {
         return await _northwindContext.Employees
         .Where(e => e.EmployeeId == employeeId).FirstOrDefaultAsync();
     }
 
-    public async Task<List<Employee>> GetEmployees()
+    public void CreateEmployee(Employee employee)
     {
-        return await _northwindContext.Employees.ToListAsync();
+        _northwindContext.Employees.Add(employee);
     }
+
+    public void UpdateEmployee(Employee employee)
+    {
+        _northwindContext.Entry(employee).State = EntityState.Modified;
+    }
+
+    public async Task<bool> SaveAllAsync()
+    {
+        return await _northwindContext.SaveChangesAsync() > 0;
+    }
+
 }

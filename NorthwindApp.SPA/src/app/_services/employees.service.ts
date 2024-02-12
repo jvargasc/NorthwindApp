@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, interval } from 'rxjs';
+import { BehaviorSubject, Observable, interval, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 
@@ -36,6 +36,21 @@ export class EmployeesService {
         this.employeesSource.next(employeessResult);
       }
     });
+  }
+
+  createEmployee(employee: Employee): Observable<Employee> {
+    console.log(employee);
+    return this.http.post<Employee>(this.baseUrl, employee)
+      .pipe(
+        tap(resData => { return resData; })
+      );
+  }
+
+  updateEmployee(employee: Employee): Observable<Employee> {
+    return this.http.put<Employee>(this.baseUrl, employee)
+      .pipe(
+        tap(resData => { return resData; })
+      );
   }
 
 }

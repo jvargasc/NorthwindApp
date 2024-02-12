@@ -28,6 +28,9 @@ public interface IEmployeesRepository
 {
     Task<List<Employee>> GetEmployees();
     Task<Employee> GetEmployee(int employeeId);
+    void CreateEmployee(Employee employee);
+    void UpdateEmployee(Employee employee);
+    Task<bool> SaveAllAsync();
 }
 
 public interface IOrdersRepository

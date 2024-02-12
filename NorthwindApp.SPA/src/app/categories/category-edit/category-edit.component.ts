@@ -39,7 +39,7 @@ export class CategoryEditComponent implements OnInit {
   toolbarButtonWasClicked(buttonName: string) {
     this.toolbarButtonPressed = buttonName;
     let modalBody = "";
-    switch(buttonName){
+    switch(buttonName) {
       case "new":
         modalBody = "Do you wish to clear this Category and create a new one?";
         this.displayModalYesNo(modalBody);
@@ -132,7 +132,7 @@ export class CategoryEditComponent implements OnInit {
   }
 //#endregion
 
-//#region Handle Categories
+//#region Handle Category
   private createOrUpdateCategory() {
     let categoryId = this.categoryForm.controls['categoryId'].value;
 

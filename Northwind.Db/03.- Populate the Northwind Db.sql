@@ -157,10 +157,10 @@ CREATE TABLE "Customers" (
 	"ContactName" nvarchar (30) NULL ,
 	"ContactTitle" nvarchar (30) NULL ,
 	"Address" nvarchar (60) NULL ,
-	"City" nvarchar (15) NULL ,
+	"City" nvarchar (30) NULL ,
 	"RegionId" int NULL ,
 	"PostalCode" nvarchar (10) NULL ,
-	"Country" nvarchar (15) NULL ,
+	"Country" nvarchar (30) NULL ,
 	"Phone" nvarchar (24) NULL ,
 	"Fax" nvarchar (24) NULL ,
 	CONSTRAINT "PK_Customers" PRIMARY KEY  CLUSTERED 

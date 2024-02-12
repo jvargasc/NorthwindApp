@@ -40,6 +40,7 @@ export class CustomerEditComponent implements OnInit {
     this.getParameters();
     this.initializeForm();
     this.SetCustomer();
+    this.toastClick();
   }
 
 //#region Buttons
@@ -95,7 +96,7 @@ export class CustomerEditComponent implements OnInit {
       'postalCode' : new FormControl(this.customer?.postalCode, Validators.required),
       'country' : new FormControl(this.customer?.country, Validators.required),
       'phone' : new FormControl(this.customer?.phone, Validators.required),
-      'fax' : new FormControl(this.customer?.fax, Validators.required)
+      'fax' : new FormControl(this.customer?.fax)
     })
 
     this.customerForm.controls['customerId'].disable();
@@ -151,10 +152,6 @@ export class CustomerEditComponent implements OnInit {
               this.phone.nativeElement.classList.add('ng-touched');
               displayModalMessage = true;
               break;
-            case "fax":
-              this.fax.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
             }
           }
         }
@@ -182,10 +179,9 @@ export class CustomerEditComponent implements OnInit {
 
 //#region Handle Customer
   private createOrUpdateCustomer() {
-    let categoryId = this.customerForm.controls['categoryId'].value;
-    console.log('createOrUpdateCustomer()');
-    this.setValuesForCustomer(categoryId);
-    if (categoryId == null)
+    let customerId = this.customerForm.controls['customerId'].value;
+    this.setValuesForCustomer(customerId);
+    if (customerId == null)
       this.customersService.createCustomer(this.customer)
           .subscribe({
             next: customerResult => {
@@ -249,7 +245,6 @@ export class CustomerEditComponent implements OnInit {
       this.router.navigate([`/customers/customer-edit/${customerId}`]);
     }
   }
-
 //#endregion
 
 //#region Modals and Toasts

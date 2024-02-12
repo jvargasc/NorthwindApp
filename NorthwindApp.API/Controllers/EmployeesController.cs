@@ -37,4 +37,21 @@ public class EmployeesController : ControllerBase
         return Ok(employee);
     }
 
+    [HttpPost]
+    public async Task<ActionResult<Employee>> CreateEmployee([FromBody] Employee employeeToCreate)
+    {
+        _employeesRepository.CreateEmployee(employeeToCreate);
+        if (await _employeesRepository.SaveAllAsync()) return Ok(employeeToCreate);
+
+        return BadRequest("Failed to save Employee");
+    }
+
+    [HttpPut]
+    public async Task<ActionResult<Employee>> UpdateCustomer([FromBody] Employee employeeToUpdate)
+    {
+        _employeesRepository.UpdateEmployee(employeeToUpdate);
+        if (await _employeesRepository.SaveAllAsync()) return Ok(employeeToUpdate);
+
+        return BadRequest("Failed to update Employee");
+    }
 }

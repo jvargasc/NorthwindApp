@@ -42,9 +42,9 @@ export class CustomersService {
   private generateCustomerId(customerName: string): string {
     let index = customerName.indexOf(' ');
     let custName = customerName.replace(' ', '');
-    custName = custName.substr(0, 3) + custName.substr(index, 3);
-
-    return custName.toLocaleLowerCase();
+    custName = custName.substr(0, 3) + custName.substr(index, 2);
+    console.log(custName);
+    return custName.toLocaleUpperCase();
   }
 
 }
