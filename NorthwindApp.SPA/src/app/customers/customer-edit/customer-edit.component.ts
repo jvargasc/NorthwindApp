@@ -39,7 +39,7 @@ export class CustomerEditComponent implements OnInit {
   ngOnInit() {
     this.getParameters();
     this.initializeForm();
-    this.SetCustomer();
+    this.setCustomer();
     this.toastClick();
   }
 
@@ -82,9 +82,6 @@ export class CustomerEditComponent implements OnInit {
 
 //#region Handle Form
   private initializeForm() {
-    let regionId = 0
-    if(this.customer?.regionId) regionId = this.customer?.regionId;
-
     this.customerForm = new FormGroup({
       'customerId' : new FormControl(this.customer?.customerId, Validators.required),
       'companyName' : new FormControl(this.customer?.companyName, Validators.required),
@@ -109,7 +106,6 @@ export class CustomerEditComponent implements OnInit {
   }
 
   private requiredFieldsValid(): boolean {
-    let tmpValue = false;
     let displayModalMessage = false;
     if(!this.customerForm.valid) {
       for (const field in this.customerForm.controls) { // 'field' is a string
@@ -226,7 +222,7 @@ export class CustomerEditComponent implements OnInit {
       this.customer.customerId = customerId;
   }
 
-  private SetCustomer() {
+  private setCustomer() {
     const customerId = this.route.snapshot.paramMap.get('customerId');
     if(customerId)
       this.customersService.getCustomer(customerId!).subscribe(
@@ -263,9 +259,9 @@ export class CustomerEditComponent implements OnInit {
 
   private toastClick() {
     const btnToast = document.getElementById("liveToastBtn");
+    console.log(btnToast);
     if(btnToast)
       btnToast.click();
   }
 //#endregion
-
 }

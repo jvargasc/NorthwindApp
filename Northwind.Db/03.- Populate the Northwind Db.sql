@@ -109,7 +109,7 @@ CREATE TABLE "Employees" (
 	"BirthDate" "datetime" NULL ,
 	"HireDate" "datetime" NULL ,
 	"Address" nvarchar (60) NULL ,
-	"City" nvarchar (15) NULL ,
+	"City" nvarchar (30) NULL ,
 	"RegionId" int NULL ,
 	"PostalCode" nvarchar (10) NULL ,
 	"Country" nvarchar (15) NULL ,
@@ -194,10 +194,10 @@ CREATE TABLE "Suppliers" (
 	"ContactName" nvarchar (30) NULL ,
 	"ContactTitle" nvarchar (30) NULL ,
 	"Address" nvarchar (60) NULL ,
-	"City" nvarchar (15) NULL ,
+	"City" nvarchar (30) NULL ,
 	"RegionId" int NULL ,
 	"PostalCode" nvarchar (10) NULL ,
-	"Country" nvarchar (15) NULL ,
+	"Country" nvarchar (30) NULL ,
 	"Phone" nvarchar (24) NULL ,
 	"Fax" nvarchar (24) NULL ,
 	"HomePage" "ntext" NULL ,
@@ -223,10 +223,10 @@ CREATE TABLE "Orders" (
 	"Freight" "money" NULL CONSTRAINT "DF_Orders_Freight" DEFAULT (0),
 	"ShipName" nvarchar (40) NULL ,
 	"ShipAddress" nvarchar (60) NULL ,
-	"ShipCity" nvarchar (15) NULL ,
+	"ShipCity" nvarchar (30) NULL ,
 	"ShipRegion" nvarchar (15) NULL ,
 	"ShipPostalCode" nvarchar (10) NULL ,
-	"ShipCountry" nvarchar (15) NULL ,
+	"ShipCountry" nvarchar (30) NULL ,
 	CONSTRAINT "PK_Orders" PRIMARY KEY  CLUSTERED 
 	(
 		"OrderID"
@@ -9125,13 +9125,13 @@ CREATE TABLE [dbo].[CustomerDemographics]
 GO		
 	
 CREATE TABLE [dbo].[Regions] 
-	( [RegionID] [int] NOT NULL ,
+	( [RegionID] INT IDENTITY (1, 1) NOT NULL,
 	[RegionDescription] [nchar] (50) NOT NULL 
 ) ON [PRIMARY]
 GO
 
 CREATE TABLE [dbo].[Territories] 
-	([TerritoryID] [nvarchar] (20) NOT NULL ,
+	([TerritoryID] INT IDENTITY (1, 1) NOT NULL,
 	[TerritoryDescription] [nchar] (50) NOT NULL ,
         [RegionID] [int] NOT NULL
 ) ON [PRIMARY]
@@ -9139,121 +9139,127 @@ GO
 
 CREATE TABLE [dbo].[EmployeeTerritories] 
 	([EmployeeID] [int] NOT NULL,
-	[TerritoryID] [nvarchar] (20) NOT NULL 
+	[TerritoryID] [int] NOT NULL 
 ) ON [PRIMARY]
 
 -- The following adds data to the tables just created.
 
-Insert Into Regions Values (1,'Eastern')
-Insert Into Regions Values (2,'Western')
-Insert Into Regions Values (3,'Northern')
-Insert Into Regions Values (4,'Southern')
+Insert Into Regions Values ('Eastern')
+Insert Into Regions Values ('Western')
+Insert Into Regions Values ('Northern')
+Insert Into Regions Values ('Southern')
 Go
 
-Insert Into Territories Values ('01581','Westboro',1)
-Insert Into Territories Values ('01730','Bedford',1)
-Insert Into Territories Values ('01833','Georgetow',1)
-Insert Into Territories Values ('02116','Boston',1)
-Insert Into Territories Values ('02139','Cambridge',1)
-Insert Into Territories Values ('02184','Braintree',1)
-Insert Into Territories Values ('02903','Providence',1)
-Insert Into Territories Values ('03049','Hollis',3)
-Insert Into Territories Values ('03801','Portsmouth',3)
-Insert Into Territories Values ('06897','Wilton',1)
-Insert Into Territories Values ('07960','Morristown',1)
-Insert Into Territories Values ('08837','Edison',1)
-Insert Into Territories Values ('10019','New York',1)
-Insert Into Territories Values ('10038','New York',1)
-Insert Into Territories Values ('11747','Mellvile',1)
-Insert Into Territories Values ('14450','Fairport',1)
-Insert Into Territories Values ('19428','Philadelphia',3)
-Insert Into Territories Values ('19713','Neward',1)
-Insert Into Territories Values ('20852','Rockville',1)
-Insert Into Territories Values ('27403','Greensboro',1)
-Insert Into Territories Values ('27511','Cary',1)
-Insert Into Territories Values ('29202','Columbia',4)
-Insert Into Territories Values ('30346','Atlanta',4)
-Insert Into Territories Values ('31406','Savannah',4)
-Insert Into Territories Values ('32859','Orlando',4)
-Insert Into Territories Values ('33607','Tampa',4)
-Insert Into Territories Values ('40222','Louisville',1)
-Insert Into Territories Values ('44122','Beachwood',3)
-Insert Into Territories Values ('45839','Findlay',3)
-Insert Into Territories Values ('48075','Southfield',3)
-Insert Into Territories Values ('48084','Troy',3)
-Insert Into Territories Values ('48304','Bloomfield Hills',3)
-Insert Into Territories Values ('53404','Racine',3)
-Insert Into Territories Values ('55113','Roseville',3)
-Insert Into Territories Values ('55439','Minneapolis',3)
-Insert Into Territories Values ('60179','Hoffman Estates',2)
-Insert Into Territories Values ('60601','Chicago',2)
-Insert Into Territories Values ('72716','Bentonville',4)
-Insert Into Territories Values ('75234','Dallas',4)
-Insert Into Territories Values ('78759','Austin',4)
-Insert Into Territories Values ('80202','Denver',2)
-Insert Into Territories Values ('80909','Colorado Springs',2)
-Insert Into Territories Values ('85014','Phoenix',2)
-Insert Into Territories Values ('85251','Scottsdale',2)
-Insert Into Territories Values ('90405','Santa Monica',2)
-Insert Into Territories Values ('94025','Menlo Park',2)
-Insert Into Territories Values ('94105','San Francisco',2)
-Insert Into Territories Values ('95008','Campbell',2)
-Insert Into Territories Values ('95054','Santa Clara',2)
-Insert Into Territories Values ('95060','Santa Cruz',2)
-Insert Into Territories Values ('98004','Bellevue',2)
-Insert Into Territories Values ('98052','Redmond',2)
-Insert Into Territories Values ('98104','Seattle',2)
+SET IDENTITY_INSERT dbo.Territories ON
+GO
+
+Insert Into dbo.Territories (TerritoryID, TerritoryDescription, RegionID) Values (1581,'Westboro',1)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (1730,'Bedford',1)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (1833,'Georgetow',1)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (2116,'Boston',1)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (2139,'Cambridge',1)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (2184,'Braintree',1)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (2903,'Providence',1)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (3049,'Hollis',3)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (3801,'Portsmouth',3)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (6897,'Wilton',1)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (7960,'Morristown',1)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (8837,'Edison',1)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (10019,'New York',1)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (10038,'New York',1)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (11747,'Mellvile',1)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (14450,'Fairport',1)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (19428,'Philadelphia',3)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (19713,'Neward',1)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (20852,'Rockville',1)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (27403,'Greensboro',1)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (27511,'Cary',1)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (29202,'Columbia',4)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (30346,'Atlanta',4)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (31406,'Savannah',4)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (32859,'Orlando',4)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (33607,'Tampa',4)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (40222,'Louisville',1)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (44122,'Beachwood',3)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (45839,'Findlay',3)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (48075,'Southfield',3)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (48084,'Troy',3)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (48304,'Bloomfield Hills',3)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (53404,'Racine',3)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (55113,'Roseville',3)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (55439,'Minneapolis',3)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (60179,'Hoffman Estates',2)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (60601,'Chicago',2)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (72716,'Bentonville',4)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (75234,'Dallas',4)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (78759,'Austin',4)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (80202,'Denver',2)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (80909,'Colorado Springs',2)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (85014,'Phoenix',2)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (85251,'Scottsdale',2)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (90405,'Santa Monica',2)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (94025,'Menlo Park',2)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (94105,'San Francisco',2)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (95008,'Campbell',2)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (95054,'Santa Clara',2)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (95060,'Santa Cruz',2)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (98004,'Bellevue',2)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (98052,'Redmond',2)
+Insert Into Territories (TerritoryID, TerritoryDescription, RegionID) Values (98104,'Seattle',2)
 Go
 
-Insert Into EmployeeTerritories Values (1,'06897')
-Insert Into EmployeeTerritories Values (1,'19713')
-Insert Into EmployeeTerritories Values (2,'01581')
-Insert Into EmployeeTerritories Values (2,'01730')
-Insert Into EmployeeTerritories Values (2,'01833')
-Insert Into EmployeeTerritories Values (2,'02116')
-Insert Into EmployeeTerritories Values (2,'02139')
-Insert Into EmployeeTerritories Values (2,'02184')
-Insert Into EmployeeTerritories Values (2,'40222')
-Insert Into EmployeeTerritories Values (3,'30346')
-Insert Into EmployeeTerritories Values (3,'31406')
-Insert Into EmployeeTerritories Values (3,'32859')
-Insert Into EmployeeTerritories Values (3,'33607')
-Insert Into EmployeeTerritories Values (4,'20852')
-Insert Into EmployeeTerritories Values (4,'27403')
-Insert Into EmployeeTerritories Values (4,'27511')
-Insert Into EmployeeTerritories Values (5,'02903')
-Insert Into EmployeeTerritories Values (5,'07960')
-Insert Into EmployeeTerritories Values (5,'08837')
-Insert Into EmployeeTerritories Values (5,'10019')
-Insert Into EmployeeTerritories Values (5,'10038')
-Insert Into EmployeeTerritories Values (5,'11747')
-Insert Into EmployeeTerritories Values (5,'14450')
-Insert Into EmployeeTerritories Values (6,'85014')
-Insert Into EmployeeTerritories Values (6,'85251')
-Insert Into EmployeeTerritories Values (6,'98004')
-Insert Into EmployeeTerritories Values (6,'98052')
-Insert Into EmployeeTerritories Values (6,'98104')
-Insert Into EmployeeTerritories Values (7,'60179')
-Insert Into EmployeeTerritories Values (7,'60601')
-Insert Into EmployeeTerritories Values (7,'80202')
-Insert Into EmployeeTerritories Values (7,'80909')
-Insert Into EmployeeTerritories Values (7,'90405')
-Insert Into EmployeeTerritories Values (7,'94025')
-Insert Into EmployeeTerritories Values (7,'94105')
-Insert Into EmployeeTerritories Values (7,'95008')
-Insert Into EmployeeTerritories Values (7,'95054')
-Insert Into EmployeeTerritories Values (7,'95060')
-Insert Into EmployeeTerritories Values (8,'19428')
-Insert Into EmployeeTerritories Values (8,'44122')
-Insert Into EmployeeTerritories Values (8,'45839')
-Insert Into EmployeeTerritories Values (8,'53404')
-Insert Into EmployeeTerritories Values (9,'03049')
-Insert Into EmployeeTerritories Values (9,'03801')
-Insert Into EmployeeTerritories Values (9,'48075')
-Insert Into EmployeeTerritories Values (9,'48084')
-Insert Into EmployeeTerritories Values (9,'48304')
-Insert Into EmployeeTerritories Values (9,'55113')
-Insert Into EmployeeTerritories Values (9,'55439')
+SET IDENTITY_INSERT dbo.Territories OFF
+GO
+
+Insert Into EmployeeTerritories Values (1,6897)
+Insert Into EmployeeTerritories Values (1,19713)
+Insert Into EmployeeTerritories Values (2,1581)
+Insert Into EmployeeTerritories Values (2,1730)
+Insert Into EmployeeTerritories Values (2,1833)
+Insert Into EmployeeTerritories Values (2,2116)
+Insert Into EmployeeTerritories Values (2,2139)
+Insert Into EmployeeTerritories Values (2,2184)
+Insert Into EmployeeTerritories Values (2,40222)
+Insert Into EmployeeTerritories Values (3,30346)
+Insert Into EmployeeTerritories Values (3,31406)
+Insert Into EmployeeTerritories Values (3,32859)
+Insert Into EmployeeTerritories Values (3,33607)
+Insert Into EmployeeTerritories Values (4,20852)
+Insert Into EmployeeTerritories Values (4,27403)
+Insert Into EmployeeTerritories Values (4,27511)
+Insert Into EmployeeTerritories Values (5,2903)
+Insert Into EmployeeTerritories Values (5,7960)
+Insert Into EmployeeTerritories Values (5,8837)
+Insert Into EmployeeTerritories Values (5,10019)
+Insert Into EmployeeTerritories Values (5,10038)
+Insert Into EmployeeTerritories Values (5,11747)
+Insert Into EmployeeTerritories Values (5,14450)
+Insert Into EmployeeTerritories Values (6,85014)
+Insert Into EmployeeTerritories Values (6,85251)
+Insert Into EmployeeTerritories Values (6,98004)
+Insert Into EmployeeTerritories Values (6,98052)
+Insert Into EmployeeTerritories Values (6,98104)
+Insert Into EmployeeTerritories Values (7,60179)
+Insert Into EmployeeTerritories Values (7,60601)
+Insert Into EmployeeTerritories Values (7,80202)
+Insert Into EmployeeTerritories Values (7,80909)
+Insert Into EmployeeTerritories Values (7,90405)
+Insert Into EmployeeTerritories Values (7,94025)
+Insert Into EmployeeTerritories Values (7,94105)
+Insert Into EmployeeTerritories Values (7,95008)
+Insert Into EmployeeTerritories Values (7,95054)
+Insert Into EmployeeTerritories Values (7,95060)
+Insert Into EmployeeTerritories Values (8,19428)
+Insert Into EmployeeTerritories Values (8,44122)
+Insert Into EmployeeTerritories Values (8,45839)
+Insert Into EmployeeTerritories Values (8,53404)
+Insert Into EmployeeTerritories Values (9,3049)
+Insert Into EmployeeTerritories Values (9,3801)
+Insert Into EmployeeTerritories Values (9,48075)
+Insert Into EmployeeTerritories Values (9,48084)
+Insert Into EmployeeTerritories Values (9,48304)
+Insert Into EmployeeTerritories Values (9,55113)
+Insert Into EmployeeTerritories Values (9,55439)
 GO
 
 

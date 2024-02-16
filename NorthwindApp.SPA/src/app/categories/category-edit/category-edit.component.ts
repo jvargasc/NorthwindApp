@@ -15,8 +15,8 @@ export class CategoryEditComponent implements OnInit {
   category:  Category = {} as Category;
   categoryForm: FormGroup = new FormGroup({});
   picture?: string;
-  pictureSufix: string = "data:image/jpg;base64,";
-  blankPicture = '../../../assets/images/Blank.png';
+  picturePrefix: string = "data:image/jpg;base64,";
+  blankPicture: string = '../../../assets/images/Blank.png';
   modalTitle = "Category";
   modalYesNoBody = "";
   modalMessageBody = "";
@@ -168,7 +168,7 @@ export class CategoryEditComponent implements OnInit {
     this.getPicture();
     if (this.picture != null)
       if (this.picture.length > 0) {
-        const newPic = this.picture.replace(this.pictureSufix, "");
+        const newPic = this.picture.replace(this.picturePrefix, "");
         this.category = {
             categoryName: this.categoryForm.controls['categoryName'].value,
             description: this.categoryForm.controls['description'].value,
@@ -229,7 +229,7 @@ export class CategoryEditComponent implements OnInit {
 
     if(Object.keys(this.category).length >0) {
       this.highLightPicture(false);
-      this.picture = this.pictureSufix + this.category?.picture;
+      this.picture = this.picturePrefix + this.category?.picture;
     }
     else
       this.picture = this.blankPicture;

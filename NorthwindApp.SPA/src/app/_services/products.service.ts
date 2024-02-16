@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Product } from '../_models/product';
 import { HttpClient } from '@angular/common/http';
@@ -21,4 +21,17 @@ export class ProductsService {
     return this.http.get<Product>(this.baseUrl + `getproduct/${productId}`);
   }
 
+  createProduct(product: Product): Observable<Product> {
+    return this.http.post<Product>(this.baseUrl, product)
+      .pipe(
+        tap(resData => { return resData; })
+      );
+  }
+
+  updateProduct(product: Product): Observable<Product> {
+    return this.http.put<Product>(this.baseUrl, product)
+      .pipe(
+        tap(resData => { return resData; })
+      );
+  }
 }

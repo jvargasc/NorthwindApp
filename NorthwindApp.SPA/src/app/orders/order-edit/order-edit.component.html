@@ -4,9 +4,7 @@
       <h4>Order</h4>
     </div>
     <div class="card-toolbar">
-      <app-toolbarcrud
-        (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"
-      ></app-toolbarcrud>
+      <app-toolbarcrud (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"></app-toolbarcrud>
     </div>
   </div>
   <div class="card-body mx-2">
@@ -15,159 +13,113 @@
         <div class="col-3">
           <div class="form-group">
             <label for="categoryId">Order Id</label>
-            <input
-              class="form-control"
-              formControlName="orderId"
-              placeholder="orderId"
-            />
+            <input class="form-control" formControlName="orderId" placeholder="orderId" />
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-3 form-group">
-          <label for="customerId">Customer Id</label>
-          <select class="form-control" formControlName="customerId">
-            <option
-              *ngFor="let customer of customers"
-              [ngValue]="order.customerId"
-            >
-              {{ customer.companyName }}
-            </option>
-          </select>
+        <div class="col-3">
+          <div class="form-group">
+            <label for="customerId">Customer</label>
+            <select class="form-control" formControlName="customerId" #customerId required>
+              <option *ngFor="let customer of customers" [ngValue]="customer.customerId">
+                {{ customer.companyName }}
+              </option>
+            </select>
+          </div>
         </div>
         <div class="col-3 form-group">
           <label for="employeeId">Employee</label>
-          <select class="form-control" formControlName="employeeId">
-            <option
-              *ngFor="let employee of employees"
-              [ngValue]="order.employeeId"
-            >
+          <select class="form-control" formControlName="employeeId" #employeeId required>
+            <option *ngFor="let employee of employees" [ngValue]="employee.employeeId">
               {{ employee.firstName + " " + employee.lastName }}
             </option>
           </select>
         </div>
         <div class="col-3 form-group">
-          <label for="orderDate">Order Date</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="orderDate"
-            placeholder="Order Date"
-          />
+          <label for="orderDate">Order Date</label>
+          <input type="date" class="form-control" formControlName="orderDate" placeholder="Order Date" #orderDate
+            required />
         </div>
         <div class="col-3 form-group">
-          <label for="requiredDate">Required Date</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="requiredDate"
-            placeholder="Required Date"
-          />
+          <label for="requiredDate">Required Date</label>
+          <input type="date" class="form-control" formControlName="requiredDate" placeholder="Required Date"
+            #requiredDate required />
         </div>
       </div>
       <div class="row">
         <div class="col-3 form-group">
-          <label for="shippedDate">Shipped Date</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="shippedDate"
-            placeholder="Shipped Date"
-          />
+          <label for="shippedDate">Shipped Date</label>
+          <input type="date" class="form-control" formControlName="shippedDate" placeholder="Shipped Date" #shippedDate
+            required />
         </div>
         <div class="col-3 form-group">
           <label for="shipperId">Shipper Id</label>
-          <select class="form-control" formControlName="shipperId">
-            <option
-              *ngFor="let shipper of shippers"
-              [ngValue]="order.shipperId"
-            >
+          <select class="form-control" formControlName="shipperId" #shipperId required>
+            <option *ngFor="let shipper of shippers" [ngValue]="shipper.shipperId">
               {{ shipper.companyName }}
             </option>
           </select>
         </div>
         <div class="col-3 form-group">
-          <label for="freight">Freight</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="freight"
-            placeholder="Freight"
-          />
+          <label for="freight">Freight</label>
+          <input type="text" class="form-control" formControlName="freight" placeholder="Freight" #freight required />
         </div>
         <div class="col-3 form-group">
-          <label for="shipName">Ship Name</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="shipName"
-            placeholder="Ship Name"
-          />
+          <label for="shipName">Ship Name</label>
+          <input type="text" class="form-control" formControlName="shipName" placeholder="Ship Name" #shipName
+            required />
         </div>
       </div>
       <div class="row">
         <div class="col-3 form-group">
-          <label for="shipAddress">Ship Address</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="shipAddress"
-            placeholder="Ship Address"
-          />
+          <label for="shipAddress">Ship Address</label>
+          <input type="text" class="form-control" formControlName="shipAddress" placeholder="Ship Address" #shipAddress
+            required />
         </div>
         <div class="col-2 form-group">
-          <label for="shipCity">Ship City</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="shipCity"
-            placeholder="Ship City"
-          />
+          <label for="shipCity">Ship City</label>
+          <input type="text" class="form-control" formControlName="shipCity" placeholder="Ship City" #shipCity
+            required />
         </div>
         <div class="col-2 form-group">
-          <label for="regionId">Region Id</label>
-          <select class="form-control" formControlName="regionId">
+          <label for="regionId">Region</label>
+          <select class="form-control" formControlName="regionId" #regionId required>
             <option *ngFor="let region of regions" [ngValue]="region.regionId">
               {{ region.regionDescription }}
             </option>
           </select>
         </div>
         <div class="col-2 form-group">
-          <label for="shipPostalCode">Ship PostalCode</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="shipPostalCode"
-            placeholder="Ship PostalCode"
-          />
+          <label for="shipPostalCode">Ship PostalCode</label>
+          <input type="text" class="form-control" formControlName="shipPostalCode" placeholder="Ship PostalCode"
+            #shipPostalCode required />
         </div>
         <div class="col-3 form-group">
-          <label for="shipCountry">Ship Country</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="shipCountry"
-            placeholder="Ship Country"
-          />
+          <label for="shipCountry">Ship Country</label>
+          <input type="text" class="form-control" formControlName="shipCountry" placeholder="Ship Country" #shipCountry
+            required />
         </div>
       </div>
     </form>
   </div>
 </div>
 
-<button
-  style="display: none"
-  type="button"
-  class="btn btn-primary"
-  data-bs-toggle="modal"
-  data-bs-target="#yesNoModal"
-  id="showModal"
->
+<button style="display: none" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalYesNo"
+  id="showModalYesNo">
   Open modal
 </button>
-<app-modalyesno
-  [modalTitle]="modalTitle"
-  [modalBody]="modalBody"
-  (modalButtonWasClicked)="modalButtonWasClicked($event)"
-  id="modalyesno"
-></app-modalyesno>
+<app-modalyesno [modalTitle]="modalTitle" [modalBody]="modalYesNoBody"
+  (modalButtonWasClicked)="modalButtonWasClicked($event)" id="modalyesno"></app-modalyesno>
+
+<button style="display: none" type="button" class="btn btn-primary" data-bs-toggle="modal"
+  data-bs-target="#modalMessage" id="showModalMessage">
+  Open modal
+</button>
+
+<app-modalmessage [modalTitle]="modalTitle" [modalBody]="modalMessageBody"></app-modalmessage>
+
+<button type="button" class="btn btn-primary" id="liveToastBtn" onclick="showToast()" style="display: none">
+  Show live toast
+</button>
+<app-toast [header]="headerToast" [body]="bodyToast"></app-toast>

@@ -23,9 +23,7 @@ export class CustomersService {
   }
 
   createCustomer(customer: Customer): Observable<Customer> {
-    console.log(customer);
     customer.customerId = this.generateCustomerId(customer.contactName);
-    console.log(customer);
     return this.http.post<Customer>(this.baseUrl, customer)
       .pipe(
         tap(resData => { return resData; })

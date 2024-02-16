@@ -19,8 +19,8 @@ export class EmployeeEditComponent implements OnInit {
   employeeForm: FormGroup = new FormGroup ({});
   employees: Employee[] = [];
   photo?: string;
-  pictureSufix: string = "data:image/jpg;base64,";
-  blankPicture = '../../../assets/images/Blank.png';
+  picturePrefix: string = 'data:image/jpg;base64,';
+  blankPicture: string = '../../../assets/images/Blank.png';
   regions: Region[] = [];
   modalTitle = "Employee";
   modalYesNoBody = "";
@@ -55,7 +55,7 @@ export class EmployeeEditComponent implements OnInit {
   ngOnInit() {
     this.initializeForm();
     this.getParameters();
-    this.SetEmployee();
+    this.setEmployee();
     this.toastClick();
   }
 
@@ -122,7 +122,7 @@ export class EmployeeEditComponent implements OnInit {
 
     this.employeeForm.controls['employeeId'].disable();
     if(Object.keys(this.employee).length >0) {
-      this.photo = 'data:image/jpg;base64,' + this.employee?.photo;
+      // this.photo = 'data:image/jpg;base64,' + this.employee?.photo;
       this.getReportsTo();
       this.getEmployees();
     }
@@ -138,7 +138,6 @@ export class EmployeeEditComponent implements OnInit {
   }
 
   private requiredFieldsValid(): boolean {
-    let tmpValue = false;
     let displayModalMessage = false;
 
     if(!this.employeeForm.valid) {
@@ -284,7 +283,7 @@ export class EmployeeEditComponent implements OnInit {
     const year = d.getFullYear();
     if (month.length < 2) month = '0' + month;
     if (day.length < 2) day = '0' + day;
-    return [day, month, year].join('-');
+    return [month, day, year].join('-');
   }
 //#endregion
 
@@ -293,7 +292,7 @@ export class EmployeeEditComponent implements OnInit {
     let employeeId = this.employeeForm.controls['employeeId'].value;
 
     this.setValuesForEmployee(employeeId);
-    if (employeeId == null)
+    if (employeeId == null){
       this.employeesServices.createEmployee(this.employee)
           .subscribe({
             next: employeeResult => {
@@ -304,7 +303,7 @@ export class EmployeeEditComponent implements OnInit {
               this.modalMessageBody = JSON.stringify(errorResult);
               this.displayModalMessage();
             }
-          });
+          });}
     else
         this.employeesServices.updateEmployee(this.employee)
         .subscribe({
@@ -324,11 +323,25 @@ export class EmployeeEditComponent implements OnInit {
     this.getPicture();
     if (this.photo != null)
       if (this.photo.length > 0) {
-        const newPic = this.photo.replace(this.pictureSufix, "");
+        const newPic = this.photo.substring(this.picturePrefix.length + 1);
         this.employee = {
             lastName: this.employeeForm.controls['lastName'].value,
             firstName: this.employeeForm.controls['firstName'].value,
-            photo: newPic
+            title: this.employeeForm.controls['title'].value,
+            titleOfCourtesy: this.employeeForm.controls['titleOfCourtesy'].value,
+            birthDate: this.employeeForm.controls['birthDate'].value,
+            hireDate: this.employeeForm.controls['hireDate'].value,
+            address: this.employeeForm.controls['address'].value,
+            city: this.employeeForm.controls['city'].value,
+            regionId: this.employeeForm.controls['regionId'].value,
+            postalCode: this.employeeForm.controls['postalCode'].value,
+            country: this.employeeForm.controls['country'].value,
+            homePhone: this.employeeForm.controls['homePhone'].value,
+            extension: this.employeeForm.controls['extension'].value,
+            photo: newPic,
+            notes: this.employeeForm.controls['notes'].value,
+            reportsTo: this.employeeForm.controls['reportsTo'].value,
+            photoPath: this.employeeForm.controls['photoPath'].value
               } as Employee ;
       }
 
@@ -337,7 +350,7 @@ export class EmployeeEditComponent implements OnInit {
 
   }
 
-  private SetEmployee() {
+  private setEmployee() {
     const employeeId = this.route.snapshot.paramMap.get('employeeId');
     if(employeeId)
       this.employeesServices.getEmployee(+employeeId!).subscribe(
@@ -385,7 +398,7 @@ export class EmployeeEditComponent implements OnInit {
 
     if(Object.keys(this.employee).length >0) {
       this.highLightPicture(false);
-      this.photo = this.pictureSufix + this.employee?.photo;
+      this.photo = this.picturePrefix + this.employee?.photo;
     }
     else
       this.photo = this.blankPicture;

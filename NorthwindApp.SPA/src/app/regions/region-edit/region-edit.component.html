@@ -4,52 +4,40 @@
       <h4>Region</h4>
     </div>
     <div class="card-toolbar">
-      <app-toolbarcrud
-        (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"
-      ></app-toolbarcrud>
+      <app-toolbarcrud (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"></app-toolbarcrud>
     </div>
   </div>
   <div class="card-body mx-2">
     <form [formGroup]="regionForm">
       <div class="row">
         <div class="col-3 form-group">
-          <label for="regionId">Region</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="regionId"
-            placeholder="Region"
-          />
+          <label for="regionId">Region</label>
+          <input type="text" class="form-control" formControlName="regionId" placeholder="Region" />
         </div>
       </div>
       <div class="row">
         <div class="col-3 form-group">
-          <label for="regionDescription">Region Description</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="regionDescription"
-            placeholder="Region Description"
-          />
+          <label for="regionDescription">Region Description</label>
+          <input type="text" class="form-control" formControlName="regionDescription" placeholder="Region Description"
+            #regionDescription required />
         </div>
       </div>
     </form>
   </div>
 </div>
 
-<button
-  style="display: none"
-  type="button"
-  class="btn btn-primary"
-  data-bs-toggle="modal"
-  data-bs-target="#yesNoModal"
-  id="showModal"
->
-  Open modal
+<button style="display: none" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalYesNo"
+  id="showModalYesNo">Open modal
 </button>
-<app-modalyesno
-  [modalTitle]="modalTitle"
-  [modalBody]="modalBody"
-  (modalButtonWasClicked)="modalButtonWasClicked($event)"
-  id="modalyesno"
-></app-modalyesno>
+<app-modalyesno [modalTitle]="modalTitle" [modalBody]="modalYesNoBody"
+  (modalButtonWasClicked)="modalButtonWasClicked($event)" id="modalyesno"></app-modalyesno>
+
+<button style="display: none" type="button" class="btn btn-primary" data-bs-toggle="modal"
+  data-bs-target="#modalMessage" id="showModalMessage">Open modal
+</button>
+
+<app-modalmessage [modalTitle]="modalTitle" [modalBody]="modalMessageBody"></app-modalmessage>
+
+<button type="button" class="btn btn-primary" id="liveToastBtn" onclick="showToast()" style="display: none;">Show
+  live toast</button>
+<app-toast [header]="headerToast" [body]="bodyToast"></app-toast>

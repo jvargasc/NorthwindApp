@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -13,25 +13,37 @@ import { RegionsService } from 'src/app/_services/regions.service';
 export class RegionEditComponent implements OnInit {
   region: Region = {} as Region;
   regionForm: FormGroup = new FormGroup({});
-  modalTitle: string = "modal Title!!";
-  modalBody: string = "modal Body!!";
+  modalTitle = "Region";
+  modalYesNoBody = "";
+  modalMessageBody = "";
+  toolbarButtonPressed = "";
+  headerToast = "Region";
+  bodyToast = "Record successfully saved!!!";
 
-  constructor( private regionsservice: RegionsService, private route: ActivatedRoute, private router: Router
+  @ViewChild('regionDescription') regionDescription: ElementRef;
+
+  constructor( private regionsService: RegionsService, private route: ActivatedRoute, private router: Router
   ) { }
 
   ngOnInit() {
     this.setParameters();
     this.initializeForm();
     this.setRegion();
+    this.toastClick();
   }
 
+//#region Buttons
   toolbarButtonWasClicked(buttonName: string) {
-    switch(buttonName){
+    this.toolbarButtonPressed = buttonName;
+    let modalBody = "";
+    switch(buttonName) {
       case "new":
-        this.displayYesNoModal();
+        modalBody = "Do you wish to clear this Region and create a new one?";
+        this.displayModalYesNo(modalBody);
         break;
       case "save":
-        console.log(buttonName);
+        modalBody = "Do you wish to save this Region?";
+        this.displayModalYesNo(modalBody);
         break;
       case "return":
         this.router.navigate(['/regions/region-list']);
@@ -42,21 +54,68 @@ export class RegionEditComponent implements OnInit {
   modalButtonWasClicked(button: string) {
     switch(button) {
       case "btnYes":
-        const modalYesNo = document.getElementById("modalyesno");
-        if(modalYesNo)
-          modalYesNo.style.display = 'none';
-        this.clearForm();
-        break;
+        if (this.toolbarButtonPressed == "new")
+          this.clearForm();
+        if (this.toolbarButtonPressed == "save")
+            if(this.requiredFieldsValid())
+              this.createOrUpdateRegion();
+      break;
       case "btnNo":
         break;
-    }
+      }
+
+    this.toolbarButtonPressed = ""
+  }
+//#endregion
+
+//#region Handle Form
+  private initializeForm() {
+    this.regionForm = new FormGroup({
+      'regionId': new FormControl(this.region.regionId),
+      'regionDescription': new FormControl(this.region.regionDescription)
+    });
+
+    this.regionForm.controls['regionId'].disable();
   }
 
-    private setRegion() {
+  private clearForm() {
+    this.region = {} as Region;
+    this.initializeForm();
+    this.router.navigate(['/regions/region-edit']);
+  }
+
+  private requiredFieldsValid(): boolean {
+    let displayModalMessage = false;
+    if(!this.regionForm.valid) {
+      for (const field in this.regionForm.controls) { // 'field' is a string
+        const tmpControl = this.regionForm.get(field); // 'control' is a FormControl
+        if(tmpControl.invalid) {
+          switch(field) {
+            case "regionDescription":
+              this.regionDescription.nativeElement.classList.add('ng-touched');
+              displayModalMessage = true;
+              break;
+            }
+          }
+        }
+
+     }
+
+    if(displayModalMessage) {
+      this.modalMessageBody = "There are required fields that you must complete.";
+      this.displayModalMessage();
+    }
+
+    return !displayModalMessage;
+  }
+//#endregion
+
+//#region Handle Region
+  private setRegion() {
     const regionId = this.route.snapshot.paramMap.get('regionId');
     console.log(regionId);
     if(regionId)
-      this.regionsservice.getRegion(+regionId).subscribe(
+      this.regionsService.getRegion(+regionId).subscribe(
       {
         next: regionResult => {
           this.region = regionResult;
@@ -66,26 +125,78 @@ export class RegionEditComponent implements OnInit {
       );
   }
 
-  private displayYesNoModal() {
-    const btnShowModal = document.getElementById("showModal");
-    if(btnShowModal)
-      btnShowModal.click();
+  private createOrUpdateRegion() {
+    let regionId = this.regionForm.controls['regionId'].value;
+
+    this.setValuesForRegion(regionId);
+    if (regionId == null){
+      this.regionsService.createProduct(this.region)
+          .subscribe({
+            next: productResult => {
+              this.reloadSavedRegion(productResult);
+              this.toastClick();
+            },
+            error: errorResult => {
+              this.modalMessageBody = JSON.stringify(errorResult);
+              this.displayModalMessage();
+            }
+          });}
+    else
+        this.regionsService.updateProduct(this.region)
+        .subscribe({
+          next: productResult => {
+            this.reloadSavedRegion(productResult);
+            this.toastClick();
+          },
+            error: errorResult => {
+              this.modalMessageBody = JSON.stringify(errorResult);
+              this.displayModalMessage();
+            }
+        });
   }
 
-  private clearForm() {
-    this.region = {} as Region;
-    this.initializeForm();
-    this.router.navigate(['/regions/region-edit']);
+  private setValuesForRegion(regionId: number) {
+
+    this.region = {
+        regionDescription: this.regionForm.controls['regionDescription'].value,
+      } as Region ;
+
+    if (regionId != null)
+      this.region.regionId = regionId;
+
   }
 
-  private initializeForm() {
-    this.regionForm = new FormGroup({
-      'regionId': new FormControl(this.region.regionId),
-      'regionDescription': new FormControl(this.region.regionDescription)
-    });
-
-    this.regionForm.controls['regionId'].disable();
+  private reloadSavedRegion(region: Region) {
+    if(region) {
+      const regionId = region.regionId;
+      this.router.navigate([`/regions/region-edit/${regionId}`]);
+    }
   }
+//#endregion
+
+//#region Modals and Toasts
+  private displayModalYesNo(modalBody: string) {
+    this.modalYesNoBody = modalBody;
+    const btnShowModalYesNo = document.getElementById("showModalYesNo");
+    if(btnShowModalYesNo)
+      btnShowModalYesNo.click();
+  }
+
+  private displayModalMessage() {
+    const btnShowModalMessage = document.getElementById("showModalMessage");
+    if(btnShowModalMessage)
+      btnShowModalMessage.click();
+  }
+
+  private toastClick() {
+    const btnToast = document.getElementById("liveToastBtn");
+    if(btnToast){
+      btnToast.click();
+      btnToast.click();
+    }
+  }
+//#endregion
+
 
   private setParameters() {
     // this.getSuppliers();

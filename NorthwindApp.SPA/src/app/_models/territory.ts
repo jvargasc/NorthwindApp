@@ -1,5 +1,5 @@
 export interface Territory {
-    territoryId:          string;
+    territoryId:          number;
     territoryDescription: string;
     regionId:             number;
 }

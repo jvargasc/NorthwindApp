@@ -34,4 +34,22 @@ public class SuppliersController : ControllerBase
         return Ok(shipper);
     }
 
+    [HttpPost]
+    public async Task<ActionResult<Supplier>> CreateSupplier([FromBody] Supplier supplierToCreate)
+    {
+        _suppliersRepository.CreateSupplier(supplierToCreate);
+        if (await _suppliersRepository.SaveAllAsync()) return Ok(supplierToCreate);
+
+        return BadRequest("Failed to save Region");
+    }
+
+    [HttpPut]
+    public async Task<ActionResult<Supplier>> UpdateSupplier([FromBody] Supplier supplierToUpdate)
+    {
+        _suppliersRepository.UpdateSupplier(supplierToUpdate);
+        if (await _suppliersRepository.SaveAllAsync()) return Ok(supplierToUpdate);
+
+        return BadRequest("Failed to update Region");
+    }
+
 }

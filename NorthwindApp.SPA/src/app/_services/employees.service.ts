@@ -15,11 +15,11 @@ export class EmployeesService {
   employees$ = this.employeesSource.asObservable();
 
   constructor(private http: HttpClient) {
-    this.setEmployees();
-    const timeLapse = (1 * 60 * 1000); // minutes * seconds * miliseconds
-    interval(timeLapse).subscribe(
-      t => (this.setEmployees())
-      );
+    // this.setEmployees();
+    // const timeLapse = (1 * 60 * 1000); // minutes * seconds * miliseconds
+    // interval(timeLapse).subscribe(
+    //   t => (this.setEmployees())
+    //   );
    }
 
   getEmployees() {
@@ -30,16 +30,7 @@ export class EmployeesService {
     return this.http.get<Employee>(this.baseUrl + `getemployee/${employeeId}`);
   }
 
-  private setEmployees() {
-    this.getEmployees().subscribe({
-      next: employeessResult => {
-        this.employeesSource.next(employeessResult);
-      }
-    });
-  }
-
   createEmployee(employee: Employee): Observable<Employee> {
-    console.log(employee);
     return this.http.post<Employee>(this.baseUrl, employee)
       .pipe(
         tap(resData => { return resData; })
@@ -51,6 +42,14 @@ export class EmployeesService {
       .pipe(
         tap(resData => { return resData; })
       );
+  }
+
+  private setEmployees() {
+    this.getEmployees().subscribe({
+      next: employeessResult => {
+        this.employeesSource.next(employeessResult);
+      }
+    });
   }
 
 }

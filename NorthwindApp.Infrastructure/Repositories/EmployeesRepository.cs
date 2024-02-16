@@ -7,6 +7,7 @@ using NorthwindApp.Core.Models;
 using NorthwindApp.Infrastructure.Context;
 using NorthwindApp.Infrastructure.Repositories;
 
+namespace NorthwindApp.Infrastructure.Repositories;
 
 public class EmployeesRepository : IEmployeesRepository
 {

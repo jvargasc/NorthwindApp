@@ -4,148 +4,94 @@
       <h4>Supplier</h4>
     </div>
     <div class="card-toolbar">
-      <app-toolbarcrud
-        (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"
-      ></app-toolbarcrud>
+      <app-toolbarcrud (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"></app-toolbarcrud>
     </div>
   </div>
   <div class="card-body">
     <form [formGroup]="supplierForm">
       <div class="row">
         <div class="col-3 form-group">
-          <label for="supplierId">Supplier Id</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="supplierId"
-            placeholder="Supplier Id"
-          />
+          <label for="supplierId">Supplier Id</label><input type="text" class="form-control"
+            formControlName="supplierId" placeholder="Supplier Id" />
         </div>
       </div>
       <div class="row">
         <div class="col-3 form-group">
-          <label for="companyName">Company Name</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="companyName"
-            placeholder="Company Name"
-          />
+          <label for="companyName">Company Name</label>
+          <input type="text" class="form-control" formControlName="companyName" placeholder="Company Name" #companyName
+            required />
         </div>
         <div class="col-3 form-group">
-          <label for="contactName">Contact Name</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="contactName"
-            placeholder="Contact Name"
-          />
+          <label for="contactName">Contact Name</label>
+          <input type="text" class="form-control" formControlName="contactName" placeholder="Contact Name" #contactName
+            required />
         </div>
         <div class="col-3 form-group">
-          <label for="contactTitle">Contact Title</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="contactTitle"
-            placeholder="Contact Title"
-          />
+          <label for="contactTitle">Contact Title</label>
+          <input type="text" class="form-control" formControlName="contactTitle" placeholder="Contact Title"
+            #contactTitle required />
         </div>
         <div class="col-3 form-group">
-          <label for="address">Address</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="address"
-            placeholder="Address"
-          />
+          <label for="address">Address</label>
+          <input type="text" class="form-control" formControlName="address" placeholder="Address" #address required />
         </div>
       </div>
       <div class="row">
         <div class="col-3 form-group">
-          <label for="city">City</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="city"
-            placeholder="City"
-          />
+          <label for="city">City</label>
+          <input type="text" class="form-control" formControlName="city" placeholder="City" #city required />
         </div>
         <div class="col-3 form-group">
           <label for="regionId">Region Id</label>
-          <select class="form-control" formControlName="regionId">
-            <option
-              *ngFor="let region of regions"
-              [ngValue]="supplier?.regionId"
-            >
+          <select class="form-control" formControlName="regionId" #regionId required>
+            <option *ngFor="let region of regions" [ngValue]="region.regionId">
               {{ region.regionDescription }}
             </option>
           </select>
         </div>
         <div class="col-3 form-group">
-          <label for="postalCode">Postal Code</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="postalCode"
-            placeholder="Postal Code"
-          />
+          <label for="postalCode">Postal Code</label>
+          <input type="text" class="form-control" formControlName="postalCode" placeholder="Postal Code" #postalCode
+            required />
         </div>
         <div class="col-3 form-group">
-          <label for="country">Country</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="country"
-            placeholder="Country"
-          />
+          <label for="country">Country</label>
+          <input type="text" class="form-control" formControlName="country" placeholder="Country" #country required />
         </div>
       </div>
       <div class="row">
         <div class="col-3 form-group">
-          <label for="phone">Phone</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="phone"
-            placeholder="Phone"
-          />
+          <label for="phone">Phone</label>
+          <input type="text" class="form-control" formControlName="phone" placeholder="Phone" #phone required />
         </div>
         <div class="col-3 form-group">
-          <label for="fax">Fax</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="fax"
-            placeholder="Fax"
-          />
+          <label for="fax">Fax</label>
+          <input type="text" class="form-control" formControlName="fax" placeholder="Fax" />
         </div>
         <div class="col-3 form-group">
-          <label for="homePage">HomePage</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="homePage"
-            placeholder="HomePage"
-          />
+          <label for="homePage">HomePage</label>
+          <input type="text" class="form-control" formControlName="homePage" placeholder="HomePage" />
         </div>
       </div>
     </form>
   </div>
 </div>
 
-<button
-  style="display: none"
-  type="button"
-  class="btn btn-primary"
-  data-bs-toggle="modal"
-  data-bs-target="#yesNoModal"
-  id="showModal"
->
+<button style="display: none" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalYesNo"
+  id="showModalYesNo">
   Open modal
 </button>
-<app-modalyesno
-  [modalTitle]="modalTitle"
-  [modalBody]="modalBody"
-  (modalButtonWasClicked)="modalButtonWasClicked($event)"
-  id="modalyesno"
-></app-modalyesno>
+<app-modalyesno [modalTitle]="modalTitle" [modalBody]="modalYesNoBody"
+  (modalButtonWasClicked)="modalButtonWasClicked($event)" id="modalyesno"></app-modalyesno>
+
+<button style="display: none" type="button" class="btn btn-primary" data-bs-toggle="modal"
+  data-bs-target="#modalMessage" id="showModalMessage">
+  Open modal
+</button>
+
+<app-modalmessage [modalTitle]="modalTitle" [modalBody]="modalMessageBody"></app-modalmessage>
+
+<button type="button" class="btn btn-primary" id="liveToastBtn" onclick="showToast()" style="display: none">
+  Show live toast
+</button>
+<app-toast [header]="headerToast" [body]="bodyToast"></app-toast>

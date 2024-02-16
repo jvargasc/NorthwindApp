@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NorthwindApp.Core.Models;
+namespace NorthwindApp.Infrastructure.Models;
 
 public partial class Territory
 {

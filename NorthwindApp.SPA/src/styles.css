@@ -6,3 +6,14 @@
 .row {
   margin-bottom: 10px;
 }
+
+input.ng-invalid.ng-touched.ng-dirty,
+input.ng-invalid.ng-touched,
+#col-photo-upload.ng-invalid.ng-touched,
+select.ng-invalid.ng-touched {
+  border: solid red
+}
+
+input.ng-invalid.ng-touched {
+  border: solid red
+}

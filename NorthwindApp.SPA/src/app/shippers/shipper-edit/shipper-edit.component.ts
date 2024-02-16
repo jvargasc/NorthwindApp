@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -13,8 +13,15 @@ import { ShippersService } from 'src/app/_services/shippers.service';
 export class ShipperEditComponent implements OnInit {
   shipper?: Shipper;
   shipperForm: FormGroup = new FormGroup({});
-  modalTitle: string = "modal Title!!";
-  modalBody: string = "modal Body!!";
+  modalTitle = "Shipper";
+  modalYesNoBody = "";
+  modalMessageBody = "";
+  toolbarButtonPressed = "";
+  headerToast = "Shipper";
+  bodyToast = "Record successfully saved!!!";
+
+  @ViewChild('companyName') companyName: ElementRef;
+  @ViewChild('phone') phone: ElementRef;
 
   constructor(private shippersService: ShippersService, private route: ActivatedRoute,
     private router: Router ) { }
@@ -22,15 +29,21 @@ export class ShipperEditComponent implements OnInit {
   ngOnInit() {
     this.initializeForm();
     this.SetShipper();
+    this.toastClick();
   }
 
+//#region Buttons
   toolbarButtonWasClicked(buttonName: string) {
+    this.toolbarButtonPressed = buttonName;
+    let modalBody = "";
     switch(buttonName){
       case "new":
-        this.displayYesNoModal();
+        modalBody = "Do you wish to clear this Customer and create a new one?";
+        this.displayModalYesNo(modalBody);
         break;
       case "save":
-        console.log(buttonName);
+        modalBody = "Do you wish to save this Customer?";
+        this.displayModalYesNo(modalBody);
         break;
       case "return":
         this.router.navigate(['/shippers/shipper-list']);
@@ -41,43 +54,23 @@ export class ShipperEditComponent implements OnInit {
   modalButtonWasClicked(button: string) {
     switch(button) {
       case "btnYes":
-        const modalYesNo = document.getElementById("modalyesno");
-        if(modalYesNo)
-          modalYesNo.style.display = 'none';
-        this.clearForm();
-        break;
-      case "btnNo":
-
-        break;
-    }
-  }
-
-  private displayYesNoModal() {
-    const btnShowModal = document.getElementById("showModal");
-    if(btnShowModal)
-      btnShowModal.click();
-  }
-
-  private clearForm() {
-    this.shipper = {} as Shipper;
-    this.initializeForm();
-    this.router.navigate(['/shippers/shipper-edit']);
-  }
-
-  private SetShipper() {
-
-    const shipperId = Number(this.route.snapshot.paramMap.get('shipperId'));
-
-    this.shippersService.getShipper(shipperId).subscribe(
-      {
-        next: shipperResult => {
-          this.shipper = shipperResult;
-          this.initializeForm();
+        if (this.toolbarButtonPressed == "new")
+          this.clearForm();
+        if (this.toolbarButtonPressed == "save") {
+            if(this.requiredFieldsValid())
+              this.createOrUpdateShipper();
         }
+      break;
+      case "btnNo":
+        break;
       }
-    );
-  }
 
+    this.toolbarButtonPressed = ""
+  }
+//#endregion
+
+
+//#region Handle Form
   private initializeForm() {
       this.shipperForm = new FormGroup({
         'shipperId' : new FormControl(this.shipper?.shipperId, []),
@@ -86,5 +79,128 @@ export class ShipperEditComponent implements OnInit {
       })
       this.shipperForm.controls['shipperId'].disable();
   }
+
+  private clearForm() {
+    this.shipper = {} as Shipper;
+    this.initializeForm();
+    this.router.navigate(['/shippers/shipper-edit']);
+  }
+
+  private requiredFieldsValid(): boolean {
+    let displayModalMessage = false;
+    if(!this.shipperForm.valid) {
+      for (const field in this.shipperForm.controls) { // 'field' is a string
+        const tmpControl = this.shipperForm.get(field); // 'control' is a FormControl
+        if(tmpControl.invalid) {
+          switch(field) {
+            case "companyName":
+              this.companyName.nativeElement.classList.add('ng-touched');
+              displayModalMessage = true;
+              break;
+            case "phone":
+              this.phone.nativeElement.classList.add('ng-touched');
+              displayModalMessage = true;
+              break;
+            }
+          }
+        }
+
+     }
+
+    if(displayModalMessage) {
+      this.modalMessageBody = "There are required fields that you must complete.";
+      this.displayModalMessage();
+    }
+
+    return !displayModalMessage;
+  }
+//#endregion
+
+//#region Handle Shipper
+  private createOrUpdateShipper() {
+    let shipperId = this.shipperForm.controls['shipperId'].value;
+    this.setValuesForShipper(shipperId);
+    if (shipperId == null)
+      this.shippersService.createShipper(this.shipper)
+          .subscribe({
+            next: shipperResult => {
+              this.reloadSavedShipper(shipperResult);
+              this.toastClick();
+            },
+            error: errorResult => {
+              this.modalMessageBody = JSON.stringify(errorResult);
+              this.displayModalMessage();
+            }
+          });
+    else
+        this.shippersService.updateShipper(this.shipper)
+        .subscribe({
+          next: shipperResult => {
+            this.reloadSavedShipper(shipperResult);
+            this.toastClick();
+          },
+            error: errorResult => {
+              this.modalMessageBody = JSON.stringify(errorResult);
+              this.displayModalMessage();
+            }
+        });
+  }
+
+  private setValuesForShipper(shipperId: number) {
+
+      this.shipper = {
+          companyName: this.shipperForm.controls['companyName'].value,
+          phone: this.shipperForm.controls['phone'].value,
+            } as Shipper ;
+
+    if (shipperId != null)
+      this.shipper.shipperId = shipperId;
+  }
+
+  private SetShipper() {
+
+    const shipperId = Number(this.route.snapshot.paramMap.get('shipperId'));
+    if(shipperId)
+      this.shippersService.getShipper(shipperId).subscribe(
+        {
+          next: shipperResult => {
+            this.shipper = shipperResult;
+            this.initializeForm();
+          }
+        }
+      );
+  }
+
+  private reloadSavedShipper(shipper: Shipper) {
+    if(shipper) {
+      const shipperId = shipper.shipperId;
+      this.router.navigate([`/shippers/shipper-edit/${shipperId}`]);
+    }
+  }
+//#endregion
+
+//#region Modals and Toasts
+  private displayModalYesNo(modalBody: string) {
+    this.modalYesNoBody = modalBody;
+    const btnShowModalYesNo = document.getElementById("showModalYesNo");
+    if(btnShowModalYesNo)
+      btnShowModalYesNo.click();
+  }
+
+  private displayModalMessage() {
+    const btnShowModalMessage = document.getElementById("showModalMessage");
+    if(btnShowModalMessage)
+      btnShowModalMessage.click();
+  }
+
+  private toastClick() {
+    const btnToast = document.getElementById("liveToastBtn");
+    console.log(btnToast);
+    if(btnToast) {
+      btnToast.click();
+      // btnToast.click();
+    }
+  }
+//#endregion
 
 }

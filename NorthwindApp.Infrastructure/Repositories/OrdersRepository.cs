@@ -26,5 +26,20 @@ namespace NorthwindApp.Infrastructure.Repositories
             return await _northwindContext.Orders
                     .Where(c => c.OrderId == orderId).FirstOrDefaultAsync();
         }
+
+        public void CreateOrder(Order order)
+        {
+            _northwindContext.Orders.Add(order);
+        }
+
+        public void UpdateOrder(Order order)
+        {
+            _northwindContext.Entry(order).State = EntityState.Modified;
+        }
+
+        public async Task<bool> SaveAllAsync()
+        {
+            return await _northwindContext.SaveChangesAsync() > 0;
+        }
     }
 }

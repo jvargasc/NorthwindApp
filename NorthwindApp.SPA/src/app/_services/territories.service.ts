@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Territory } from '../_models/territory';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { BehaviorSubject, interval } from 'rxjs';
+import { BehaviorSubject, Observable, interval, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -37,4 +37,17 @@ export class TerritoriesService {
     });
   }
 
+  createTerritory(territory: Territory): Observable<Territory> {
+    return this.http.post<Territory>(this.baseUrl, territory)
+      .pipe(
+        tap(resData => { return resData; })
+      );
+  }
+
+  updateTerritory(territory: Territory): Observable<Territory> {
+    return this.http.put<Territory>(this.baseUrl, territory)
+      .pipe(
+        tap(resData => { return resData; })
+      );
+  }
 }

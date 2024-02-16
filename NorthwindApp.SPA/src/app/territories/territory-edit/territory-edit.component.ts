@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Region } from 'src/app/_models/region';
@@ -16,26 +16,39 @@ export class TerritoryEditComponent implements OnInit {
 
   territory?: Territory;
   territoryForm: FormGroup = new FormGroup({});
-  modalTitle: string = "modal Title!!";
-  modalBody: string = "modal Body!!";
   regions: Region[] = [];
+  modalTitle = "Territory";
+  modalYesNoBody = "";
+  modalMessageBody = "";
+  toolbarButtonPressed = "";
+  headerToast = "Territory";
+  bodyToast = "Record successfully saved!!!";
+
+  @ViewChild('territoryDescription') territoryDescription: ElementRef;
+  @ViewChild('regionId') regionId: ElementRef;
 
   constructor( private territoriesService: TerritoriesService, private regionsService: RegionsService, private route: ActivatedRoute,
     private router: Router ) { }
 
   ngOnInit() {
+    this.getParameters();
     this.initializeForm();
-    this.setParameters();
     this.setTerritory();
+    this.toastClick(1);
   }
 
+//#region Buttons
   toolbarButtonWasClicked(buttonName: string) {
+    this.toolbarButtonPressed = buttonName;
+    let modalBody = "";
     switch(buttonName){
       case "new":
-        this.displayYesNoModal();
+        modalBody = "Do you wish to clear this Territory and create a new one?";
+        this.displayModalYesNo(modalBody);
         break;
       case "save":
-        console.log(buttonName);
+        modalBody = "Do you wish to save this Territory?";
+        this.displayModalYesNo(modalBody);
         break;
       case "return":
         this.router.navigate(['/territories/territory-list']);
@@ -46,25 +59,30 @@ export class TerritoryEditComponent implements OnInit {
   modalButtonWasClicked(button: string) {
     switch(button) {
       case "btnYes":
-        const modalYesNo = document.getElementById("modalyesno");
-        if(modalYesNo)
-          modalYesNo.style.display = 'none';
-        this.clearForm();
-        break;
+        if (this.toolbarButtonPressed == "new")
+          this.clearForm();
+        if (this.toolbarButtonPressed == "save") {
+            if(this.requiredFieldsValid())
+              this.createOrUpdateTerritory();
+        }
+      break;
       case "btnNo":
-
         break;
-    }
-  }
+      }
 
-  getRegion(regionId: number) : string | undefined {
-    return this.regions.find(r => r.regionId == regionId)?.regionDescription;
+    this.toolbarButtonPressed = ""
   }
+//#endregion
 
-  private displayYesNoModal() {
-    const btnShowModal = document.getElementById("showModal");
-    if(btnShowModal)
-      btnShowModal.click();
+//#region Handle Form
+  private initializeForm() {
+    this.territoryForm = new FormGroup({
+      'territoryId' : new FormControl(this.territory?.territoryId),
+      'territoryDescription' : new FormControl(this.territory?.territoryDescription, Validators.required),
+      'regionId' : new FormControl(this.territory?.regionId, Validators.required)
+      });
+
+    this.territoryForm.controls['territoryId'].disable();
   }
 
   private clearForm() {
@@ -73,14 +91,88 @@ export class TerritoryEditComponent implements OnInit {
     this.router.navigate(['/territories/territory-edit']);
   }
 
-  private initializeForm() {
-    this.territoryForm = new FormGroup({
-      'territoryId' : new FormControl(this.territory?.territoryId),
-      'territoryDescription' : new FormControl(this.territory?.territoryDescription),
-      'regionId' : new FormControl(this.territory?.regionId)
-      });
+  private requiredFieldsValid(): boolean {
+    let displayModalMessage = false;
+    if(!this.territoryForm.valid) {
+      for (const field in this.territoryForm.controls) { // 'field' is a string
+        const tmpControl = this.territoryForm.get(field); // 'control' is a FormControl
+        if(tmpControl.invalid) {
+          switch(field) {
+            case "territoryDescription":
+              this.territoryDescription.nativeElement.classList.add('ng-touched');
+              displayModalMessage = true;
+              break;
+            case "regionId":
+              this.regionId.nativeElement.classList.add('ng-touched');
+              displayModalMessage = true;
+              break;
+            }
+          }
+        }
+     }
 
-    this.territoryForm.controls['territoryId'].disable();
+    if(displayModalMessage) {
+      this.modalMessageBody = "There are required fields that you must complete.";
+      this.displayModalMessage();
+    }
+
+    return !displayModalMessage;
+  }
+
+  private getParameters() {
+    this.setregions()
+  }
+
+  private setregions() {
+    this.regionsService.getRegions().subscribe(
+      {
+        next: regionsResult => {
+          this.regions = regionsResult;
+        }
+      }
+    );
+  }
+//#endregion
+
+//#region Handle Territory
+  private createOrUpdateTerritory() {
+    let territoryId = this.territoryForm.controls['territoryId'].value;
+    this.setValuesForTerritory(territoryId);
+    if (territoryId == null)
+      this.territoriesService.createTerritory(this.territory)
+          .subscribe({
+            next: territoryResult => {
+              this.reloadSavedTerritory(territoryResult);
+              this.toastClick(2);
+            },
+            error: errorResult => {
+              this.modalMessageBody = JSON.stringify(errorResult);
+              this.displayModalMessage();
+            }
+          });
+    else
+        this.territoriesService.updateTerritory(this.territory)
+        .subscribe({
+          next: territoryResult => {
+            this.reloadSavedTerritory(territoryResult);
+            this.toastClick(2);
+          },
+            error: errorResult => {
+              this.modalMessageBody = JSON.stringify(errorResult);
+              this.displayModalMessage();
+            }
+        });
+  }
+
+  private setValuesForTerritory(territoryId: number) {
+
+    this.territory = {
+        territoryDescription: this.territoryForm.controls['territoryDescription'].value,
+        regionId: this.territoryForm.controls['regionId'].value,
+          } as Territory ;
+
+    if (territoryId != null)
+      this.territory.territoryId = territoryId;
   }
 
   private setTerritory() {
@@ -96,18 +188,36 @@ export class TerritoryEditComponent implements OnInit {
       );
   }
 
-  private setParameters() {
-    this.setregions()
+  private reloadSavedTerritory(territory: Territory) {
+    if(territory) {
+      const territoryId = territory.territoryId;
+      if (territoryId)
+        this.router.navigate([`/territories/territory-edit/${territoryId}`]);
+    }
+  }
+//#endregion
+
+//#region Modals and Toasts
+  private displayModalYesNo(modalBody: string) {
+    this.modalYesNoBody = modalBody;
+    const btnShowModalYesNo = document.getElementById("showModalYesNo");
+    if(btnShowModalYesNo)
+      btnShowModalYesNo.click();
   }
 
-  private setregions() {
-    this.regionsService.getRegions().subscribe(
-      {
-        next: regionsResult => {
-          this.regions = regionsResult;
-        }
-      }
-    );
+  private displayModalMessage() {
+    const btnShowModalMessage = document.getElementById("showModalMessage");
+    if(btnShowModalMessage)
+      btnShowModalMessage.click();
   }
+
+  private toastClick(clickCounter: number) {
+    const btnToast = document.getElementById("liveToastBtn");
+    console.log(btnToast);
+    if(btnToast)
+      for(let i = 1; i <= clickCounter; i++)
+        btnToast.click();
+  }
+//#endregion
 
 }

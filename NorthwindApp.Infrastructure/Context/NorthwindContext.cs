@@ -66,9 +66,7 @@ public partial class NorthwindContext : DbContext
                 .HasName("PK_Region")
                 .IsClustered(false);
 
-            entity.Property(e => e.RegionId)
-                .ValueGeneratedNever()
-                .HasColumnName("RegionID");
+            entity.Property(e => e.RegionId).HasColumnName("RegionID");
             entity.Property(e => e.RegionDescription)
                 .HasMaxLength(50)
                 .IsFixedLength();

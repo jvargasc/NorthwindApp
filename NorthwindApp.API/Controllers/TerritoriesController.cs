@@ -26,12 +26,30 @@ public class TerritoriesController : ControllerBase
     }
 
     [HttpGet("getterritory/{territoryId}")]
-    public async Task<ActionResult<Territory>> GetTerritory(string territoryId)
+    public async Task<ActionResult<Territory>> GetTerritory(int territoryId)
     {
         var territory = await _territoriesRepository.GetTerritory(territoryId);
         if (territory == null) return NotFound();
 
         return Ok(territory);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<Territory>> CreateTerritory([FromBody] Territory shipperToCreate)
+    {
+        _territoriesRepository.CreateTerritory(shipperToCreate);
+        if (await _territoriesRepository.SaveAllAsync()) return Ok(shipperToCreate);
+
+        return BadRequest("Failed to save Region");
+    }
+
+    [HttpPut]
+    public async Task<ActionResult<Territory>> UpdateTerritory([FromBody] Territory regionToUpdate)
+    {
+        _territoriesRepository.UpdateTerritory(regionToUpdate);
+        if (await _territoriesRepository.SaveAllAsync()) return Ok(regionToUpdate);
+
+        return BadRequest("Failed to update Region");
     }
 
 }
