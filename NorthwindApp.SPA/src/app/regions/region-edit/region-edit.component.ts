@@ -29,7 +29,6 @@ export class RegionEditComponent implements OnInit {
     this.setParameters();
     this.initializeForm();
     this.setRegion();
-    this.toastClick();
   }
 
 //#region Buttons

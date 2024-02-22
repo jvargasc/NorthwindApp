@@ -15,7 +15,7 @@ export class CategoryEditComponent implements OnInit {
   category:  Category = {} as Category;
   categoryForm: FormGroup = new FormGroup({});
   picture?: string;
-  picturePrefix: string = "data:image/jpg;base64,";
+  picturePrefix: string = "data:image/jpeg;base64,";
   blankPicture: string = '../../../assets/images/Blank.png';
   modalTitle = "Category";
   modalYesNoBody = "";
@@ -30,9 +30,11 @@ export class CategoryEditComponent implements OnInit {
   constructor( private categoriesService: CategoriesService, private route: ActivatedRoute, private photosService: PhotosService, private router: Router ) { }
 
   ngOnInit() {
+    // this.toastClick();
+    this.photosService.setPhoto(this.blankPicture);
     this.initializeForm();
     this.setCategory();
-    this.toastClick();
+    // this.toastClick();
   }
 
 //#region Buttons
@@ -168,12 +170,15 @@ export class CategoryEditComponent implements OnInit {
     this.getPicture();
     if (this.picture != null)
       if (this.picture.length > 0) {
-        const newPic = this.picture.replace(this.picturePrefix, "");
+        let prefixPosition = this.picture.includes(this.picturePrefix);
+        const newPic = this.picture.substring(
+          prefixPosition ? this.picturePrefix.length : 0
+        );
         this.category = {
-            categoryName: this.categoryForm.controls['categoryName'].value,
-            description: this.categoryForm.controls['description'].value,
-            picture: newPic
-              } as Category ;
+          categoryName: this.categoryForm.controls['categoryName'].value,
+          description: this.categoryForm.controls['description'].value,
+          picture: newPic
+            } as Category ;
       }
 
     if (categoryId != null)

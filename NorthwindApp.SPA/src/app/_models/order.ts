@@ -1,6 +1,6 @@
 export interface Order {
     orderId:        number;
-    customerId:     string;
+    customerId:     number;
     employeeId:     number;
     orderDate:      Date;
     requiredDate:   Date;

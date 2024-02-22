@@ -18,12 +18,11 @@ export class CustomersService {
     return this.http.get<Customer[]>(this.baseUrl + 'getcustomers');
   }
 
-  getCustomer(customerId: string): Observable<Customer> {
+  getCustomer(customerId: number): Observable<Customer> {
     return this.http.get<Customer>(this.baseUrl + `getcustomer/${customerId}`);
   }
 
   createCustomer(customer: Customer): Observable<Customer> {
-    customer.customerId = this.generateCustomerId(customer.contactName);
     return this.http.post<Customer>(this.baseUrl, customer)
       .pipe(
         tap(resData => { return resData; })

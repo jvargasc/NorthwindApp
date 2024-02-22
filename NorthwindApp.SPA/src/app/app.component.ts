@@ -11,5 +11,4 @@ export class AppComponent {
   containerClicked() {
     // console.log('containerClicked()');
   }
-
 }

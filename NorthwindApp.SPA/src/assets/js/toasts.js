@@ -1,14 +1,39 @@
+const liveToastBtn = document.getElementById('liveToastBtn');
+// console.log(liveToastBtn);
+if (liveToastBtn) {
+  const toastBootstrap = bootstrap.Toast.getOrCreateInstance(liveToast);
+  // console.log(liveToast);
+  liveToastBtn.addEventListener('click', () => {
+    toastBootstrap.show();
+  });
+}
 
 function showToast() {
-
-  const toastTrigger = document.getElementById('liveToastBtn')
-  const toastLiveExample = document.getElementById('liveToast')
-
-  if (toastTrigger) {
-    // console.log('toastTrigger1');
-    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
-    toastTrigger.addEventListener('click', () => {
-      toastBootstrap.show()
-    })
-  }
+  console.log(liveToastBtn);
+  console.log('showToast()');
+  const toastBootstrap = bootstrap.Toast.getOrCreateInstance(liveToast)
+  toastBootstrap.show();
 }
+
+// function showToast() {
+
+//   console.log('showToast()');
+
+//   const liveToastBtn = document.getElementById('liveToastBtn')
+//   const liveToast = document.getElementById('liveToast')
+//   const toastLiveExampleII = document.getElementById('liveToastContainer')
+
+//   // console.log(liveToastBtn);
+//   // console.log(liveToast);
+//   // console.log(toastLiveExampleII);
+
+//   if (liveToastBtn) {
+//     const toastBootstrap = bootstrap.Toast.getOrCreateInstance(liveToast)
+//     console.log(liveToast);
+//     liveToastBtn.addEventListener('click', () => {
+//       toastBootstrap.show();
+//       liveToast.classList.add('show');
+//       console.log(liveToast);
+//     })
+//   }
+// }

@@ -19,7 +19,7 @@ export class EmployeeEditComponent implements OnInit {
   employeeForm: FormGroup = new FormGroup ({});
   employees: Employee[] = [];
   photo?: string;
-  picturePrefix: string = 'data:image/jpg;base64,';
+  picturePrefix: string = 'data:image/jpeg;base64,';
   blankPicture: string = '../../../assets/images/Blank.png';
   regions: Region[] = [];
   modalTitle = "Employee";
@@ -56,7 +56,6 @@ export class EmployeeEditComponent implements OnInit {
     this.initializeForm();
     this.getParameters();
     this.setEmployee();
-    this.toastClick();
   }
 
 //#region Buttons
@@ -292,7 +291,7 @@ export class EmployeeEditComponent implements OnInit {
     let employeeId = this.employeeForm.controls['employeeId'].value;
 
     this.setValuesForEmployee(employeeId);
-    if (employeeId == null){
+    if (employeeId == null)
       this.employeesServices.createEmployee(this.employee)
           .subscribe({
             next: employeeResult => {
@@ -303,7 +302,7 @@ export class EmployeeEditComponent implements OnInit {
               this.modalMessageBody = JSON.stringify(errorResult);
               this.displayModalMessage();
             }
-          });}
+          });
     else
         this.employeesServices.updateEmployee(this.employee)
         .subscribe({
@@ -323,26 +322,29 @@ export class EmployeeEditComponent implements OnInit {
     this.getPicture();
     if (this.photo != null)
       if (this.photo.length > 0) {
-        const newPic = this.photo.substring(this.picturePrefix.length + 1);
+        let prefixPosition = this.photo.includes(this.picturePrefix);
+        const newPic = this.photo.substring(
+          prefixPosition ? this.picturePrefix.length : 0
+        );
         this.employee = {
-            lastName: this.employeeForm.controls['lastName'].value,
-            firstName: this.employeeForm.controls['firstName'].value,
-            title: this.employeeForm.controls['title'].value,
-            titleOfCourtesy: this.employeeForm.controls['titleOfCourtesy'].value,
-            birthDate: this.employeeForm.controls['birthDate'].value,
-            hireDate: this.employeeForm.controls['hireDate'].value,
-            address: this.employeeForm.controls['address'].value,
-            city: this.employeeForm.controls['city'].value,
-            regionId: this.employeeForm.controls['regionId'].value,
-            postalCode: this.employeeForm.controls['postalCode'].value,
-            country: this.employeeForm.controls['country'].value,
-            homePhone: this.employeeForm.controls['homePhone'].value,
-            extension: this.employeeForm.controls['extension'].value,
-            photo: newPic,
-            notes: this.employeeForm.controls['notes'].value,
-            reportsTo: this.employeeForm.controls['reportsTo'].value,
-            photoPath: this.employeeForm.controls['photoPath'].value
-              } as Employee ;
+          lastName: this.employeeForm.controls['lastName'].value,
+          firstName: this.employeeForm.controls['firstName'].value,
+          title: this.employeeForm.controls['title'].value,
+          titleOfCourtesy: this.employeeForm.controls['titleOfCourtesy'].value,
+          birthDate: this.employeeForm.controls['birthDate'].value,
+          hireDate: this.employeeForm.controls['hireDate'].value,
+          address: this.employeeForm.controls['address'].value,
+          city: this.employeeForm.controls['city'].value,
+          regionId: this.employeeForm.controls['regionId'].value,
+          postalCode: this.employeeForm.controls['postalCode'].value,
+          country: this.employeeForm.controls['country'].value,
+          homePhone: this.employeeForm.controls['homePhone'].value,
+          extension: this.employeeForm.controls['extension'].value,
+          photo: newPic,
+          notes: this.employeeForm.controls['notes'].value,
+          reportsTo: this.employeeForm.controls['reportsTo'].value,
+          photoPath: this.employeeForm.controls['photoPath'].value
+            } as Employee ;
       }
 
     if (employeeId != null)

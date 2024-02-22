@@ -27,7 +27,7 @@ public class CustomersController : ControllerBase
     }
 
     [HttpGet("getcustomer/{customerId}")]
-    public async Task<ActionResult<Customer>> GetCustomer(string customerId)
+    public async Task<ActionResult<Customer>> GetCustomer(int customerId)
     {
         var customer = await _customersRepository.GetCustomer(customerId);
         if (customer == null) return NotFound();

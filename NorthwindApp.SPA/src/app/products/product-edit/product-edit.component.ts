@@ -230,16 +230,16 @@ export class ProductEditComponent implements OnInit {
   private setValuesForProduct(productId: number) {
 
     this.product = {
-        productName: this.productForm.controls['productName'].value,
-        supplierId: this.productForm.controls['supplierId'].value,
-        categoryId: this.productForm.controls['categoryId'].value,
-        quantityPerUnit: this.productForm.controls['quantityPerUnit'].value,
-        unitPrice: this.productForm.controls['unitPrice'].value,
-        unitsInStock: this.productForm.controls['unitsInStock'].value,
-        unitsOnOrder: this.productForm.controls['unitsOnOrder'].value,
-        reorderLevel: this.productForm.controls['reorderLevel'].value,
-        discontinued: this.productForm.controls['discontinued'].value
-          } as Product ;
+      productName: this.productForm.controls['productName'].value,
+      supplierId: this.productForm.controls['supplierId'].value,
+      categoryId: this.productForm.controls['categoryId'].value,
+      quantityPerUnit: this.productForm.controls['quantityPerUnit'].value,
+      unitPrice: this.productForm.controls['unitPrice'].value,
+      unitsInStock: this.productForm.controls['unitsInStock'].value,
+      unitsOnOrder: this.productForm.controls['unitsOnOrder'].value,
+      reorderLevel: this.productForm.controls['reorderLevel'].value,
+      discontinued: this.productForm.controls['discontinued'].value
+        } as Product ;
 
     if (productId != null)
       this.product.productId = productId;

@@ -34,7 +34,6 @@ export class TerritoryEditComponent implements OnInit {
     this.getParameters();
     this.initializeForm();
     this.setTerritory();
-    this.toastClick(1);
   }
 
 //#region Buttons
@@ -143,7 +142,7 @@ export class TerritoryEditComponent implements OnInit {
           .subscribe({
             next: territoryResult => {
               this.reloadSavedTerritory(territoryResult);
-              this.toastClick(2);
+              this.toastClick();
             },
             error: errorResult => {
               this.modalMessageBody = JSON.stringify(errorResult);
@@ -155,7 +154,7 @@ export class TerritoryEditComponent implements OnInit {
         .subscribe({
           next: territoryResult => {
             this.reloadSavedTerritory(territoryResult);
-            this.toastClick(2);
+            this.toastClick();
           },
             error: errorResult => {
               this.modalMessageBody = JSON.stringify(errorResult);
@@ -167,9 +166,9 @@ export class TerritoryEditComponent implements OnInit {
   private setValuesForTerritory(territoryId: number) {
 
     this.territory = {
-        territoryDescription: this.territoryForm.controls['territoryDescription'].value,
-        regionId: this.territoryForm.controls['regionId'].value,
-          } as Territory ;
+      territoryDescription: this.territoryForm.controls['territoryDescription'].value,
+      regionId: this.territoryForm.controls['regionId'].value,
+        } as Territory ;
 
     if (territoryId != null)
       this.territory.territoryId = territoryId;
@@ -211,12 +210,10 @@ export class TerritoryEditComponent implements OnInit {
       btnShowModalMessage.click();
   }
 
-  private toastClick(clickCounter: number) {
+  private toastClick() {
     const btnToast = document.getElementById("liveToastBtn");
-    console.log(btnToast);
     if(btnToast)
-      for(let i = 1; i <= clickCounter; i++)
-        btnToast.click();
+      btnToast.click();
   }
 //#endregion
 

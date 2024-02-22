@@ -54,7 +54,6 @@ export class OrderEditComponent implements OnInit {
     this.getParameters();
     this.initializeForm();
     this.setOrder();
-    this.toastClick();
   }
 
 //#region Buttons
@@ -303,21 +302,21 @@ export class OrderEditComponent implements OnInit {
   }
 
   private setValuesForOrder(orderId: number) {
-      this.order = {
-          customerId: this.orderForm.controls['customerId'].value,
-          employeeId: this.orderForm.controls['employeeId'].value,
-          orderDate: this.orderForm.controls['orderDate'].value,
-          requiredDate: this.orderForm.controls['requiredDate'].value,
-          shippedDate: this.orderForm.controls['shippedDate'].value,
-          shipperId: this.orderForm.controls['shipperId'].value,
-          freight: this.orderForm.controls['freight'].value,
-          shipName: this.orderForm.controls['shipName'].value,
-          shipAddress: this.orderForm.controls['shipAddress'].value,
-          shipCity: this.orderForm.controls['shipCity'].value,
-          regionId: this.orderForm.controls['regionId'].value,
-          shipPostalCode: this.orderForm.controls['shipPostalCode'].value,
-          shipCountry: this.orderForm.controls['shipCountry'].value,
-            } as Order ;
+    this.order = {
+      customerId: this.orderForm.controls['customerId'].value,
+      employeeId: this.orderForm.controls['employeeId'].value,
+      orderDate: this.orderForm.controls['orderDate'].value,
+      requiredDate: this.orderForm.controls['requiredDate'].value,
+      shippedDate: this.orderForm.controls['shippedDate'].value,
+      shipperId: this.orderForm.controls['shipperId'].value,
+      freight: this.orderForm.controls['freight'].value,
+      shipName: this.orderForm.controls['shipName'].value,
+      shipAddress: this.orderForm.controls['shipAddress'].value,
+      shipCity: this.orderForm.controls['shipCity'].value,
+      regionId: this.orderForm.controls['regionId'].value,
+      shipPostalCode: this.orderForm.controls['shipPostalCode'].value,
+      shipCountry: this.orderForm.controls['shipCountry'].value,
+        } as Order ;
 
       if (orderId != null)
         this.order.orderId = orderId;

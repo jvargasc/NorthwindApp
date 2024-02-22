@@ -37,6 +37,10 @@ public partial class NorthwindContext : DbContext
 
         modelBuilder.Entity<Customer>(entity =>
         {
+            entity.HasKey(e => e.CustomerId)
+                .HasName("PK_Customer")
+                .IsClustered(true);
+
             entity.HasIndex(e => e.City, "City");
 
             entity.HasIndex(e => e.CompanyName, "CompanyName");
@@ -45,10 +49,6 @@ public partial class NorthwindContext : DbContext
 
             entity.HasIndex(e => e.RegionId, "Region");
 
-            entity.Property(e => e.CustomerId)
-                .HasMaxLength(5)
-                .IsFixedLength()
-                .HasColumnName("CustomerID");
             entity.Property(e => e.Address).HasMaxLength(60);
             entity.Property(e => e.City).HasMaxLength(15);
             entity.Property(e => e.CompanyName).HasMaxLength(40);
@@ -182,10 +182,7 @@ public partial class NorthwindContext : DbContext
             entity.HasIndex(e => e.ShipperId, "ShippersOrders");
 
             entity.Property(e => e.OrderId).HasColumnName("OrderID");
-            entity.Property(e => e.CustomerId)
-                .HasMaxLength(5)
-                .IsFixedLength()
-                .HasColumnName("CustomerID");
+
             entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
             entity.Property(e => e.Freight)
                 .HasDefaultValueSql("((0))")

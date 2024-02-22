@@ -42,7 +42,7 @@
           <input type="text" class="form-control" formControlName="city" placeholder="City" #city required />
         </div>
         <div class="col-3 form-group">
-          <label for="regionId">Region Id</label>
+          <label for="regionId">Region</label>
           <select class="form-control" formControlName="regionId" #regionId required>
             <option *ngFor="let region of regions" [ngValue]="region.regionId">
               {{ region.regionDescription }}

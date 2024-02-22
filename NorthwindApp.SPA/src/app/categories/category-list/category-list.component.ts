@@ -27,7 +27,7 @@ export class CategoryListComponent implements OnInit {
         this.router.navigate(['/categories/category-edit']);
         break;
       case "refresh":
-        // location.reload();
+        location.reload();
         this.getCategories();
         break;
       case "search":

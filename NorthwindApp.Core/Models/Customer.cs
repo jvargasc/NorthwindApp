@@ -2,7 +2,7 @@
 
 public partial class Customer
 {
-    public string CustomerId { get; set; } = null!;
+    public int CustomerId { get; set; }
 
     public string CompanyName { get; set; } = null!;
 

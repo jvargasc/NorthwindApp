@@ -18,7 +18,7 @@ public interface ICategoriesRepository
 public interface ICustomersRepository
 {
     Task<List<Customer>> GetCustomers();
-    Task<Customer> GetCustomer(string customerId);
+    Task<Customer> GetCustomer(int customerId);
     void CreateCustomer(Customer customer);
     void UpdateCustomer(Customer customer);
     Task<bool> SaveAllAsync();

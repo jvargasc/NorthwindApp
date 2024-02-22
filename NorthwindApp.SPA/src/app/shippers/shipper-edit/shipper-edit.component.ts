@@ -29,7 +29,6 @@ export class ShipperEditComponent implements OnInit {
   ngOnInit() {
     this.initializeForm();
     this.SetShipper();
-    this.toastClick();
   }
 
 //#region Buttons
@@ -148,10 +147,10 @@ export class ShipperEditComponent implements OnInit {
 
   private setValuesForShipper(shipperId: number) {
 
-      this.shipper = {
-          companyName: this.shipperForm.controls['companyName'].value,
-          phone: this.shipperForm.controls['phone'].value,
-            } as Shipper ;
+    this.shipper = {
+      companyName: this.shipperForm.controls['companyName'].value,
+      phone: this.shipperForm.controls['phone'].value,
+        } as Shipper ;
 
     if (shipperId != null)
       this.shipper.shipperId = shipperId;

@@ -40,7 +40,6 @@ export class CustomerEditComponent implements OnInit {
     this.getParameters();
     this.initializeForm();
     this.setCustomer();
-    this.toastClick();
   }
 
 //#region Buttons
@@ -181,8 +180,8 @@ export class CustomerEditComponent implements OnInit {
       this.customersService.createCustomer(this.customer)
           .subscribe({
             next: customerResult => {
-              this.reloadSavedCustomer(customerResult);
               this.toastClick();
+              this.reloadSavedCustomer(customerResult);
             },
             error: errorResult => {
               this.modalMessageBody = JSON.stringify(errorResult);
@@ -193,8 +192,8 @@ export class CustomerEditComponent implements OnInit {
         this.customersService.updateCustomer(this.customer)
         .subscribe({
           next: customerResult => {
-            this.reloadSavedCustomer(customerResult);
             this.toastClick();
+            this.reloadSavedCustomer(customerResult);
           },
             error: errorResult => {
               this.modalMessageBody = JSON.stringify(errorResult);
@@ -203,20 +202,20 @@ export class CustomerEditComponent implements OnInit {
         });
   }
 
-  private setValuesForCustomer(customerId: string) {
+  private setValuesForCustomer(customerId: number) {
 
       this.customer = {
-          companyName: this.customerForm.controls['companyName'].value,
-          contactName: this.customerForm.controls['contactName'].value,
-          contactTitle: this.customerForm.controls['contactTitle'].value,
-          address: this.customerForm.controls['address'].value,
-          city: this.customerForm.controls['city'].value,
-          regionId: this.customerForm.controls['regionId'].value,
-          postalCode: this.customerForm.controls['postalCode'].value,
-          country: this.customerForm.controls['country'].value,
-          phone: this.customerForm.controls['phone'].value,
-          fax: this.customerForm.controls['fax'].value
-            } as Customer ;
+        companyName: this.customerForm.controls['companyName'].value,
+        contactName: this.customerForm.controls['contactName'].value,
+        contactTitle: this.customerForm.controls['contactTitle'].value,
+        address: this.customerForm.controls['address'].value,
+        city: this.customerForm.controls['city'].value,
+        regionId: this.customerForm.controls['regionId'].value,
+        postalCode: this.customerForm.controls['postalCode'].value,
+        country: this.customerForm.controls['country'].value,
+        phone: this.customerForm.controls['phone'].value,
+        fax: this.customerForm.controls['fax'].value
+          } as Customer ;
 
     if (customerId != null)
       this.customer.customerId = customerId;
@@ -225,7 +224,7 @@ export class CustomerEditComponent implements OnInit {
   private setCustomer() {
     const customerId = this.route.snapshot.paramMap.get('customerId');
     if(customerId)
-      this.customersService.getCustomer(customerId!).subscribe(
+      this.customersService.getCustomer(+customerId).subscribe(
         {
           next: customerResult => {
             this.customer = customerResult;
@@ -259,7 +258,6 @@ export class CustomerEditComponent implements OnInit {
 
   private toastClick() {
     const btnToast = document.getElementById("liveToastBtn");
-    console.log(btnToast);
     if(btnToast)
       btnToast.click();
   }

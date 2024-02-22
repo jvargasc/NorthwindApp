@@ -34,14 +34,12 @@ export class SupplierDetailComponent implements OnInit {
   @ViewChild('country') country: ElementRef;
   @ViewChild('phone') phone: ElementRef;
 
-  constructor( private suppliersService: SuppliersService, private regionsService: RegionsService, private route: ActivatedRoute,
-    private router: Router ) { }
+  constructor( private suppliersService: SuppliersService, private regionsService: RegionsService, private route: ActivatedRoute, private router: Router ) { }
 
   ngOnInit() {
     this.getParameters();
     this.initializeForm();
     this.setSupplier();
-    this.toastClick();
   }
 
 //#region Buttons
@@ -207,18 +205,18 @@ export class SupplierDetailComponent implements OnInit {
 
   private setValuesForSupplier(supplierId: string) {
 
-      this.supplier = {
-          companyName: this.supplierForm.controls['companyName'].value,
-          contactName: this.supplierForm.controls['contactName'].value,
-          contactTitle: this.supplierForm.controls['contactTitle'].value,
-          address: this.supplierForm.controls['address'].value,
-          city: this.supplierForm.controls['city'].value,
-          regionId: this.supplierForm.controls['regionId'].value,
-          postalCode: this.supplierForm.controls['postalCode'].value,
-          country: this.supplierForm.controls['country'].value,
-          phone: this.supplierForm.controls['phone'].value,
-          fax: this.supplierForm.controls['fax'].value
-            } as Supplier ;
+    this.supplier = {
+      companyName: this.supplierForm.controls['companyName'].value,
+      contactName: this.supplierForm.controls['contactName'].value,
+      contactTitle: this.supplierForm.controls['contactTitle'].value,
+      address: this.supplierForm.controls['address'].value,
+      city: this.supplierForm.controls['city'].value,
+      regionId: this.supplierForm.controls['regionId'].value,
+      postalCode: this.supplierForm.controls['postalCode'].value,
+      country: this.supplierForm.controls['country'].value,
+      phone: this.supplierForm.controls['phone'].value,
+      fax: this.supplierForm.controls['fax'].value
+        } as Supplier ;
 
     if (supplierId != null)
       this.supplier.supplierId = +supplierId;

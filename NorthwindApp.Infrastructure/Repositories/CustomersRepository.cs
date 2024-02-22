@@ -21,7 +21,7 @@ public class CustomersRepository : ICustomersRepository
         return await _northwindContext.Customers.ToListAsync();
     }
 
-    public async Task<Customer> GetCustomer(string customerId)
+    public async Task<Customer> GetCustomer(int customerId)
     {
         return await _northwindContext.Customers
                 .Where(c => c.CustomerId == customerId).FirstOrDefaultAsync();
