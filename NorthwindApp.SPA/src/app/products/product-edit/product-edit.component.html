@@ -4,26 +4,41 @@
       <h4>Product</h4>
     </div>
     <div class="card-toolbar">
-      <app-toolbarcrud (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"></app-toolbarcrud>
+      <app-toolbarcrud
+        (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"
+      ></app-toolbarcrud>
     </div>
   </div>
   <div class="card-body mx-2">
     <form [formGroup]="productForm">
       <div class="row">
         <div class="col-3 form-group">
-          <label for="productId">Product Id</label><input type="text" class="form-control" formControlName="productId"
-            placeholder="Product Id" />
+          <label for="productId">Product Id</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="productId"
+            placeholder="Product Id"
+          />
         </div>
       </div>
       <div class="row">
         <div class="col-3 form-group">
-          <label for="productName">Product Name</label><input type="text" class="form-control"
-            formControlName="productName" placeholder="Product Name" />
+          <label for="productName">Product Name</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="productName"
+            placeholder="Product Name"
+          />
         </div>
         <div class="col-3 form-group">
           <label for="supplierId">Supplier</label>
           <select class="form-control" formControlName="supplierId">
-            <option *ngFor="let supplier of suppliers" [ngValue]="product.supplierId">
+            <option
+              *ngFor="let supplier of suppliers"
+              [ngValue]="product.supplierId"
+            >
               {{ supplier.companyName }}
             </option>
           </select>
@@ -31,57 +46,105 @@
         <div class="col-3 form-group">
           <label for="categoryId">Category Id</label>
           <select class="form-control" formControlName="categoryId">
-            <option *ngFor="let category of categories" [ngValue]="product.categoryId">
+            <option
+              *ngFor="let category of categories"
+              [ngValue]="product.categoryId"
+            >
               {{ category.categoryName }}
             </option>
           </select>
         </div>
         <div class="col-3 form-group">
-          <label for="quantityPerUnit">Quantity Per Unit</label><input type="text" class="form-control"
-            formControlName="quantityPerUnit" placeholder="Quantity Per Unit" />
+          <label for="quantityPerUnit">Quantity Per Unit</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="quantityPerUnit"
+            placeholder="Quantity Per Unit"
+          />
         </div>
       </div>
       <div class="row">
         <div class="col-2 form-group">
-          <label for="unitPrice">Unit Price</label><input type="text" class="form-control" formControlName="unitPrice"
-            placeholder="Unit Price" />
+          <label for="unitPrice">Unit Price</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="unitPrice"
+            placeholder="Unit Price"
+          />
         </div>
         <div class="col-2 form-group">
-          <label for="unitsInStock">Units In Stock</label><input type="text" class="form-control"
-            formControlName="unitsInStock" placeholder="Units In Stock" />
+          <label for="unitsInStock">Units In Stock</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="unitsInStock"
+            placeholder="Units In Stock"
+          />
         </div>
         <div class="col-2 form-group">
-          <label for="unitsOnOrder">Units On Order</label><input type="text" class="form-control"
-            formControlName="unitsOnOrder" placeholder="Units On Order" />
+          <label for="unitsOnOrder">Units On Order</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="unitsOnOrder"
+            placeholder="Units On Order"
+          />
         </div>
         <div class="col-3 form-group">
-          <label for="reorderLevel">ReOrder Level</label><input type="text" class="form-control"
-            formControlName="reorderLevel" placeholder="ReOrder Level" />
+          <label for="reorderLevel">ReOrder Level</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="reorderLevel"
+            placeholder="ReOrder Level"
+          />
         </div>
         <div class="col-3 form-group">
-          <label for="discontinued">Discontinued</label><input type="checkbox" class="form-control form-check-input"
-            formControlName="discontinued" placeholder="Discontinued" [value]="product.discontinued" />
+          <label for="discontinued">Discontinued</label
+          ><input
+            type="checkbox"
+            class="form-control form-check-input"
+            formControlName="discontinued"
+            placeholder="Discontinued"
+            [value]="product.discontinued"
+          />
         </div>
       </div>
     </form>
   </div>
 </div>
 
-<button style="display: none" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalYesNo"
-  id="showModalYesNo">
+<button
+  style="display: none"
+  type="button"
+  class="btn btn-primary"
+  data-bs-toggle="modal"
+  data-bs-target="#modalYesNo"
+  id="showModalYesNo"
+>
   Open modal
 </button>
-<app-modalyesno [modalTitle]="modalTitle" [modalBody]="modalYesNoBody"
-  (modalButtonWasClicked)="modalButtonWasClicked($event)" id="modalyesno"></app-modalyesno>
+<app-modalyesno
+  [modalTitle]="modalTitle"
+  [modalBody]="modalYesNoBody"
+  (modalButtonWasClicked)="modalButtonWasClicked($event)"
+  id="modalyesno"
+></app-modalyesno>
 
-<button style="display: none" type="button" class="btn btn-primary" data-bs-toggle="modal"
-  data-bs-target="#modalMessage" id="showModalMessage">
+<button
+  style="display: none"
+  type="button"
+  class="btn btn-primary"
+  data-bs-toggle="modal"
+  data-bs-target="#modalMessage"
+  id="showModalMessage"
+>
   Open modal
 </button>
 
-<app-modalmessage [modalTitle]="modalTitle" [modalBody]="modalMessageBody"></app-modalmessage>
-
-<button type="button" class="btn btn-primary" id="liveToastBtn" onclick="showToast()" style="display: none">
-  Show live toast
-</button>
-<app-toast [header]="headerToast" [body]="bodyToast"></app-toast>
+<app-modalmessage
+  [modalTitle]="modalTitle"
+  [modalBody]="modalMessageBody"
+></app-modalmessage>

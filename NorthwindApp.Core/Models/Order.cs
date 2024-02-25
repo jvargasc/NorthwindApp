@@ -27,7 +27,8 @@ public partial class Order
 
     public string? ShipCity { get; set; }
 
-    public int? RegionId { get; set; }
+    // public int? RegionId { get; set; }
+    public string? ShipRegion { get; set; }
 
     public string? ShipPostalCode { get; set; }
 

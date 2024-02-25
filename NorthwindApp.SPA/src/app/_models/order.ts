@@ -10,7 +10,7 @@ export interface Order {
     shipName:       string;
     shipAddress:    string;
     shipCity:       string;
-    regionId:       number;
+    shipRegion:     string;
     shipPostalCode: string;
     shipCountry:    string;
 }

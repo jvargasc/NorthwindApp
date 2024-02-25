@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { Category } from 'src/app/_models/category';
 import { CategoriesService } from 'src/app/_services/categories.service';
@@ -27,7 +28,7 @@ export class CategoryEditComponent implements OnInit {
   @ViewChild('categoryName') categoryName: ElementRef;
   @ViewChild('description') description: ElementRef;
 
-  constructor( private categoriesService: CategoriesService, private route: ActivatedRoute, private photosService: PhotosService, private router: Router ) { }
+  constructor( private categoriesService: CategoriesService, private route: ActivatedRoute, private photosService: PhotosService, private router: Router, private toastr: ToastrService ) { }
 
   ngOnInit() {
     // this.toastClick();
@@ -144,7 +145,7 @@ export class CategoryEditComponent implements OnInit {
           .subscribe({
             next: categoryResult => {
               this.reloadSavedCategory(categoryResult);
-              this.toastClick();
+              this.toastr.success(this.bodyToast);
             },
             error: errorResult => {
               this.modalMessageBody = JSON.stringify(errorResult);
@@ -156,7 +157,7 @@ export class CategoryEditComponent implements OnInit {
         .subscribe({
           next: categoryResult => {
             this.reloadSavedCategory(categoryResult);
-            this.toastClick();
+            this.toastr.success(this.bodyToast);
           },
             error: errorResult => {
               this.modalMessageBody = JSON.stringify(errorResult);
@@ -208,7 +209,7 @@ export class CategoryEditComponent implements OnInit {
   }
 //#endregion
 
-//#region Modals and Toasts
+//#region Modals
   private displayModalYesNo(modalBody: string) {
     this.modalYesNoBody = modalBody;
     const btnShowModalYesNo = document.getElementById("showModalYesNo");
@@ -222,11 +223,6 @@ export class CategoryEditComponent implements OnInit {
       btnShowModalMessage.click();
   }
 
-  private toastClick() {
-    const btnToast = document.getElementById("liveToastBtn");
-    if(btnToast)
-      btnToast.click();
-  }
 //#endregion
 
 //#region Picture

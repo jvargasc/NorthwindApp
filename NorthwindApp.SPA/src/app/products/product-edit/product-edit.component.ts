@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { Category } from 'src/app/_models/category';
 import { Product } from 'src/app/_models/product';
@@ -37,7 +38,7 @@ export class ProductEditComponent implements OnInit {
   @ViewChild('reorderLevel') reorderLevel: ElementRef;
   @ViewChild('discontinued') discontinued: ElementRef;
 
-  constructor( private productsService: ProductsService, private categoriesservice: CategoriesService, private suppliersservice: SuppliersService, private route: ActivatedRoute, private router: Router) { }
+  constructor( private productsService: ProductsService, private categoriesservice: CategoriesService, private suppliersservice: SuppliersService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.getParameters();
@@ -206,7 +207,7 @@ export class ProductEditComponent implements OnInit {
           .subscribe({
             next: productResult => {
               this.reloadSavedProduct(productResult);
-              this.toastClick();
+              this.toastr.success(this.bodyToast);
             },
             error: errorResult => {
               this.modalMessageBody = JSON.stringify(errorResult);
@@ -218,7 +219,7 @@ export class ProductEditComponent implements OnInit {
         .subscribe({
           next: productResult => {
             this.reloadSavedProduct(productResult);
-            this.toastClick();
+            this.toastr.success(this.bodyToast);
           },
             error: errorResult => {
               this.modalMessageBody = JSON.stringify(errorResult);
@@ -267,7 +268,7 @@ export class ProductEditComponent implements OnInit {
   }
 //#endregion
 
-//#region Modals and Toasts
+//#region Modals
   private displayModalYesNo(modalBody: string) {
     this.modalYesNoBody = modalBody;
     const btnShowModalYesNo = document.getElementById("showModalYesNo");
@@ -279,15 +280,6 @@ export class ProductEditComponent implements OnInit {
     const btnShowModalMessage = document.getElementById("showModalMessage");
     if(btnShowModalMessage)
       btnShowModalMessage.click();
-  }
-
-  private toastClick() {
-    const btnToast = document.getElementById("liveToastBtn");
-    console.log(btnToast);
-    if(btnToast){
-      btnToast.click();
-      btnToast.click();
-    }
   }
 //#endregion
 

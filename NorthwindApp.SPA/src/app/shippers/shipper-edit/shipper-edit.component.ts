@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { Shipper } from 'src/app/_models/shipper';
 import { ShippersService } from 'src/app/_services/shippers.service';
@@ -24,7 +25,7 @@ export class ShipperEditComponent implements OnInit {
   @ViewChild('phone') phone: ElementRef;
 
   constructor(private shippersService: ShippersService, private route: ActivatedRoute,
-    private router: Router ) { }
+    private router: Router, private toastr: ToastrService ) { }
 
   ngOnInit() {
     this.initializeForm();
@@ -124,7 +125,7 @@ export class ShipperEditComponent implements OnInit {
           .subscribe({
             next: shipperResult => {
               this.reloadSavedShipper(shipperResult);
-              this.toastClick();
+              this.toastr.success(this.bodyToast);
             },
             error: errorResult => {
               this.modalMessageBody = JSON.stringify(errorResult);
@@ -136,7 +137,7 @@ export class ShipperEditComponent implements OnInit {
         .subscribe({
           next: shipperResult => {
             this.reloadSavedShipper(shipperResult);
-            this.toastClick();
+            this.toastr.success(this.bodyToast);
           },
             error: errorResult => {
               this.modalMessageBody = JSON.stringify(errorResult);
@@ -178,7 +179,7 @@ export class ShipperEditComponent implements OnInit {
   }
 //#endregion
 
-//#region Modals and Toasts
+//#region Modals
   private displayModalYesNo(modalBody: string) {
     this.modalYesNoBody = modalBody;
     const btnShowModalYesNo = document.getElementById("showModalYesNo");

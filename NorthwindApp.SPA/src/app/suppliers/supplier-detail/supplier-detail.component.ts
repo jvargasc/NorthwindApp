@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { Region } from 'src/app/_models/region';
 import { Supplier } from 'src/app/_models/supplier';
@@ -34,7 +35,7 @@ export class SupplierDetailComponent implements OnInit {
   @ViewChild('country') country: ElementRef;
   @ViewChild('phone') phone: ElementRef;
 
-  constructor( private suppliersService: SuppliersService, private regionsService: RegionsService, private route: ActivatedRoute, private router: Router ) { }
+  constructor( private suppliersService: SuppliersService, private regionsService: RegionsService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService ) { }
 
   ngOnInit() {
     this.getParameters();
@@ -182,7 +183,7 @@ export class SupplierDetailComponent implements OnInit {
           .subscribe({
             next: supplierResult => {
               this.reloadSavedSupplier(supplierResult);
-              this.toastClick();
+              this.toastr.success(this.bodyToast);
             },
             error: errorResult => {
               this.modalMessageBody = JSON.stringify(errorResult);
@@ -194,7 +195,7 @@ export class SupplierDetailComponent implements OnInit {
         .subscribe({
           next: supplierResult => {
             this.reloadSavedSupplier(supplierResult);
-            this.toastClick();
+            this.toastr.success(this.bodyToast);
           },
             error: errorResult => {
               this.modalMessageBody = JSON.stringify(errorResult);
@@ -244,7 +245,7 @@ export class SupplierDetailComponent implements OnInit {
   }
 //#endregion
 
-//#region Modals and Toasts
+//#region Modals
   private displayModalYesNo(modalBody: string) {
     this.modalYesNoBody = modalBody;
     const btnShowModalYesNo = document.getElementById("showModalYesNo");
@@ -256,13 +257,6 @@ export class SupplierDetailComponent implements OnInit {
     const btnShowModalMessage = document.getElementById("showModalMessage");
     if(btnShowModalMessage)
       btnShowModalMessage.click();
-  }
-
-  private toastClick() {
-    const btnToast = document.getElementById("liveToastBtn");
-    console.log(btnToast);
-    if(btnToast)
-      btnToast.click();
   }
 //#endregion
 

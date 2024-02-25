@@ -2,6 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { Customer } from 'src/app/_models/customer';
 import { Employee } from 'src/app/_models/employee';
@@ -43,12 +44,11 @@ export class OrderEditComponent implements OnInit {
   @ViewChild('shipName') shipName: ElementRef;
   @ViewChild('shipAddress') shipAddress: ElementRef;
   @ViewChild('shipCity') shipCity: ElementRef;
-  @ViewChild('regionId') regionId: ElementRef;
+  @ViewChild('shipRegion') shipRegion: ElementRef;
   @ViewChild('shipPostalCode') shipPostalCode: ElementRef;
   @ViewChild('shipCountry') shipCountry: ElementRef;
 
-  constructor( private ordersService: OrdersService, private customersService: CustomersService, private employeesService: EmployeesService,
-               private regionsService: RegionsService, private shippersService: ShippersService, private route: ActivatedRoute, private router: Router) { }
+  constructor( private ordersService: OrdersService, private customersService: CustomersService, private employeesService: EmployeesService, private regionsService: RegionsService, private shippersService: ShippersService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.getParameters();
@@ -107,7 +107,7 @@ export class OrderEditComponent implements OnInit {
       'shipName' : new FormControl(this.order.shipName, Validators.required),
       'shipAddress' : new FormControl(this.order.shipAddress, Validators.required),
       'shipCity' : new FormControl(this.order.shipCity, Validators.required),
-      'regionId' : new FormControl(this.order.regionId, Validators.required),
+      'shipRegion' : new FormControl(this.order.shipRegion, Validators.required),
       'shipPostalCode' : new FormControl(this.order.shipPostalCode, Validators.required),
       'shipCountry' : new FormControl(this.order.shipCountry, Validators.required)
     });
@@ -179,8 +179,8 @@ export class OrderEditComponent implements OnInit {
               this.shipCity.nativeElement.classList.add('ng-touched');
               displayModalMessage = true;
               break;
-            case "regionId":
-              this.regionId.nativeElement.classList.add('ng-touched');
+            case "shipRegion":
+              this.shipRegion.nativeElement.classList.add('ng-touched');
               displayModalMessage = true;
               break;
             case "shipPostalCode":
@@ -279,8 +279,8 @@ export class OrderEditComponent implements OnInit {
       this.ordersService.createOrder(this.order)
           .subscribe({
             next: customerResult => {
-              this.toastClick();
               this.reloadSavedOrder(customerResult);
+              this.toastr.success(this.bodyToast);
             },
             error: errorResult => {
               this.modalMessageBody = JSON.stringify(errorResult);
@@ -292,7 +292,7 @@ export class OrderEditComponent implements OnInit {
         .subscribe({
           next: customerResult => {
             this.reloadSavedOrder(customerResult);
-            this.toastClick();
+            this.toastr.success(this.bodyToast);
           },
             error: errorResult => {
               this.modalMessageBody = JSON.stringify(errorResult);
@@ -313,7 +313,7 @@ export class OrderEditComponent implements OnInit {
       shipName: this.orderForm.controls['shipName'].value,
       shipAddress: this.orderForm.controls['shipAddress'].value,
       shipCity: this.orderForm.controls['shipCity'].value,
-      regionId: this.orderForm.controls['regionId'].value,
+      shipRegion: this.orderForm.controls['shipRegion'].value,
       shipPostalCode: this.orderForm.controls['shipPostalCode'].value,
       shipCountry: this.orderForm.controls['shipCountry'].value,
         } as Order ;
@@ -344,7 +344,7 @@ export class OrderEditComponent implements OnInit {
   }
 //#endregion
 
-//#region Modals and Toasts
+//#region Modals
   private displayModalYesNo(modalBody: string) {
     this.modalYesNoBody = modalBody;
     const btnShowModalYesNo = document.getElementById("showModalYesNo");
@@ -356,16 +356,6 @@ export class OrderEditComponent implements OnInit {
     const btnShowModalMessage = document.getElementById("showModalMessage");
     if(btnShowModalMessage)
       btnShowModalMessage.click();
-  }
-
-  private toastClick() {
-    const btnToast = document.getElementById("liveToastBtn");
-    console.log(btnToast);
-    if(btnToast) {
-      btnToast.click();
-      // if(Object.keys(this.order).length > 0)
-        // btnToast.click();
-    }
   }
 //#endregion
 }

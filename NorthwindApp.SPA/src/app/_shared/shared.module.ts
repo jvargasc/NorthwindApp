@@ -12,7 +12,6 @@ import { ModalSearchComponent } from './modals/modalsearch/modalsearch.component
 import { ModalMessageComponent } from './modals/modalmessage/modalmessage.component';
 import { PhotoUploadComponent } from './photo-upload/photo-upload.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ToastComponent } from './toast/toast.component';
 
 @NgModule({
   declarations: [
@@ -21,8 +20,7 @@ import { ToastComponent } from './toast/toast.component';
     ModalYesNoComponent,
     ModalSearchComponent,
     ModalMessageComponent,
-    PhotoUploadComponent,
-    ToastComponent
+    PhotoUploadComponent
   ],
   imports: [
     CommonModule,
@@ -38,8 +36,7 @@ import { ToastComponent } from './toast/toast.component';
     ModalYesNoComponent,
     ModalSearchComponent,
     ModalMessageComponent,
-    PhotoUploadComponent,
-    ToastComponent
+    PhotoUploadComponent
   ],
 })
 export class SharedModule { }

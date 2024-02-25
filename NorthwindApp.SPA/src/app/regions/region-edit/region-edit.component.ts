@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { Region } from 'src/app/_models/region';
 import { RegionsService } from 'src/app/_services/regions.service';
@@ -22,8 +23,7 @@ export class RegionEditComponent implements OnInit {
 
   @ViewChild('regionDescription') regionDescription: ElementRef;
 
-  constructor( private regionsService: RegionsService, private route: ActivatedRoute, private router: Router
-  ) { }
+  constructor( private regionsService: RegionsService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.setParameters();
@@ -133,7 +133,7 @@ export class RegionEditComponent implements OnInit {
           .subscribe({
             next: productResult => {
               this.reloadSavedRegion(productResult);
-              this.toastClick();
+              this.toastr.success(this.bodyToast);
             },
             error: errorResult => {
               this.modalMessageBody = JSON.stringify(errorResult);
@@ -145,7 +145,7 @@ export class RegionEditComponent implements OnInit {
         .subscribe({
           next: productResult => {
             this.reloadSavedRegion(productResult);
-            this.toastClick();
+            this.toastr.success(this.bodyToast);
           },
             error: errorResult => {
               this.modalMessageBody = JSON.stringify(errorResult);
@@ -173,7 +173,7 @@ export class RegionEditComponent implements OnInit {
   }
 //#endregion
 
-//#region Modals and Toasts
+//#region Modals
   private displayModalYesNo(modalBody: string) {
     this.modalYesNoBody = modalBody;
     const btnShowModalYesNo = document.getElementById("showModalYesNo");
@@ -185,14 +185,6 @@ export class RegionEditComponent implements OnInit {
     const btnShowModalMessage = document.getElementById("showModalMessage");
     if(btnShowModalMessage)
       btnShowModalMessage.click();
-  }
-
-  private toastClick() {
-    const btnToast = document.getElementById("liveToastBtn");
-    if(btnToast){
-      btnToast.click();
-      btnToast.click();
-    }
   }
 //#endregion
 

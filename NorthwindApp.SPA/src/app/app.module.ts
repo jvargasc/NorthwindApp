@@ -16,7 +16,8 @@ import { ProductsModule } from './products/products.module';
 import { RegionsModule } from './regions/regions.module';
 import { SuppliersModule } from './suppliers/suppliers.module';
 import { TerritoriesModule } from './territories/territories.module';
-import { ToastComponent } from './_shared/toast/toast.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   imports: [
@@ -34,7 +35,11 @@ import { ToastComponent } from './_shared/toast/toast.component';
     RegionsModule,
     ShippersModule,
     SuppliersModule,
-    TerritoriesModule
+    TerritoriesModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right'
+    })
   ],
   declarations: [
     AppComponent,

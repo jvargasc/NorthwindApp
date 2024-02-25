@@ -6,11 +6,13 @@ import { OrderListComponent } from './order-list/order-list.component';
 import { OrderEditComponent } from './order-edit/order-edit.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../_shared/shared.module';
+import { OrderDetailsComponent } from './order-edit/order-details/order-details.component';
 
 @NgModule({
   declarations: [
     OrderEditComponent,
-    OrderListComponent
+    OrderListComponent,
+    OrderDetailsComponent
   ],
   imports: [
     CommonModule,

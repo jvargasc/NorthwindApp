@@ -1,14 +1,17 @@
-const liveToastBtn = document.getElementById('liveToastBtn');
-// console.log(liveToastBtn);
-if (liveToastBtn) {
-  const toastBootstrap = bootstrap.Toast.getOrCreateInstance(liveToast);
-  // console.log(liveToast);
-  liveToastBtn.addEventListener('click', () => {
-    toastBootstrap.show();
-  });
+function createToastButton() {
+  console.log('liveToastBtn');
+  const liveToastBtn = document.getElementById('liveToastBtn');
+  if (liveToastBtn) {
+    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(liveToast);
+    // console.log(liveToast);
+    liveToastBtn.addEventListener('click', () => {
+      toastBootstrap.show();
+    });
+  }
 }
 
 function showToast() {
+  this.createToastButton();
   console.log(liveToastBtn);
   console.log('showToast()');
   const toastBootstrap = bootstrap.Toast.getOrCreateInstance(liveToast)

@@ -2,6 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { Employee } from 'src/app/_models/employee';
 import { Region } from 'src/app/_models/region';
@@ -48,9 +49,7 @@ export class EmployeeEditComponent implements OnInit {
   @ViewChild('reportsTo') reportsTo: ElementRef;
   @ViewChild('photoPath') photoPath: ElementRef;
 
-  constructor(private employeesServices: EmployeesService, private regionsService: RegionsService, private photosService: PhotosService,
-    private route: ActivatedRoute,
-    private router: Router ) { }
+  constructor(private employeesServices: EmployeesService, private regionsService: RegionsService, private photosService: PhotosService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService ) { }
 
   ngOnInit() {
     this.initializeForm();
@@ -296,7 +295,7 @@ export class EmployeeEditComponent implements OnInit {
           .subscribe({
             next: employeeResult => {
               this.reloadSavedEmployee(employeeResult);
-              this.toastClick();
+              this.toastr.success(this.bodyToast);
             },
             error: errorResult => {
               this.modalMessageBody = JSON.stringify(errorResult);
@@ -308,7 +307,7 @@ export class EmployeeEditComponent implements OnInit {
         .subscribe({
           next: employeeResult => {
             this.reloadSavedEmployee(employeeResult);
-            this.toastClick();
+            this.toastr.success(this.bodyToast);
           },
             error: errorResult => {
               this.modalMessageBody = JSON.stringify(errorResult);
@@ -374,7 +373,7 @@ export class EmployeeEditComponent implements OnInit {
   }
 //#endregion
 
-//#region Modals and Toasts
+//#region Modals
   private displayModalYesNo(modalBody: string) {
     this.modalYesNoBody = modalBody;
     const btnShowModalYesNo = document.getElementById("showModalYesNo");
@@ -386,12 +385,6 @@ export class EmployeeEditComponent implements OnInit {
     const btnShowModalMessage = document.getElementById("showModalMessage");
     if(btnShowModalMessage)
       btnShowModalMessage.click();
-  }
-
-  private toastClick() {
-    const btnToast = document.getElementById("liveToastBtn");
-    if(btnToast)
-      btnToast.click();
   }
 //#endregion
 

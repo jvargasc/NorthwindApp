@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { Region } from 'src/app/_models/region';
 import { Territory } from 'src/app/_models/territory';
@@ -27,8 +28,7 @@ export class TerritoryEditComponent implements OnInit {
   @ViewChild('territoryDescription') territoryDescription: ElementRef;
   @ViewChild('regionId') regionId: ElementRef;
 
-  constructor( private territoriesService: TerritoriesService, private regionsService: RegionsService, private route: ActivatedRoute,
-    private router: Router ) { }
+  constructor( private territoriesService: TerritoriesService, private regionsService: RegionsService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService ) { }
 
   ngOnInit() {
     this.getParameters();
@@ -142,7 +142,7 @@ export class TerritoryEditComponent implements OnInit {
           .subscribe({
             next: territoryResult => {
               this.reloadSavedTerritory(territoryResult);
-              this.toastClick();
+              this.toastr.success(this.bodyToast);
             },
             error: errorResult => {
               this.modalMessageBody = JSON.stringify(errorResult);
@@ -154,7 +154,7 @@ export class TerritoryEditComponent implements OnInit {
         .subscribe({
           next: territoryResult => {
             this.reloadSavedTerritory(territoryResult);
-            this.toastClick();
+            this.toastr.success(this.bodyToast);
           },
             error: errorResult => {
               this.modalMessageBody = JSON.stringify(errorResult);
@@ -196,7 +196,7 @@ export class TerritoryEditComponent implements OnInit {
   }
 //#endregion
 
-//#region Modals and Toasts
+//#region Modals
   private displayModalYesNo(modalBody: string) {
     this.modalYesNoBody = modalBody;
     const btnShowModalYesNo = document.getElementById("showModalYesNo");
@@ -208,12 +208,6 @@ export class TerritoryEditComponent implements OnInit {
     const btnShowModalMessage = document.getElementById("showModalMessage");
     if(btnShowModalMessage)
       btnShowModalMessage.click();
-  }
-
-  private toastClick() {
-    const btnToast = document.getElementById("liveToastBtn");
-    if(btnToast)
-      btnToast.click();
   }
 //#endregion
 

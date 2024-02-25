@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { Customer } from 'src/app/_models/customer';
 import { Region } from 'src/app/_models/region';
@@ -34,7 +35,7 @@ export class CustomerEditComponent implements OnInit {
   @ViewChild('phone') phone: ElementRef;
   @ViewChild('fax') fax: ElementRef;
 
-  constructor(private customersService: CustomersService, private regionsService: RegionsService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private customersService: CustomersService, private regionsService: RegionsService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.getParameters();
@@ -180,8 +181,8 @@ export class CustomerEditComponent implements OnInit {
       this.customersService.createCustomer(this.customer)
           .subscribe({
             next: customerResult => {
-              this.toastClick();
               this.reloadSavedCustomer(customerResult);
+              this.toastr.success(this.bodyToast);
             },
             error: errorResult => {
               this.modalMessageBody = JSON.stringify(errorResult);
@@ -192,8 +193,8 @@ export class CustomerEditComponent implements OnInit {
         this.customersService.updateCustomer(this.customer)
         .subscribe({
           next: customerResult => {
-            this.toastClick();
             this.reloadSavedCustomer(customerResult);
+            this.toastr.success(this.bodyToast);
           },
             error: errorResult => {
               this.modalMessageBody = JSON.stringify(errorResult);
@@ -242,7 +243,7 @@ export class CustomerEditComponent implements OnInit {
   }
 //#endregion
 
-//#region Modals and Toasts
+//#region Modals
   private displayModalYesNo(modalBody: string) {
     this.modalYesNoBody = modalBody;
     const btnShowModalYesNo = document.getElementById("showModalYesNo");
@@ -254,12 +255,6 @@ export class CustomerEditComponent implements OnInit {
     const btnShowModalMessage = document.getElementById("showModalMessage");
     if(btnShowModalMessage)
       btnShowModalMessage.click();
-  }
-
-  private toastClick() {
-    const btnToast = document.getElementById("liveToastBtn");
-    if(btnToast)
-      btnToast.click();
   }
 //#endregion
 }
