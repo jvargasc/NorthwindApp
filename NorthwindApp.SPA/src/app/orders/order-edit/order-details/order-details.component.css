@@ -1,0 +1,14 @@
+.detail-container {
+  border-radius: 25px;
+  border: 2px solid #73AD21;
+  padding: 20px;
+  /* width: 200px; */
+  height: 150px;
+  margin: 15px;
+}
+
+
+.bi-file-minus-fill {
+  color: red;
+  /* size: 50px; */
+}

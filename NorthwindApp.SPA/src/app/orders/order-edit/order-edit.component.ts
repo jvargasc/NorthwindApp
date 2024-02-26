@@ -21,6 +21,7 @@ import { ShippersService } from 'src/app/_services/shippers.service';
   styleUrls: ['./order-edit.component.css']
 })
 export class OrderEditComponent implements OnInit {
+
   order: Order = {} as Order;
   orderForm: FormGroup = new FormGroup({});
   customers: Customer[]  = [];
@@ -90,6 +91,14 @@ export class OrderEditComponent implements OnInit {
     }
 
     this.toolbarButtonPressed = ""
+  }
+
+  addDetail() {
+    console.log('addDetail()');
+  }
+
+  removeDetail() {
+    console.log('removeDetail()');
   }
 //#endregion
 
@@ -358,4 +367,5 @@ export class OrderEditComponent implements OnInit {
       btnShowModalMessage.click();
   }
 //#endregion
+
 }

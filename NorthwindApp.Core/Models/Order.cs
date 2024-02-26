@@ -33,4 +33,6 @@ public partial class Order
     public string? ShipPostalCode { get; set; }
 
     public string? ShipCountry { get; set; }
+
+    public virtual ICollection<OrderDetail> Order_Details { get; set; } = new List<OrderDetail>();
 }

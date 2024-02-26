@@ -20,6 +20,7 @@ public partial class NorthwindContext : DbContext
     public virtual DbSet<Customer> Customers { get; set; }
     public virtual DbSet<Employee> Employees { get; set; }
     public virtual DbSet<Order> Orders { get; set; }
+    public virtual DbSet<OrderDetail> Order_Details { get; set; }
     public virtual DbSet<Product> Products { get; set; }
     public virtual DbSet<Region> Regions { get; set; }
     public virtual DbSet<Shipper> Shippers { get; set; }
@@ -182,7 +183,7 @@ public partial class NorthwindContext : DbContext
             entity.HasIndex(e => e.ShipperId, "ShippersOrders");
 
             entity.Property(e => e.OrderId).HasColumnName("OrderID");
-
+            entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
             entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
             entity.Property(e => e.Freight)
                 .HasDefaultValueSql("((0))")
@@ -190,13 +191,40 @@ public partial class NorthwindContext : DbContext
             entity.Property(e => e.OrderDate).HasColumnType("datetime");
             entity.Property(e => e.RequiredDate).HasColumnType("datetime");
             entity.Property(e => e.ShipAddress).HasMaxLength(60);
-            entity.Property(e => e.ShipCity).HasMaxLength(15);
-            entity.Property(e => e.ShipCountry).HasMaxLength(15);
+            entity.Property(e => e.ShipCity).HasMaxLength(30);
+            entity.Property(e => e.ShipCountry).HasMaxLength(30);
             entity.Property(e => e.ShipName).HasMaxLength(40);
             entity.Property(e => e.ShipPostalCode).HasMaxLength(10);
+            entity.Property(e => e.ShipRegion).HasMaxLength(15);
             entity.Property(e => e.ShippedDate).HasColumnType("datetime");
             entity.Property(e => e.ShipperId).HasColumnName("ShipperID");
         });
+
+        modelBuilder.Entity<OrderDetail>(entity =>
+        {
+            entity.HasKey(e => new { e.OrderId, e.ProductId });
+
+            entity.ToTable("Order_Details");
+
+            entity.HasIndex(e => e.OrderId, "OrderID");
+
+            entity.HasIndex(e => e.OrderId, "OrdersOrder_Details");
+
+            entity.HasIndex(e => e.ProductId, "ProductID");
+
+            entity.HasIndex(e => e.ProductId, "ProductsOrder_Details");
+
+            entity.Property(e => e.OrderId).HasColumnName("OrderID");
+            entity.Property(e => e.ProductId).HasColumnName("ProductID");
+            entity.Property(e => e.Quantity).HasDefaultValueSql("((1))");
+            entity.Property(e => e.UnitPrice).HasColumnType("money");
+
+            // entity.HasOne(d => d.Order).WithMany(p => p.Order_Details)
+            //     .HasForeignKey(d => d.OrderId)
+            //     .OnDelete(DeleteBehavior.ClientSetNull)
+            //     .HasConstraintName("FK_Order_Details_Orders");
+        });
+
 
         OnModelCreatingPartial(modelBuilder);
     }
