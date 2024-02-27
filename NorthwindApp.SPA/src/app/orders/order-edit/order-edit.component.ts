@@ -1,12 +1,13 @@
 import { formatDate } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 import { Customer } from 'src/app/_models/customer';
 import { Employee } from 'src/app/_models/employee';
 import { Order } from 'src/app/_models/order';
+import { OrderDetail } from 'src/app/_models/orderdetail';
 import { Region } from 'src/app/_models/region';
 import { Shipper } from 'src/app/_models/shipper';
 import { CustomersService } from 'src/app/_services/customers.service';
@@ -48,6 +49,7 @@ export class OrderEditComponent implements OnInit {
   @ViewChild('shipRegion') shipRegion: ElementRef;
   @ViewChild('shipPostalCode') shipPostalCode: ElementRef;
   @ViewChild('shipCountry') shipCountry: ElementRef;
+  @ViewChild('details') details: ElementRef;
 
   constructor( private ordersService: OrdersService, private customersService: CustomersService, private employeesService: EmployeesService, private regionsService: RegionsService, private shippersService: ShippersService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService) { }
 
@@ -93,17 +95,50 @@ export class OrderEditComponent implements OnInit {
     this.toolbarButtonPressed = ""
   }
 
-  addDetail() {
-    console.log('addDetail()');
+  onAddDetail() {
+    let orderDetails = (<FormArray>this.orderForm.get('details'));
+    orderDetails.push(
+      new FormGroup({
+        productId: new FormControl(null, Validators.required),
+        unitPrice: new FormControl(null, [
+          Validators.required,
+          Validators.pattern(/^[1-9]+(\.[0-9]*)$/)
+        ]),
+        quantity: new FormControl(null, [
+          Validators.required,
+          Validators.pattern(/^[1-9]+[0-9]*$/)
+        ]),
+        discount: new FormControl(0, [Validators.required,Validators.pattern(/^[1-9]+(\.[0-9]*)$/)]),
+      })
+    );
+    // console.log(orderDetails);
+
+    //for(let tmpControl of orderDetails.controls) {
+    let tmpControl = orderDetails.controls[orderDetails.length - 1]
+    console.log(tmpControl)
+    if(!tmpControl.value) {
+        tmpControl[0].nativeElement.classList.add('form-control'); //
+        tmpControl[1].nativeElement.classList.add('form-control'); //ng-dirty ng-invalid ng-touched
+        tmpControl[2].nativeElement.classList.add('form-control'); //ng-dirty ng-invalid ng-touched
+        tmpControl[3].nativeElement.classList.add('form-control'); //ng-dirty ng-invalid ng-touched
+      }
+    // class="form-control ng-dirty ng-invalid ng-touched"
+    //   // console.log(tmpControl.get('productId'));
+    //   if(!tmpControl.value)
+    //     tmpControl[0].nativeElement.classList.add('form-control');
+    // }
   }
 
-  removeDetail() {
-    console.log('removeDetail()');
+  onRemoveDetail(index: number) {
+    let orderDetails = (<FormArray>this.orderForm.get('details'));
+    orderDetails.removeAt(index);
   }
 //#endregion
 
 //#region Handle Form
   private initializeForm() {
+    let orderDetails = this.initializeDetailsForm();
+
     this.orderForm = new FormGroup({
       'orderId' : new FormControl(this.order.orderId),
       'customerId' : new FormControl(this.order.customerId, Validators.required),
@@ -118,7 +153,8 @@ export class OrderEditComponent implements OnInit {
       'shipCity' : new FormControl(this.order.shipCity, Validators.required),
       'shipRegion' : new FormControl(this.order.shipRegion, Validators.required),
       'shipPostalCode' : new FormControl(this.order.shipPostalCode, Validators.required),
-      'shipCountry' : new FormControl(this.order.shipCountry, Validators.required)
+      'shipCountry' : new FormControl(this.order.shipCountry, Validators.required),
+      'details': orderDetails
     });
 
     this.orderForm.controls['orderId'].disable();
@@ -200,10 +236,22 @@ export class OrderEditComponent implements OnInit {
               this.shipCountry.nativeElement.classList.add('ng-touched');
               displayModalMessage = true;
               break;
-            }
+            case "details":
+              // for(let tmpControl of this.details.nativeElement) {
+              //   // console.log(tmpControl.get('productId'));
+              //   if(!tmpControl.value)
+              //     tmpControl[0].nativeElement.classList.add('form-control');
+              // }
+              this.details.nativeElement.classList.add('ng-touched');
+              for(let tmpDetails of tmpControl.value)
+                console.log(tmpDetails);
+              displayModalMessage = true;
+            break;
+            default:
+              console.log(field);
           }
         }
-
+      }
      }
 
     if(displayModalMessage) {
@@ -278,6 +326,35 @@ export class OrderEditComponent implements OnInit {
     if (day.length < 2) day = '0' + day;
     return [month, day, year].join('-');
   }
+
+  private initializeDetailsForm() {
+    let orderDetails = new FormArray([]);
+    if(this.order.order_Details)
+      for (let detail of this.order.order_Details) {
+        orderDetails.push(
+          new FormGroup({
+            productId: new FormControl(detail.productId, Validators.required),
+            unitPrice: new FormControl(detail.unitPrice, [
+              Validators.required,
+              Validators.pattern(/^[1-9]+[0-9]*$/)
+            ]),
+            quantity: new FormControl(detail.quantity, [
+              Validators.required,
+              Validators.pattern(/^[1-9]+[0-9]*$/)
+            ]),
+            discount: new FormControl(detail.discount,
+              [Validators.required,Validators.pattern(/^[1-9]+(\.[0-9]*)$/)]),
+          })
+        );
+      }
+
+    return orderDetails;
+
+  }
+
+  get detailsControls() {
+    return (this.orderForm.get('details') as FormArray).controls;
+  }
 //#endregion
 
 //#region Handle Order
@@ -325,6 +402,7 @@ export class OrderEditComponent implements OnInit {
       shipRegion: this.orderForm.controls['shipRegion'].value,
       shipPostalCode: this.orderForm.controls['shipPostalCode'].value,
       shipCountry: this.orderForm.controls['shipCountry'].value,
+      order_Details: this.orderForm.controls['details'].value,
         } as Order ;
 
       if (orderId != null)
