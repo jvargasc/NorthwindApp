@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NorthwindApp.Core.Models;
+namespace NorthwindApp.Core.Dtos;
 
-public partial class OrderDetail
+public partial class OrderDetailDto
 {
     public int OrderId { get; set; }
-    public int OrderDetailID { get; set; }
 
     public int ProductId { get; set; }
 

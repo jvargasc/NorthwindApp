@@ -3,17 +3,24 @@
   text-align: center;
   margin-bottom: 20px;
 }
+
 .row {
   margin-bottom: 10px;
 }
 
-input.ng-invalid.ng-touched.ng-dirty,
-input.ng-invalid.ng-touched,
-#col-photo-upload.ng-invalid.ng-touched,
-select.ng-invalid.ng-touched {
+/* input.ng-invalid.ng-dirty,
+input.ng-invalid,
+#col-photo-upload.ng-invalid,
+select.ng-invalid {
   border: solid red
 }
 
-input.ng-invalid.ng-touched {
+input.ng-invalid {
+  border: solid red
+}
+*/
+
+input.ng-invalid,
+select.ng-invalid {
   border: solid red
 }

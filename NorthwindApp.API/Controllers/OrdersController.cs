@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NorthwindApp.Core.Models;
+using NorthwindApp.Core.Dtos;
 using NorthwindApp.Infrastructure.Repositories;
 
 namespace NorthwindApp.API.Controllers;
@@ -45,7 +46,9 @@ public class OrdersController : ControllerBase
     [HttpPut]
     public async Task<ActionResult<Order>> UpdateOrder([FromBody] Order orderToUpdate)
     {
-        _ordersRepository.UpdateOrder(orderToUpdate);
+
+        _ordersRepository.DeleteOrder(orderToUpdate.OrderId);
+
         if (await _ordersRepository.SaveAllAsync()) return Ok(orderToUpdate);
 
         return BadRequest("Failed to update Order");

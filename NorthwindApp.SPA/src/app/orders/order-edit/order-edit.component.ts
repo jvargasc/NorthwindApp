@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, NgControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
@@ -99,29 +99,30 @@ export class OrderEditComponent implements OnInit {
     let orderDetails = (<FormArray>this.orderForm.get('details'));
     orderDetails.push(
       new FormGroup({
-        productId: new FormControl(null, Validators.required),
-        unitPrice: new FormControl(null, [
+        productId: new FormControl(0, Validators.required),
+        unitPrice: new FormControl(0, [
           Validators.required,
-          Validators.pattern(/^[1-9]+(\.[0-9]*)$/)
+          Validators.pattern(/^-?(0|[1-9]\d*)?$/)
         ]),
-        quantity: new FormControl(null, [
-          Validators.required,
+        quantity: new FormControl(1, [
+          Validators.required, Validators.min(1),
           Validators.pattern(/^[1-9]+[0-9]*$/)
         ]),
-        discount: new FormControl(0, [Validators.required,Validators.pattern(/^[1-9]+(\.[0-9]*)$/)]),
+        discount: new FormControl(0, [Validators.required, Validators.min(0), Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
       })
     );
     // console.log(orderDetails);
 
     //for(let tmpControl of orderDetails.controls) {
     let tmpControl = orderDetails.controls[orderDetails.length - 1]
-    console.log(tmpControl)
-    if(!tmpControl.value) {
-        tmpControl[0].nativeElement.classList.add('form-control'); //
-        tmpControl[1].nativeElement.classList.add('form-control'); //ng-dirty ng-invalid ng-touched
-        tmpControl[2].nativeElement.classList.add('form-control'); //ng-dirty ng-invalid ng-touched
-        tmpControl[3].nativeElement.classList.add('form-control'); //ng-dirty ng-invalid ng-touched
-      }
+    // console.log(tmpControl)
+    // if(!tmpControl.value) {
+    //     tmpControl[0].nativeElement.classList.add('form-control'); //
+    //     tmpControl[1].nativeElement.classList.add('form-control'); //ng-dirty ng-invalid ng-touched
+    //     tmpControl[2].nativeElement.classList.add('form-control'); //ng-dirty ng-invalid ng-touched
+    //     tmpControl[3].nativeElement.classList.add('form-control'); //ng-dirty ng-invalid ng-touched
+    //   }
+
     // class="form-control ng-dirty ng-invalid ng-touched"
     //   // console.log(tmpControl.get('productId'));
     //   if(!tmpControl.value)
@@ -178,88 +179,12 @@ export class OrderEditComponent implements OnInit {
   }
 
   private requiredFieldsValid(): boolean {
-    let displayModalMessage = false;
     if(!this.orderForm.valid) {
-      for (const field in this.orderForm.controls) { // 'field' is a string
-        const tmpControl = this.orderForm.get(field); // 'control' is a FormControl
-        if(tmpControl.invalid) {
-          switch(field) {
-            case "customerId":
-              this.customerId.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "employeeId":
-              this.employeeId.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "orderDate":
-              this.orderDate.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "requiredDate":
-              this.requiredDate.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "shippedDate":
-              this.shippedDate.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "shipperId":
-              this.shipperId.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "freight":
-              this.freight.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "shipName":
-              this.shipName.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "shipAddress":
-              this.shipAddress.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "shipCity":
-              this.shipCity.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "shipRegion":
-              this.shipRegion.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "shipPostalCode":
-              this.shipPostalCode.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "shipCountry":
-              this.shipCountry.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "details":
-              // for(let tmpControl of this.details.nativeElement) {
-              //   // console.log(tmpControl.get('productId'));
-              //   if(!tmpControl.value)
-              //     tmpControl[0].nativeElement.classList.add('form-control');
-              // }
-              this.details.nativeElement.classList.add('ng-touched');
-              for(let tmpDetails of tmpControl.value)
-                console.log(tmpDetails);
-              displayModalMessage = true;
-            break;
-            default:
-              console.log(field);
-          }
-        }
-      }
-     }
-
-    if(displayModalMessage) {
       this.modalMessageBody = "There are required fields that you must complete.";
       this.displayModalMessage();
     }
 
-    return !displayModalMessage;
+    return this.orderForm.valid;
   }
 
   private getParameters() {
@@ -336,14 +261,15 @@ export class OrderEditComponent implements OnInit {
             productId: new FormControl(detail.productId, Validators.required),
             unitPrice: new FormControl(detail.unitPrice, [
               Validators.required,
-              Validators.pattern(/^[1-9]+[0-9]*$/)
+              Validators.min(0), Validators.pattern(/^-?(0|[1-9]\d*)?/)
             ]),
             quantity: new FormControl(detail.quantity, [
-              Validators.required,
+              Validators.required, Validators.min(1),
               Validators.pattern(/^[1-9]+[0-9]*$/)
             ]),
-            discount: new FormControl(detail.discount,
-              [Validators.required,Validators.pattern(/^[1-9]+(\.[0-9]*)$/)]),
+            discount: new FormControl(detail.discount, [
+              Validators.required, Validators.min(0), Validators.pattern(/^-?(0|[1-9]\d*)?/)
+            ]),
           })
         );
       }

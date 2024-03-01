@@ -37,7 +37,20 @@ public class OrdersRepository : IOrdersRepository
 
     public void UpdateOrder(Order order)
     {
-        _northwindContext.Entry(order).State = EntityState.Modified;
+        // _northwindContext.Entry(order).State = EntityState.Modified;
+        Order orderToRemove = order;
+
+        _northwindContext.Orders.Remove(orderToRemove);
+        _northwindContext.Orders.Add(order);
+    }
+
+    public async void DeleteOrder(int orderId)
+    {
+        Task<Order> order = GetOrder(orderId);
+        Order orderToRemove = new Order(); // =  ;
+
+        if (orderToRemove != null)
+            _northwindContext.Orders.Remove(orderToRemove);
     }
 
     public async Task<bool> SaveAllAsync()

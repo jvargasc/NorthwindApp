@@ -38,7 +38,8 @@ public interface IOrdersRepository
     Task<List<Order>> GetOrders();
     Task<Order> GetOrder(int orderId);
     void CreateOrder(Order order);
-    void UpdateOrder(Order order);
+    // void UpdateOrder(Order order);
+    void DeleteOrder(int orderId);
     Task<bool> SaveAllAsync();
 }
 
