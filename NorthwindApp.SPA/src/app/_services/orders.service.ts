@@ -29,7 +29,6 @@ export class OrdersService {
   }
 
   updateOrder(order: Order): Observable<Order> {
-    console.log(order);
     return this.http.put<Order>(this.baseUrl, order)
       .pipe(
         tap(resData => { return resData; })

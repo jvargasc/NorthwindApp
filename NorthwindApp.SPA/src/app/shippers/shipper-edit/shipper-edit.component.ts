@@ -195,7 +195,6 @@ export class ShipperEditComponent implements OnInit {
 
   private toastClick() {
     const btnToast = document.getElementById("liveToastBtn");
-    console.log(btnToast);
     if(btnToast) {
       btnToast.click();
       // btnToast.click();

@@ -40,7 +40,6 @@ export class CustomersService {
     let index = customerName.indexOf(' ');
     let custName = customerName.replace(' ', '');
     custName = custName.substr(0, 3) + custName.substr(index, 2);
-    console.log(custName);
     return custName.toLocaleUpperCase();
   }
 

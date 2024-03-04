@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NorthwindApp.Core.Dtos;
 using NorthwindApp.Core.Models;
 
 namespace NorthwindApp.Infrastructure.Repositories;
@@ -37,9 +38,12 @@ public interface IOrdersRepository
 {
     Task<List<Order>> GetOrders();
     Task<Order> GetOrder(int orderId);
+    Task<List<OrderDetail>> GetOrderDetails(int orderId);
     void CreateOrder(Order order);
-    // void UpdateOrder(Order order);
-    void DeleteOrder(int orderId);
+    void CreateOrderDetails(List<OrderDetail> orderDetails);
+    void UpdateOrder(Order order);
+    void UpdateOrderDetails(List<OrderDetail> orderDetails);
+    void DeleteOrderDetails(List<OrderDetail> orderDetails);
     Task<bool> SaveAllAsync();
 }
 

@@ -322,7 +322,7 @@ CREATE TABLE "Order_Details" (
 	CONSTRAINT "PK_Order_Details" PRIMARY KEY  CLUSTERED 
 	(
 		"OrderID",
-		"ProductID"
+		"OrderDetailID"
 	),
 	CONSTRAINT "FK_Order_Details_Orders" FOREIGN KEY 
 	(

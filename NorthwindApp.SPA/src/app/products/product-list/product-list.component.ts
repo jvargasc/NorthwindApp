@@ -31,7 +31,7 @@ export class ProductListComponent implements OnInit {
   buttonWasClicked(buttonName: string) {
     switch(buttonName)
     {
-            case "new":
+      case "new":
         this.router.navigate(['/products/product-edit']);
         break;
       case "refresh":

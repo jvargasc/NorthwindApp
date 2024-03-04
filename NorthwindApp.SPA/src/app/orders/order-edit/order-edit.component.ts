@@ -7,7 +7,6 @@ import { ToastrService } from 'ngx-toastr';
 import { Customer } from 'src/app/_models/customer';
 import { Employee } from 'src/app/_models/employee';
 import { Order } from 'src/app/_models/order';
-import { OrderDetail } from 'src/app/_models/orderdetail';
 import { Region } from 'src/app/_models/region';
 import { Shipper } from 'src/app/_models/shipper';
 import { CustomersService } from 'src/app/_services/customers.service';
@@ -99,6 +98,8 @@ export class OrderEditComponent implements OnInit {
     let orderDetails = (<FormArray>this.orderForm.get('details'));
     orderDetails.push(
       new FormGroup({
+        orderId: new FormControl(this.order.orderId, Validators.required),
+        orderDetailID: new FormControl(0, Validators.required),
         productId: new FormControl(0, Validators.required),
         unitPrice: new FormControl(0, [
           Validators.required,
@@ -111,23 +112,7 @@ export class OrderEditComponent implements OnInit {
         discount: new FormControl(0, [Validators.required, Validators.min(0), Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
       })
     );
-    // console.log(orderDetails);
 
-    //for(let tmpControl of orderDetails.controls) {
-    let tmpControl = orderDetails.controls[orderDetails.length - 1]
-    // console.log(tmpControl)
-    // if(!tmpControl.value) {
-    //     tmpControl[0].nativeElement.classList.add('form-control'); //
-    //     tmpControl[1].nativeElement.classList.add('form-control'); //ng-dirty ng-invalid ng-touched
-    //     tmpControl[2].nativeElement.classList.add('form-control'); //ng-dirty ng-invalid ng-touched
-    //     tmpControl[3].nativeElement.classList.add('form-control'); //ng-dirty ng-invalid ng-touched
-    //   }
-
-    // class="form-control ng-dirty ng-invalid ng-touched"
-    //   // console.log(tmpControl.get('productId'));
-    //   if(!tmpControl.value)
-    //     tmpControl[0].nativeElement.classList.add('form-control');
-    // }
   }
 
   onRemoveDetail(index: number) {
@@ -258,6 +243,8 @@ export class OrderEditComponent implements OnInit {
       for (let detail of this.order.order_Details) {
         orderDetails.push(
           new FormGroup({
+            orderID: new FormControl(detail.orderId, Validators.required),
+            orderDetailID: new FormControl(detail.orderDetailID, Validators.required),
             productId: new FormControl(detail.productId, Validators.required),
             unitPrice: new FormControl(detail.unitPrice, [
               Validators.required,

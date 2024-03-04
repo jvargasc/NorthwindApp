@@ -202,7 +202,7 @@ public partial class NorthwindContext : DbContext
 
         modelBuilder.Entity<OrderDetail>(entity =>
         {
-            entity.HasKey(e => new { e.OrderId, e.ProductId });
+            entity.HasKey(e => new { e.OrderId, e.OrderDetailID });
 
             entity.ToTable("Order_Details");
 
@@ -215,16 +215,18 @@ public partial class NorthwindContext : DbContext
             entity.HasIndex(e => e.ProductId, "ProductsOrder_Details");
 
             entity.Property(e => e.OrderId).HasColumnName("OrderID");
+            entity.Property(e => e.OrderDetailID)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("OrderDetailID");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
             entity.Property(e => e.Quantity).HasDefaultValueSql("((1))");
             entity.Property(e => e.UnitPrice).HasColumnType("money");
 
-            // entity.HasOne(d => d.Order).WithMany(p => p.Order_Details)
+            // entity.HasOne(d => d.Order).WithMany(p => p.OrderDetails)
             //     .HasForeignKey(d => d.OrderId)
             //     .OnDelete(DeleteBehavior.ClientSetNull)
             //     .HasConstraintName("FK_Order_Details_Orders");
         });
-
 
         OnModelCreatingPartial(modelBuilder);
     }

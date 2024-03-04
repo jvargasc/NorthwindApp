@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using NorthwindApp.Core.Models;
 using NorthwindApp.Core.Dtos;
 using NorthwindApp.Infrastructure.Repositories;
+using AutoMapper;
 
 namespace NorthwindApp.API.Controllers;
 [ApiController]
@@ -13,9 +14,12 @@ namespace NorthwindApp.API.Controllers;
 public class OrdersController : ControllerBase
 {
     private readonly IOrdersRepository _ordersRepository;
-    public OrdersController(IOrdersRepository ordersRepository)
+    private readonly IMapper _mapper;
+
+    public OrdersController(IOrdersRepository ordersRepository, IMapper mapper)
     {
         _ordersRepository = ordersRepository;
+        _mapper = mapper;
     }
 
     [HttpGet("getorders")]
@@ -47,11 +51,36 @@ public class OrdersController : ControllerBase
     public async Task<ActionResult<Order>> UpdateOrder([FromBody] Order orderToUpdate)
     {
 
-        _ordersRepository.DeleteOrder(orderToUpdate.OrderId);
+        List<OrderDetail> orderDetailDtoToCreate = orderToUpdate.Order_Details.Where(od => od.OrderDetailID == 0).ToList();
 
-        if (await _ordersRepository.SaveAllAsync()) return Ok(orderToUpdate);
+        foreach (OrderDetail item in orderDetailDtoToCreate)
+            orderToUpdate.Order_Details.Remove(item);
+
+        int orderId = orderToUpdate.OrderId;
+
+        List<OrderDetail> orderDetailsToUpdate = orderToUpdate.Order_Details.ToList();
+        List<OrderDetail> orderDetailsExisting = await _ordersRepository.GetOrderDetails(orderId);
+        List<OrderDetail> orderDetailsToExclude = orderDetailsExisting.Except(orderDetailsToUpdate).ToList();
+
+        if (orderDetailsToExclude.Count > 0)
+            _ordersRepository.DeleteOrderDetails(orderDetailsToExclude);
+
+        // if (orderDetailsToExclude.Count > 0)
+        //     await _ordersRepository.SaveAllAsync();
+
+        _ordersRepository.UpdateOrder(orderToUpdate);
+        _ordersRepository.UpdateOrderDetails(orderDetailsToUpdate);
+
+        if (orderDetailDtoToCreate.Count > 0)
+            _ordersRepository.CreateOrderDetails(orderDetailDtoToCreate);
+
+        if (await _ordersRepository.SaveAllAsync())
+        {
+            Order orderUpdated = await _ordersRepository.GetOrder(orderId);
+            if (orderUpdated != null)
+                return Ok(orderUpdated);
+        }
 
         return BadRequest("Failed to update Order");
     }
-
 }

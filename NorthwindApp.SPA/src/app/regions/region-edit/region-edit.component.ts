@@ -112,7 +112,6 @@ export class RegionEditComponent implements OnInit {
 //#region Handle Region
   private setRegion() {
     const regionId = this.route.snapshot.paramMap.get('regionId');
-    console.log(regionId);
     if(regionId)
       this.regionsService.getRegion(+regionId).subscribe(
       {
