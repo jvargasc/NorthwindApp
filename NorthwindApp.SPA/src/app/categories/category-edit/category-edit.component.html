@@ -4,9 +4,7 @@
       <h4>Category</h4>
     </div>
     <div class="card-toolbar">
-      <app-toolbarcrud
-        (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"
-      ></app-toolbarcrud>
+      <app-toolbarcrud (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"></app-toolbarcrud>
     </div>
   </div>
   <div class="card-body mx-2">
@@ -15,12 +13,7 @@
         <div class="col-3">
           <div class="form-group">
             <label for="categoryId">Category Id</label>
-            <input
-              class="form-control"
-              formControlName="categoryId"
-              placeholder="Category Id"
-              required
-            />
+            <input class="form-control" formControlName="categoryId" placeholder="Category Id" />
           </div>
         </div>
       </div>
@@ -28,27 +21,17 @@
         <div class="col-6">
           <div class="form-group">
             <label for="categoryName">Category Name</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="categoryName"
-              placeholder="Category Name"
-              #categoryName
-              required
-            />
+            <input type="text" class="form-control" [ngClass]="{'ng-touched': savingRecord}"
+              formControlName="categoryName" placeholder="Category Name" />
           </div>
           <div class="form-group mt-2">
             <label for="description">Contact Name</label>
-            <input
-              class="form-control"
-              formControlName="description"
-              placeholder="Description"
-              #description
-            />
+            <input class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="description"
+              placeholder="Description" />
           </div>
         </div>
         <div class="col-6" id="col-photo-upload">
-          <div class="form-group">
+          <div class="form-group lblPicture" [ngClass]="{'ng-touched': savingRecord && !pictureAssigned}">
             <app-photo-upload></app-photo-upload>
           </div>
         </div>
@@ -57,35 +40,16 @@
   </div>
 </div>
 
-<button
-  style="display: none"
-  type="button"
-  class="btn btn-primary"
-  data-bs-toggle="modal"
-  data-bs-target="#modalYesNo"
-  id="showModalYesNo"
->
+<button style="display: none" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalYesNo"
+  id="showModalYesNo">
   Open modal
 </button>
-<app-modalyesno
-  [modalTitle]="modalTitle"
-  [modalBody]="modalYesNoBody"
-  (modalButtonWasClicked)="modalButtonWasClicked($event)"
-  id="modalyesno"
-></app-modalyesno>
+<app-modalyesno [modalTitle]="modalTitle" [modalBody]="modalYesNoBody"
+  (modalButtonWasClicked)="modalButtonWasClicked($event)" id="modalyesno"></app-modalyesno>
 
-<button
-  style="display: none"
-  type="button"
-  class="btn btn-primary"
-  data-bs-toggle="modal"
-  data-bs-target="#modalMessage"
-  id="showModalMessage"
->
+<button style="display: none" type="button" class="btn btn-primary" data-bs-toggle="modal"
+  data-bs-target="#modalMessage" id="showModalMessage">
   Open modal
 </button>
 
-<app-modalmessage
-  [modalTitle]="modalTitle"
-  [modalBody]="modalMessageBody"
-></app-modalmessage>
+<app-modalmessage [modalTitle]="modalTitle" [modalBody]="modalMessageBody"></app-modalmessage>

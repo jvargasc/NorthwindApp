@@ -23,6 +23,7 @@ import { ShippersService } from 'src/app/_services/shippers.service';
 export class OrderEditComponent implements OnInit {
 
   order: Order = {} as Order;
+
   orderForm: FormGroup = new FormGroup({});
   customers: Customer[]  = [];
   employees: Employee[]  = [];
@@ -34,27 +35,14 @@ export class OrderEditComponent implements OnInit {
   toolbarButtonPressed = "";
   headerToast = "Order";
   bodyToast = "Record successfully saved!!!";
-
-  @ViewChild('customerId') customerId: ElementRef;
-  @ViewChild('employeeId') employeeId: ElementRef;
-  @ViewChild('orderDate') orderDate: ElementRef;
-  @ViewChild('requiredDate') requiredDate: ElementRef;
-  @ViewChild('shippedDate') shippedDate: ElementRef;
-  @ViewChild('shipperId') shipperId: ElementRef;
-  @ViewChild('freight') freight: ElementRef;
-  @ViewChild('shipName') shipName: ElementRef;
-  @ViewChild('shipAddress') shipAddress: ElementRef;
-  @ViewChild('shipCity') shipCity: ElementRef;
-  @ViewChild('shipRegion') shipRegion: ElementRef;
-  @ViewChild('shipPostalCode') shipPostalCode: ElementRef;
-  @ViewChild('shipCountry') shipCountry: ElementRef;
-  @ViewChild('details') details: ElementRef;
+  savingRecord = false;
 
   constructor( private ordersService: OrdersService, private customersService: CustomersService, private employeesService: EmployeesService, private regionsService: RegionsService, private shippersService: ShippersService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.getParameters();
     this.initializeForm();
+    this.onAddDetail();
     this.setOrder();
   }
 
@@ -99,17 +87,16 @@ export class OrderEditComponent implements OnInit {
     orderDetails.push(
       new FormGroup({
         orderId: new FormControl(this.order.orderId, Validators.required),
-        orderDetailID: new FormControl(0, Validators.required),
-        productId: new FormControl(0, Validators.required),
-        unitPrice: new FormControl(0, [
+        orderDetailID: new FormControl(null, Validators.required),
+        productId: new FormControl(null, Validators.required),
+        unitPrice: new FormControl(null, [
           Validators.required,
           Validators.pattern(/^-?(0|[1-9]\d*)?$/)
         ]),
-        quantity: new FormControl(1, [
-          Validators.required, Validators.min(1),
-          Validators.pattern(/^[1-9]+[0-9]*$/)
+        quantity: new FormControl(null, [
+          Validators.required, Validators.min(1), Validators.pattern(/^[1-9]+[0-9]*$/)
         ]),
-        discount: new FormControl(0, [Validators.required, Validators.min(0), Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
+        discount: new FormControl(null, [Validators.required, Validators.min(0), Validators.pattern(/^-?(0|[1-9]\d*)?$/)]),
       })
     );
 
@@ -123,15 +110,15 @@ export class OrderEditComponent implements OnInit {
 
 //#region Handle Form
   private initializeForm() {
+    this.savingRecord = false;
     let orderDetails = this.initializeDetailsForm();
-
     this.orderForm = new FormGroup({
       'orderId' : new FormControl(this.order.orderId),
       'customerId' : new FormControl(this.order.customerId, Validators.required),
       'employeeId' : new FormControl(this.order.employeeId, Validators.required),
-      'orderDate' : new FormControl('', Validators.required),
-      'requiredDate' : new FormControl('', Validators.required),
-      'shippedDate' : new FormControl('', Validators.required),
+      'orderDate' : new FormControl(null, Validators.required),
+      'requiredDate' : new FormControl(null, Validators.required),
+      'shippedDate' : new FormControl(null, Validators.required),
       'shipperId' : new FormControl(this.order.shipperId, Validators.required),
       'freight' : new FormControl(this.order.freight, Validators.required),
       'shipName' : new FormControl(this.order.shipName, Validators.required),
@@ -161,9 +148,11 @@ export class OrderEditComponent implements OnInit {
     this.order = {} as Order;
     this.initializeForm();
     this.router.navigate(['/orders/order-edit']);
+    this.onAddDetail();
   }
 
   private requiredFieldsValid(): boolean {
+    this.savingRecord = true;
     if(!this.orderForm.valid) {
       this.modalMessageBody = "There are required fields that you must complete.";
       this.displayModalMessage();

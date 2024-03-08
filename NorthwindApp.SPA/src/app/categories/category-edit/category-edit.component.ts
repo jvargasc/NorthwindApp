@@ -25,16 +25,18 @@ export class CategoryEditComponent implements OnInit {
   headerToast = "Category";
   bodyToast = "Record successfully saved!!!";
 
-  @ViewChild('categoryName') categoryName: ElementRef;
-  @ViewChild('description') description: ElementRef;
+  savingRecord = false;
+  pictureAssigned = false;
 
   constructor( private categoriesService: CategoriesService, private route: ActivatedRoute, private photosService: PhotosService, private router: Router, private toastr: ToastrService ) { }
+
 
   ngOnInit() {
     // this.toastClick();
     this.photosService.setPhoto(this.blankPicture);
     this.initializeForm();
     this.setCategory();
+    // console.log(this.defaultValues);
     // this.toastClick();
   }
 
@@ -77,6 +79,8 @@ export class CategoryEditComponent implements OnInit {
 
 //#region Handle Form
   private initializeForm() {
+    this.savingRecord = false;
+    this.pictureAssigned = false;
     this.categoryForm = new FormGroup({
       'categoryId' : new FormControl(this.category?.categoryId),
       'categoryName' : new FormControl(this.category?.categoryName, Validators.required),
@@ -88,8 +92,6 @@ export class CategoryEditComponent implements OnInit {
   }
 
   private clearForm() {
-    this.categoryName.nativeElement.classList.remove('ng-touched');
-    this.description.nativeElement.classList.remove('ng-touched');
     this.highLightPicture(false);
     this.router.navigate(['/categories/category-edit']);
     this.category = {} as Category;
@@ -99,30 +101,15 @@ export class CategoryEditComponent implements OnInit {
   }
 
   private requiredFieldsValid(): boolean {
+    this.savingRecord = true;
     let tmpValue = false;
     let displayModalMessage = false;
 
-    if(!this.categoryForm.valid) {
-      for (const field in this.categoryForm.controls) { // 'field' is a string
-        const tmpControl = this.categoryForm.get(field); // 'control' is a FormControl
-        if(tmpControl.invalid) {
-          switch(field) {
-            case "categoryName":
-              this.categoryName.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "description":
-              this.description.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            }
-          }
-        }
-
-     }
+    if(!this.categoryForm.valid) displayModalMessage = true;
 
     if ((this.picture == this.blankPicture) || this.picture === undefined) {
       displayModalMessage = true;
+      this.pictureAssigned = false
       this.highLightPicture(true);
     }
 
@@ -246,15 +233,18 @@ export class CategoryEditComponent implements OnInit {
           this.picture = photoResult;
           this.categoryForm.controls['picture'].setValue(photoResult);
           this.highLightPicture(false);
-        } else
-            this.displayModalMessage();
+          this.pictureAssigned = true;
+        } else {
+          this.displayModalMessage();
+          this.pictureAssigned = false;
+        }
       }
-    })
+    });
 
   }
 
   private highLightPicture(show: boolean) {
-
+    // console.log('highLightPicture');
     const colPhotoUpload = document.getElementById('col-photo-upload');
     const classesList: string[] = [ 'ng-invalid', 'ng-touched' ];
 

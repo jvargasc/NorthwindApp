@@ -12,3 +12,8 @@ input.ng-invalid.ng-touched,
 input.ng-invalid.ng-touched {
   border: solid red
 } */
+
+
+.lblPicture.ng-touched {
+  border: solid red
+}

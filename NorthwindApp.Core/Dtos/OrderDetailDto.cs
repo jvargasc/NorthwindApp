@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace NorthwindApp.Core.Dtos;
+﻿namespace NorthwindApp.Core.Dtos;
 
 public partial class OrderDetailDto
 {

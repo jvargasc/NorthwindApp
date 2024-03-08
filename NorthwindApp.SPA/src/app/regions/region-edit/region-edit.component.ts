@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
@@ -20,10 +20,9 @@ export class RegionEditComponent implements OnInit {
   toolbarButtonPressed = "";
   headerToast = "Region";
   bodyToast = "Record successfully saved!!!";
+  savingRecord = false;
 
-  @ViewChild('regionDescription') regionDescription: ElementRef;
-
-  constructor( private regionsService: RegionsService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService) { }
+  constructor( private regionsService: RegionsService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService ) { }
 
   ngOnInit() {
     this.setParameters();
@@ -69,9 +68,10 @@ export class RegionEditComponent implements OnInit {
 
 //#region Handle Form
   private initializeForm() {
+    this.savingRecord = false;
     this.regionForm = new FormGroup({
       'regionId': new FormControl(this.region.regionId),
-      'regionDescription': new FormControl(this.region.regionDescription)
+      'regionDescription': new FormControl(this.region.regionDescription, Validators.required)
     });
 
     this.regionForm.controls['regionId'].disable();
@@ -84,28 +84,13 @@ export class RegionEditComponent implements OnInit {
   }
 
   private requiredFieldsValid(): boolean {
-    let displayModalMessage = false;
+    this.savingRecord = true;
     if(!this.regionForm.valid) {
-      for (const field in this.regionForm.controls) { // 'field' is a string
-        const tmpControl = this.regionForm.get(field); // 'control' is a FormControl
-        if(tmpControl.invalid) {
-          switch(field) {
-            case "regionDescription":
-              this.regionDescription.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            }
-          }
-        }
-
-     }
-
-    if(displayModalMessage) {
       this.modalMessageBody = "There are required fields that you must complete.";
       this.displayModalMessage();
     }
 
-    return !displayModalMessage;
+    return this.regionForm.valid;
   }
 //#endregion
 

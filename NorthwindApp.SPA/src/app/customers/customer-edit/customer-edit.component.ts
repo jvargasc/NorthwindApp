@@ -23,19 +23,9 @@ export class CustomerEditComponent implements OnInit {
   toolbarButtonPressed = "";
   headerToast = "Customer";
   bodyToast = "Record successfully saved!!!";
+  savingRecord = false;
 
-  @ViewChild('companyName') companyName: ElementRef;
-  @ViewChild('contactName') contactName: ElementRef;
-  @ViewChild('contactTitle') contactTitle: ElementRef;
-  @ViewChild('address') address: ElementRef;
-  @ViewChild('city') city: ElementRef;
-  @ViewChild('regionId') regionId: ElementRef;
-  @ViewChild('postalCode') postalCode: ElementRef;
-  @ViewChild('country') country: ElementRef;
-  @ViewChild('phone') phone: ElementRef;
-  @ViewChild('fax') fax: ElementRef;
-
-  constructor(private customersService: CustomersService, private regionsService: RegionsService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService) { }
+  constructor(private customersService: CustomersService, private regionsService: RegionsService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService ) { }
 
   ngOnInit() {
     this.getParameters();
@@ -82,9 +72,10 @@ export class CustomerEditComponent implements OnInit {
 
 //#region Handle Form
   private initializeForm() {
+    this.savingRecord = false;
     this.customerForm = new FormGroup({
-      'customerId' : new FormControl(this.customer?.customerId, Validators.required),
-      'companyName' : new FormControl(this.customer?.companyName, Validators.required),
+      'customerId' : new FormControl(this.customer?.customerId, [Validators.required, Validators.minLength(1)]),
+      'companyName' : new FormControl(this.customer?.companyName,  [Validators.required, Validators.minLength(1)]),
       'contactName' : new FormControl(this.customer?.contactName, Validators.required),
       'contactTitle' : new FormControl(this.customer?.contactTitle, Validators.required),
       'address' : new FormControl(this.customer?.address, Validators.required),
@@ -106,60 +97,13 @@ export class CustomerEditComponent implements OnInit {
   }
 
   private requiredFieldsValid(): boolean {
-    let displayModalMessage = false;
+    this.savingRecord = true;
     if(!this.customerForm.valid) {
-      for (const field in this.customerForm.controls) { // 'field' is a string
-        const tmpControl = this.customerForm.get(field); // 'control' is a FormControl
-        if(tmpControl.invalid) {
-          switch(field) {
-            case "companyName":
-              this.companyName.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "contactName":
-              this.contactName.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "contactTitle":
-              this.contactTitle.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "address":
-              this.address.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "city":
-              this.city.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "regionId":
-              this.regionId.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "postalCode":
-              this.postalCode.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "country":
-              this.country.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "phone":
-              this.phone.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            }
-          }
-        }
-
-     }
-
-    if(displayModalMessage) {
       this.modalMessageBody = "There are required fields that you must complete.";
       this.displayModalMessage();
     }
 
-    return !displayModalMessage;
+    return this.customerForm.valid;
   }
 
   private getParameters() {

@@ -4,45 +4,27 @@
       <h4>Territory</h4>
     </div>
     <div class="card-toolbar">
-      <app-toolbarcrud
-        (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"
-      ></app-toolbarcrud>
+      <app-toolbarcrud (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"></app-toolbarcrud>
     </div>
   </div>
   <div class="card-body">
     <form [formGroup]="territoryForm">
       <div class="row">
         <div class="col-3 form-group">
-          <label for="supplierId">Territory Id</label
-          ><input
-            type="text"
-            class="form-control"
-            formControlName="territoryId"
-            placeholder="Territory Id"
-          />
+          <label for="supplierId">Territory Id</label><input type="text" class="form-control"
+            formControlName="territoryId" placeholder="Territory Id" />
         </div>
       </div>
 
       <div class="row">
         <div class="col-3 form-group">
           <label for="territoryDescription">Territory Description</label>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="territoryDescription"
-            placeholder="Territory Description"
-            #territoryDescription
-            required
-          />
+          <input type="text" class="form-control" [ngClass]="{'ng-touched': savingRecord}"
+            formControlName="territoryDescription" placeholder="Territory Description" />
         </div>
         <div class="col-3 form-group">
           <label for="regionId">Region Id</label>
-          <select
-            class="form-control"
-            formControlName="regionId"
-            #regionId
-            required
-          >
+          <select class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="regionId">
             <option *ngFor="let region of regions" [ngValue]="region?.regionId">
               {{ region.regionDescription }}
             </option>
@@ -59,35 +41,16 @@
   </div>
 </div>
 
-<button
-  style="display: none"
-  type="button"
-  class="btn btn-primary"
-  data-bs-toggle="modal"
-  data-bs-target="#modalYesNo"
-  id="showModalYesNo"
->
+<button style="display: none" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalYesNo"
+  id="showModalYesNo">
   Open modal
 </button>
-<app-modalyesno
-  [modalTitle]="modalTitle"
-  [modalBody]="modalYesNoBody"
-  (modalButtonWasClicked)="modalButtonWasClicked($event)"
-  id="modalyesno"
-></app-modalyesno>
+<app-modalyesno [modalTitle]="modalTitle" [modalBody]="modalYesNoBody"
+  (modalButtonWasClicked)="modalButtonWasClicked($event)" id="modalyesno"></app-modalyesno>
 
-<button
-  style="display: none"
-  type="button"
-  class="btn btn-primary"
-  data-bs-toggle="modal"
-  data-bs-target="#modalMessage"
-  id="showModalMessage"
->
+<button style="display: none" type="button" class="btn btn-primary" data-bs-toggle="modal"
+  data-bs-target="#modalMessage" id="showModalMessage">
   Open modal
 </button>
 
-<app-modalmessage
-  [modalTitle]="modalTitle"
-  [modalBody]="modalMessageBody"
-></app-modalmessage>
+<app-modalmessage [modalTitle]="modalTitle" [modalBody]="modalMessageBody"></app-modalmessage>

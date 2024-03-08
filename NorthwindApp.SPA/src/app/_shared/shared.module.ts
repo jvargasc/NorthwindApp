@@ -12,6 +12,9 @@ import { ModalSearchComponent } from './modals/modalsearch/modalsearch.component
 import { ModalMessageComponent } from './modals/modalmessage/modalmessage.component';
 import { PhotoUploadComponent } from './photo-upload/photo-upload.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { ToastrModule } from 'ngx-toastr';
+import { ConfirmDialogComponent } from '../modals/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -20,13 +23,20 @@ import { ReactiveFormsModule } from '@angular/forms';
     ModalYesNoComponent,
     ModalSearchComponent,
     ModalMessageComponent,
-    PhotoUploadComponent
+    PhotoUploadComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     CommonModule,
     ToolbarsModule,
     RouterLink,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right'
+    }),
+    NgxSpinnerModule.forRoot({
+      type: 'line-scale-party'
+    })
   ],
   exports: [
     NavComponent,
@@ -36,7 +46,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     ModalYesNoComponent,
     ModalSearchComponent,
     ModalMessageComponent,
-    PhotoUploadComponent
+    PhotoUploadComponent,
+    ToastrModule,
+    NgxSpinnerModule,
+    ConfirmDialogComponent
   ],
 })
 export class SharedModule { }

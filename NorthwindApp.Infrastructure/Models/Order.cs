@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace NorthwindApp.Infrastructure.Models;
+﻿namespace NorthwindApp.Infrastructure.Models;
 
 public partial class Order
 {

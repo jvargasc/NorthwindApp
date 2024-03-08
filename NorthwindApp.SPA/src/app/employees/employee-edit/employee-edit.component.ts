@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
@@ -29,25 +29,7 @@ export class EmployeeEditComponent implements OnInit {
   toolbarButtonPressed = "";
   headerToast = "Employee";
   bodyToast = "Record successfully saved!!!";
-
-  @ViewChild('lastName') lastName: ElementRef;
-  @ViewChild('firstName') firstName: ElementRef;
-  @ViewChild('title') title: ElementRef;
-  @ViewChild('titleOfCourtesy') titleOfCourtesy: ElementRef;
-  @ViewChild('birthDate') birthDate: ElementRef;
-  @ViewChild('hireDate') hireDate: ElementRef;
-  @ViewChild('address') address: ElementRef;
-  @ViewChild('city') city: ElementRef;
-  @ViewChild('regionId') regionId: ElementRef;
-  @ViewChild('postalCode') postalCode: ElementRef;
-  @ViewChild('country') country: ElementRef;
-  @ViewChild('homePhone') homePhone: ElementRef;
-  @ViewChild('extension') extension: ElementRef;
-  @ViewChild('regiondId') regiondId: ElementRef;
-  // @ViewChild('photo') photo: ElementRef;
-  @ViewChild('notes') notes: ElementRef;
-  @ViewChild('reportsTo') reportsTo: ElementRef;
-  @ViewChild('photoPath') photoPath: ElementRef;
+  savingRecord = false;
 
   constructor(private employeesServices: EmployeesService, private regionsService: RegionsService, private photosService: PhotosService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService ) { }
 
@@ -96,34 +78,43 @@ export class EmployeeEditComponent implements OnInit {
 
 //#region Handle Form
   private initializeForm() {
+    this.savingRecord = false;
     this.employeeForm = new FormGroup({
-      'employeeId' : new FormControl(this.employee?.employeeId),
-      'lastName' : new FormControl(this.employee?.lastName),
-      'firstName' : new FormControl(this.employee?.firstName),
-      'photo' : new FormControl(this.employee?.photo),
-      'title' : new FormControl(this.employee?.title),
-      'titleOfCourtesy' : new FormControl(this.employee?.titleOfCourtesy),
-      'birthDate' : new FormControl(formatDate( this.getDate(this.employee?.birthDate), 'yyyy-MM-dd', 'en')),
-      'hireDate' : new FormControl(formatDate( this.getDate(this.employee?.hireDate), 'yyyy-MM-dd', 'en')),
-      'address' : new FormControl(this.employee?.address),
-      'city' : new FormControl(this.employee?.city),
-      'regionId' : new FormControl(this.employee?.regionId),
-      'postalCode' : new FormControl(this.employee?.postalCode),
-      'country' : new FormControl(this.employee?.country),
-      'homePhone' : new FormControl(this.employee?.homePhone),
-      'extension' : new FormControl(this.employee?.extension),
-      'notes' : new FormControl(this.employee?.notes),
-      'reportsTo' : new FormControl(this.employee?.reportsTo),
-      'reportsToDescription' : new FormControl(this.employee?.reportsTo),
-      'photoPath' : new FormControl(this.employee?.photoPath)
+      'employeeId' : new FormControl(this.employee?.employeeId, Validators.required),
+      'lastName' : new FormControl(this.employee?.lastName, Validators.required),
+      'firstName' : new FormControl(this.employee?.firstName, Validators.required),
+      'photo' : new FormControl(this.employee?.photo, Validators.required),
+      'title' : new FormControl(this.employee?.title, Validators.required),
+      'titleOfCourtesy' : new FormControl(this.employee?.titleOfCourtesy, Validators.required),
+      'birthDate' : new FormControl(null, Validators.required),
+      'hireDate' : new FormControl(null, Validators.required),
+      'address' : new FormControl(this.employee?.address, Validators.required),
+      'city' : new FormControl(this.employee?.city, Validators.required),
+      'regionId' : new FormControl(this.employee?.regionId, Validators.required),
+      'postalCode' : new FormControl(this.employee?.postalCode, Validators.required),
+      'country' : new FormControl(this.employee?.country, Validators.required),
+      'homePhone' : new FormControl(this.employee?.homePhone, Validators.required),
+      'extension' : new FormControl(this.employee?.extension, Validators.required),
+      'notes' : new FormControl(this.employee?.notes, Validators.required),
+      'reportsTo' : new FormControl(this.employee?.reportsTo, Validators.required),
+      'reportsToDescription' : new FormControl(this.employee?.reportsTo, Validators.required),
+      'photoPath' : new FormControl(this.employee?.photoPath, Validators.required)
     })
 
     this.employeeForm.controls['employeeId'].disable();
     if(Object.keys(this.employee).length >0) {
       // this.photo = 'data:image/jpg;base64,' + this.employee?.photo;
+      this.fillDates();
       this.getReportsTo();
       this.getEmployees();
     }
+  }
+
+  private fillDates() {
+    this.employeeForm.patchValue({
+      birthDate : formatDate(this.getDate(this.employee.birthDate), 'yyyy-MM-dd', 'en'),
+      hireDate : formatDate(this.getDate(this.employee.hireDate), 'yyyy-MM-dd', 'en')
+    });
   }
 
   private clearForm() {
@@ -137,85 +128,9 @@ export class EmployeeEditComponent implements OnInit {
 
   private requiredFieldsValid(): boolean {
     let displayModalMessage = false;
+    this.savingRecord = true;
 
-    if(!this.employeeForm.valid) {
-      for (const field in this.employeeForm.controls) { // 'field' is a string
-        const tmpControl = this.employeeForm.get(field); // 'control' is a FormControl
-        if(tmpControl.invalid) {
-          switch(field) {
-            case "title":
-              this.title.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "titleOfCourtesy":
-              this.titleOfCourtesy.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "lastName":
-              this.lastName.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "firstName":
-              this.firstName.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "birthDate":
-              this.birthDate.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "hireDate":
-              this.hireDate.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "address":
-              this.address.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "city":
-              this.city.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "regionId":
-              this.regionId.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "postalCode":
-              this.postalCode.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "country":
-              this.country.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "homePhone":
-              this.homePhone.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "extension":
-              this.extension.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "regiondId":
-              this.regiondId.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "notes":
-              this.notes.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "reportsTo":
-              this.reportsTo.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "photoPath":
-              this.photoPath.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            }
-          }
-        }
-
-     }
+    if(!this.employeeForm.valid) displayModalMessage = true;
 
     if ((this.photo == this.blankPicture) || this.photo === undefined) {
       displayModalMessage = true;
@@ -227,7 +142,7 @@ export class EmployeeEditComponent implements OnInit {
       this.displayModalMessage();
     }
 
-    return !displayModalMessage;
+    return this.employeeForm.valid;
   }
 
   private getParameters() {

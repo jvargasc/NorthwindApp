@@ -24,16 +24,8 @@ export class SupplierDetailComponent implements OnInit {
   toolbarButtonPressed = "";
   headerToast = "Customer";
   bodyToast = "Record successfully saved!!!";
+  savingRecord = false;
 
-  @ViewChild('companyName') companyName: ElementRef;
-  @ViewChild('contactName') contactName: ElementRef;
-  @ViewChild('contactTitle') contactTitle: ElementRef;
-  @ViewChild('address') address: ElementRef;
-  @ViewChild('city') city: ElementRef;
-  @ViewChild('regionId') regionId: ElementRef;
-  @ViewChild('postalCode') postalCode: ElementRef;
-  @ViewChild('country') country: ElementRef;
-  @ViewChild('phone') phone: ElementRef;
 
   constructor( private suppliersService: SuppliersService, private regionsService: RegionsService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService ) { }
 
@@ -82,22 +74,23 @@ export class SupplierDetailComponent implements OnInit {
 
 //#region Handle Form
   private initializeForm() {
-      this.supplierForm = new FormGroup({
-        'supplierId' : new FormControl(this.supplier?.supplierId),
-        'companyName' : new FormControl(this.supplier?.companyName, Validators.required),
-        'contactName' : new FormControl(this.supplier?.contactName, Validators.required),
-        'contactTitle' : new FormControl(this.supplier?.contactTitle, Validators.required),
-        'address' : new FormControl(this.supplier?.address, Validators.required),
-        'city' : new FormControl(this.supplier?.city, Validators.required),
-        'regionId' : new FormControl(this.supplier?.regionId, Validators.required),
-        'postalCode' : new FormControl(this.supplier?.postalCode, Validators.required),
-        'country' : new FormControl(this.supplier?.country, Validators.required),
-        'phone' : new FormControl(this.supplier?.phone, Validators.required),
-        'fax' : new FormControl(this.supplier?.fax),
-        'homePage' : new FormControl(this.supplier?.homePage)
-      });
+    this.savingRecord = false;
+    this.supplierForm = new FormGroup({
+      'supplierId' : new FormControl(this.supplier?.supplierId),
+      'companyName' : new FormControl(this.supplier?.companyName, Validators.required),
+      'contactName' : new FormControl(this.supplier?.contactName, Validators.required),
+      'contactTitle' : new FormControl(this.supplier?.contactTitle, Validators.required),
+      'address' : new FormControl(this.supplier?.address, Validators.required),
+      'city' : new FormControl(this.supplier?.city, Validators.required),
+      'regionId' : new FormControl(this.supplier?.regionId, Validators.required),
+      'postalCode' : new FormControl(this.supplier?.postalCode, Validators.required),
+      'country' : new FormControl(this.supplier?.country, Validators.required),
+      'phone' : new FormControl(this.supplier?.phone, Validators.required),
+      'fax' : new FormControl(this.supplier?.fax),
+      'homePage' : new FormControl(this.supplier?.homePage)
+    });
 
-      this.supplierForm.controls['supplierId'].disable();
+    this.supplierForm.controls['supplierId'].disable();
   }
 
   private clearForm() {
@@ -107,60 +100,13 @@ export class SupplierDetailComponent implements OnInit {
   }
 
   private requiredFieldsValid(): boolean {
-    let displayModalMessage = false;
+    this.savingRecord = true;
     if(!this.supplierForm.valid) {
-      for (const field in this.supplierForm.controls) { // 'field' is a string
-        const tmpControl = this.supplierForm.get(field); // 'control' is a FormControl
-        if(tmpControl.invalid) {
-          switch(field) {
-            case "companyName":
-              this.companyName.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "contactName":
-              this.contactName.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "contactTitle":
-              this.contactTitle.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "address":
-              this.address.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "city":
-              this.city.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "regionId":
-              this.regionId.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "postalCode":
-              this.postalCode.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "country":
-              this.country.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "phone":
-              this.phone.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            }
-          }
-        }
-
-     }
-
-    if(displayModalMessage) {
       this.modalMessageBody = "There are required fields that you must complete.";
       this.displayModalMessage();
     }
 
-    return !displayModalMessage;
+    return this.supplierForm.valid;
   }
 
   private getParameters() {

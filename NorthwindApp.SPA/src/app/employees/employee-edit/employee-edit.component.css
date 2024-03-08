@@ -3,3 +3,6 @@
   width: 150px;
 } */
 
+.lblPicture.ng-touched {
+  border: solid red
+}

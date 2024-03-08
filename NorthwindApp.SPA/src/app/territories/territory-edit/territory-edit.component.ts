@@ -24,9 +24,7 @@ export class TerritoryEditComponent implements OnInit {
   toolbarButtonPressed = "";
   headerToast = "Territory";
   bodyToast = "Record successfully saved!!!";
-
-  @ViewChild('territoryDescription') territoryDescription: ElementRef;
-  @ViewChild('regionId') regionId: ElementRef;
+  savingRecord = false;
 
   constructor( private territoriesService: TerritoriesService, private regionsService: RegionsService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService ) { }
 
@@ -75,6 +73,7 @@ export class TerritoryEditComponent implements OnInit {
 
 //#region Handle Form
   private initializeForm() {
+    this.savingRecord = false;
     this.territoryForm = new FormGroup({
       'territoryId' : new FormControl(this.territory?.territoryId),
       'territoryDescription' : new FormControl(this.territory?.territoryDescription, Validators.required),
@@ -91,31 +90,13 @@ export class TerritoryEditComponent implements OnInit {
   }
 
   private requiredFieldsValid(): boolean {
-    let displayModalMessage = false;
+    this.savingRecord = true;
     if(!this.territoryForm.valid) {
-      for (const field in this.territoryForm.controls) { // 'field' is a string
-        const tmpControl = this.territoryForm.get(field); // 'control' is a FormControl
-        if(tmpControl.invalid) {
-          switch(field) {
-            case "territoryDescription":
-              this.territoryDescription.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "regionId":
-              this.regionId.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            }
-          }
-        }
-     }
-
-    if(displayModalMessage) {
       this.modalMessageBody = "There are required fields that you must complete.";
       this.displayModalMessage();
     }
 
-    return !displayModalMessage;
+    return this.territoryForm.valid;
   }
 
   private getParameters() {

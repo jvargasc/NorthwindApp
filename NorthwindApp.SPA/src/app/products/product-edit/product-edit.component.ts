@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
@@ -26,19 +26,9 @@ export class ProductEditComponent implements OnInit {
   suppliers: Supplier[] = [];
   headerToast = "Product";
   bodyToast = "Record successfully saved!!!";
+  savingRecord = false;
 
-  @ViewChild('productId') productId: ElementRef;
-  @ViewChild('productName') productName: ElementRef;
-  @ViewChild('supplierId') supplierId: ElementRef;
-  @ViewChild('categoryId') categoryId: ElementRef;
-  @ViewChild('quantityPerUnit') quantityPerUnit: ElementRef;
-  @ViewChild('unitPrice') unitPrice: ElementRef;
-  @ViewChild('unitsInStock') unitsInStock: ElementRef;
-  @ViewChild('unitsOnOrder') unitsOnOrder: ElementRef;
-  @ViewChild('reorderLevel') reorderLevel: ElementRef;
-  @ViewChild('discontinued') discontinued: ElementRef;
-
-  constructor( private productsService: ProductsService, private categoriesservice: CategoriesService, private suppliersservice: SuppliersService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService) { }
+  constructor( private productsService: ProductsService, private categoriesservice: CategoriesService, private suppliersservice: SuppliersService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService ) { }
 
   ngOnInit() {
     this.getParameters();
@@ -85,17 +75,18 @@ export class ProductEditComponent implements OnInit {
 
 //#region Handle Form
   private initializeForm() {
+    this.savingRecord = false;
     this.productForm = new FormGroup({
-      'productId': new FormControl(this.product.productId),
-      'productName': new FormControl(this.product.productName),
-      'supplierId': new FormControl(this.product.supplierId),
-      'categoryId': new FormControl(this.product.categoryId),
-      'quantityPerUnit': new FormControl(this.product.quantityPerUnit),
-      'unitPrice': new FormControl(this.product.unitPrice),
-      'unitsInStock': new FormControl(this.product.unitsInStock),
-      'unitsOnOrder': new FormControl(this.product.unitsOnOrder),
-      'reorderLevel': new FormControl(this.product.reorderLevel),
-      'discontinued': new FormControl(this.product.discontinued)
+      'productId': new FormControl(this.product.productId, Validators.required),
+      'productName': new FormControl(this.product.productName, Validators.required),
+      'supplierId': new FormControl(this.product.supplierId, Validators.required),
+      'categoryId': new FormControl(this.product.categoryId, Validators.required),
+      'quantityPerUnit': new FormControl(this.product.quantityPerUnit, Validators.required),
+      'unitPrice': new FormControl(this.product.unitPrice, Validators.required),
+      'unitsInStock': new FormControl(this.product.unitsInStock, Validators.required),
+      'unitsOnOrder': new FormControl(this.product.unitsOnOrder, Validators.required),
+      'reorderLevel': new FormControl(this.product.reorderLevel, Validators.required),
+      'discontinued': new FormControl(this.product.discontinued, Validators.required)
     });
 
     this.productForm.controls['productId'].disable();
@@ -108,60 +99,13 @@ export class ProductEditComponent implements OnInit {
   }
 
   private requiredFieldsValid(): boolean {
-    let displayModalMessage = false;
+    this.savingRecord = true;
     if(!this.productForm.valid) {
-      for (const field in this.productForm.controls) { // 'field' is a string
-        const tmpControl = this.productForm.get(field); // 'control' is a FormControl
-        if(tmpControl.invalid) {
-          switch(field) {
-            case "productName":
-              this.productName.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "supplierId":
-              this.supplierId.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "categoryId":
-              this.categoryId.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "quantityPerUnit":
-              this.quantityPerUnit.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "unitPrice":
-              this.unitPrice.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "unitsInStock":
-              this.unitsInStock.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "unitsOnOrder":
-              this.unitsOnOrder.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "reorderLevel":
-              this.reorderLevel.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "discontinued":
-              this.discontinued.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            }
-          }
-        }
-
-     }
-
-    if(displayModalMessage) {
       this.modalMessageBody = "There are required fields that you must complete.";
       this.displayModalMessage();
-    }
+     }
 
-    return !displayModalMessage;
+    return this.productForm.valid;
   }
 
   private getParameters() {

@@ -4,9 +4,7 @@
       <h4>Customer</h4>
     </div>
     <div class="card-toolbar">
-      <app-toolbarcrud
-        (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"
-      ></app-toolbarcrud>
+      <app-toolbarcrud (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"></app-toolbarcrud>
     </div>
   </div>
   <div class="card-body mx-2">
@@ -15,12 +13,7 @@
         <div class="col-3">
           <div class="form-group">
             <label for="customerId">Customer Id</label>
-            <input
-              class="form-control"
-              formControlName="customerId"
-              placeholder="Customer Id"
-              required
-            />
+            <input class="form-control" formControlName="customerId" placeholder="Customer Id" />
           </div>
         </div>
       </div>
@@ -28,27 +21,15 @@
         <div class="col-6">
           <div class="form-group">
             <label for="companyName">Company Name</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="companyName"
-              placeholder="Company Name"
-              #companyName
-              required
-            />
+            <input type="text" class="form-control" [ngClass]="{'ng-touched': savingRecord}"
+              formControlName="companyName" placeholder="Company Name" />
           </div>
         </div>
         <div class="col-6">
           <div class="form-group">
             <label for="contactName">Contact Name</label>
-            <input
-              type="phone"
-              class="form-control"
-              formControlName="contactName"
-              placeholder="Contact Name"
-              #contactName
-              required
-            />
+            <input type="phone" class="form-control" [ngClass]="{'ng-touched': savingRecord}"
+              formControlName="contactName" placeholder="Contact Name" />
           </div>
         </div>
       </div>
@@ -56,27 +37,15 @@
         <div class="col-6">
           <div class="form-group">
             <label for="contactTitle">Contact Title</label>
-            <input
-              type="phone"
-              class="form-control"
-              formControlName="contactTitle"
-              placeholder="Contact Title"
-              #contactTitle
-              required
-            />
+            <input type="phone" class="form-control" [ngClass]="{'ng-touched': savingRecord}"
+              formControlName="contactTitle" placeholder="Contact Title" />
           </div>
         </div>
         <div class="col-6">
           <div class="form-group">
             <label for="address">Address</label>
-            <input
-              type="phone"
-              class="form-control"
-              formControlName="address"
-              placeholder="Address"
-              #address
-              required
-            />
+            <input type="phone" class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="address"
+              placeholder="Address" />
           </div>
         </div>
       </div>
@@ -84,29 +53,15 @@
         <div class="col-6">
           <div class="form-group">
             <label for="city">City</label>
-            <input
-              type="phone"
-              class="form-control"
-              formControlName="city"
-              placeholder="City"
-              #city
-              required
-            />
+            <input type="phone" class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="city"
+              placeholder="City" />
           </div>
         </div>
         <div class="col-6">
           <div class="form-group">
             <label for="regionId">Region</label>
-            <select
-              class="form-control"
-              formControlName="regionId"
-              #regionId
-              required
-            >
-              <option
-                *ngFor="let region of regions"
-                [ngValue]="region.regionId"
-              >
+            <select class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="regionId">
+              <option *ngFor="let region of regions" [ngValue]="region.regionId">
                 {{ region.regionDescription }}
               </option>
             </select>
@@ -117,27 +72,15 @@
         <div class="col-6">
           <div class="form-group">
             <label for="postalCode">Postal Code</label>
-            <input
-              type="phone"
-              class="form-control"
-              formControlName="postalCode"
-              placeholder="postalCode"
-              #postalCode
-              required
-            />
+            <input type="phone" class="form-control" [ngClass]="{'ng-touched': savingRecord}"
+              formControlName="postalCode" placeholder="postalCode" />
           </div>
         </div>
         <div class="col-6">
           <div class="form-group">
             <label for="country">Country</label>
-            <input
-              type="phone"
-              class="form-control"
-              formControlName="country"
-              placeholder="Country"
-              #country
-              required
-            />
+            <input type="phone" class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="country"
+              placeholder="Country" />
           </div>
         </div>
       </div>
@@ -145,26 +88,14 @@
         <div class="col-6">
           <div class="form-group">
             <label for="phone">Phone</label>
-            <input
-              type="phone"
-              class="form-control"
-              formControlName="phone"
-              placeholder="phone"
-              #phone
-              required
-            />
+            <input type="phone" class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="phone"
+              placeholder="phone" />
           </div>
         </div>
         <div class="col-6">
           <div class="form-group">
             <label for="fax">Fax</label>
-            <input
-              type="phone"
-              class="form-control"
-              formControlName="fax"
-              placeholder="Fax"
-              #fax
-            />
+            <input type="phone" class="form-control" formControlName="fax" placeholder="Fax" />
           </div>
         </div>
       </div>
@@ -172,35 +103,16 @@
   </div>
 </div>
 
-<button
-  style="display: none"
-  type="button"
-  class="btn btn-primary"
-  data-bs-toggle="modal"
-  data-bs-target="#modalYesNo"
-  id="showModalYesNo"
->
+<button style="display: none" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalYesNo"
+  id="showModalYesNo">
   Open modal
 </button>
-<app-modalyesno
-  [modalTitle]="modalTitle"
-  [modalBody]="modalYesNoBody"
-  (modalButtonWasClicked)="modalButtonWasClicked($event)"
-  id="modalyesno"
-></app-modalyesno>
+<app-modalyesno [modalTitle]="modalTitle" [modalBody]="modalYesNoBody"
+  (modalButtonWasClicked)="modalButtonWasClicked($event)" id="modalyesno"></app-modalyesno>
 
-<button
-  style="display: none"
-  type="button"
-  class="btn btn-primary"
-  data-bs-toggle="modal"
-  data-bs-target="#modalMessage"
-  id="showModalMessage"
->
+<button style="display: none" type="button" class="btn btn-primary" data-bs-toggle="modal"
+  data-bs-target="#modalMessage" id="showModalMessage">
   Open modal
 </button>
 
-<app-modalmessage
-  [modalTitle]="modalTitle"
-  [modalBody]="modalMessageBody"
-></app-modalmessage>
+<app-modalmessage [modalTitle]="modalTitle" [modalBody]="modalMessageBody"></app-modalmessage>

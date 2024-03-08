@@ -4,9 +4,7 @@
       <h4>Shippers</h4>
     </div>
     <div class="card-toolbar">
-      <app-toolbarcrud
-        (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"
-      ></app-toolbarcrud>
+      <app-toolbarcrud (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"></app-toolbarcrud>
     </div>
   </div>
   <div class="card-body">
@@ -15,41 +13,22 @@
         <div class="col-2" id="row-shipperId">
           <div class="form-group">
             <label for="exampleShipperId">Shipper Id</label>
-            <input
-              type="text"
-              class="form-control"
-              id="shipperId"
-              formControlName="shipperId"
-              placeholder="Shipper Id"
-            />
+            <input type="text" class="form-control" id="shipperId" formControlName="shipperId"
+              placeholder="Shipper Id" />
           </div>
         </div>
         <div class="col-5">
           <div class="form-group">
             <label for="companyName">Company Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="companyName"
-              formControlName="companyName"
-              placeholder="Company Name"
-              #companyName
-              required
-            />
+            <input type="text" class="form-control" [ngClass]="{'ng-touched': savingRecord}" id="companyName"
+              formControlName="companyName" placeholder="Company Name" />
           </div>
         </div>
         <div class="col-5">
           <div class="form-group">
             <label for="phone">Phone</label>
-            <input
-              type="phone"
-              class="form-control"
-              id="phone"
-              formControlName="phone"
-              placeholder="Phone Number"
-              #phone
-              required
-            />
+            <input type="phone" class="form-control" [ngClass]="{'ng-touched': savingRecord}" id="phone"
+              formControlName="phone" placeholder="Phone Number" />
           </div>
         </div>
       </div>
@@ -57,35 +36,16 @@
   </div>
 </div>
 
-<button
-  style="display: none"
-  type="button"
-  class="btn btn-primary"
-  data-bs-toggle="modal"
-  data-bs-target="#modalYesNo"
-  id="showModalYesNo"
->
+<button style="display: none" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalYesNo"
+  id="showModalYesNo">
   Open modal
 </button>
-<app-modalyesno
-  [modalTitle]="modalTitle"
-  [modalBody]="modalYesNoBody"
-  (modalButtonWasClicked)="modalButtonWasClicked($event)"
-  id="modalyesno"
-></app-modalyesno>
+<app-modalyesno [modalTitle]="modalTitle" [modalBody]="modalYesNoBody"
+  (modalButtonWasClicked)="modalButtonWasClicked($event)" id="modalyesno"></app-modalyesno>
 
-<button
-  style="display: none"
-  type="button"
-  class="btn btn-primary"
-  data-bs-toggle="modal"
-  data-bs-target="#modalMessage"
-  id="showModalMessage"
->
+<button style="display: none" type="button" class="btn btn-primary" data-bs-toggle="modal"
+  data-bs-target="#modalMessage" id="showModalMessage">
   Open modal
 </button>
 
-<app-modalmessage
-  [modalTitle]="modalTitle"
-  [modalBody]="modalMessageBody"
-></app-modalmessage>
+<app-modalmessage [modalTitle]="modalTitle" [modalBody]="modalMessageBody"></app-modalmessage>

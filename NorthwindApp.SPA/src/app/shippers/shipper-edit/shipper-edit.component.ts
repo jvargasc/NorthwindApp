@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
@@ -20,12 +20,9 @@ export class ShipperEditComponent implements OnInit {
   toolbarButtonPressed = "";
   headerToast = "Shipper";
   bodyToast = "Record successfully saved!!!";
+  savingRecord = false;
 
-  @ViewChild('companyName') companyName: ElementRef;
-  @ViewChild('phone') phone: ElementRef;
-
-  constructor(private shippersService: ShippersService, private route: ActivatedRoute,
-    private router: Router, private toastr: ToastrService ) { }
+  constructor(private shippersService: ShippersService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService ) { }
 
   ngOnInit() {
     this.initializeForm();
@@ -69,15 +66,15 @@ export class ShipperEditComponent implements OnInit {
   }
 //#endregion
 
-
 //#region Handle Form
   private initializeForm() {
-      this.shipperForm = new FormGroup({
-        'shipperId' : new FormControl(this.shipper?.shipperId, []),
-        'companyName' : new FormControl(this.shipper?.companyName, []),
-        'phone' : new FormControl(this.shipper?.phone, [])
-      })
-      this.shipperForm.controls['shipperId'].disable();
+    this.savingRecord = false;
+    this.shipperForm = new FormGroup({
+      'shipperId' : new FormControl(this.shipper?.shipperId),
+      'companyName' : new FormControl(this.shipper?.companyName, Validators.required),
+      'phone' : new FormControl(this.shipper?.phone, Validators.required)
+    })
+    this.shipperForm.controls['shipperId'].disable();
   }
 
   private clearForm() {
@@ -87,32 +84,13 @@ export class ShipperEditComponent implements OnInit {
   }
 
   private requiredFieldsValid(): boolean {
-    let displayModalMessage = false;
+    this.savingRecord = true;
     if(!this.shipperForm.valid) {
-      for (const field in this.shipperForm.controls) { // 'field' is a string
-        const tmpControl = this.shipperForm.get(field); // 'control' is a FormControl
-        if(tmpControl.invalid) {
-          switch(field) {
-            case "companyName":
-              this.companyName.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            case "phone":
-              this.phone.nativeElement.classList.add('ng-touched');
-              displayModalMessage = true;
-              break;
-            }
-          }
-        }
-
-     }
-
-    if(displayModalMessage) {
       this.modalMessageBody = "There are required fields that you must complete.";
       this.displayModalMessage();
     }
 
-    return !displayModalMessage;
+    return this.shipperForm.valid;
   }
 //#endregion
 

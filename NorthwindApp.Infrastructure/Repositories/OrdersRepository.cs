@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using NorthwindApp.Core.Dtos;
 using NorthwindApp.Core.Models;
 using NorthwindApp.Infrastructure.Context;
 
@@ -61,34 +55,10 @@ public class OrdersRepository : IOrdersRepository
     public async void UpdateOrder(Order order)
     {
         _northwindContext.Entry(order).State = EntityState.Modified;
-        /*
-                List<OrderDetail> orderDetailToUpdate = order.Order_Details.Where(o => o.OrderDetailID == null).ToList();
-        if (orderDetailToUpdate.Count > 0)
-        {
-            List<OrderDetailDto> OrderDetailToInsert = new List<OrderDetailDto>();
-            _mapper.Map(orderDetailToUpdate, OrderDetailToInsert);
-            CreateOrderDetails(orderDetailToUpdate);
-        }
-        else
-                // _northwindContext.Entry(order).State = EntityState.Modified;
-                Order orderToRemove = order;
-
-                try
-                {
-                    _northwindContext.Orders.Remove(orderToRemove);
-                    _northwindContext.Orders.Add(order);
-                }
-                catch (System.Exception ex)
-                {
-                    // TODO
-                    Console.WriteLine(ex.Message);
-                }
-        */
     }
 
     public async void UpdateOrderDetails(List<OrderDetail> orderDetails)
     {
-        //https://stackoverflow.com/questions/21592596/update-multiple-rows-in-entity-framework-from-a-list-of-ids
         foreach (OrderDetail detailItem in orderDetails)
         {
             _northwindContext.Entry(detailItem).State = EntityState.Modified;

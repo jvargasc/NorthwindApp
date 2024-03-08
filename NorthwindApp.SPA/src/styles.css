@@ -20,7 +20,10 @@ input.ng-invalid {
 }
 */
 
-input.ng-invalid,
-select.ng-invalid {
+/* input.ng-invalid,
+select.ng-invalid */
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched,
+select.ng-invalid.ng-touched {
   border: solid red
 }
