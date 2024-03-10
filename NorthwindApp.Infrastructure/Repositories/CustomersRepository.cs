@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NorthwindApp.Core.Models;
 using NorthwindApp.Infrastructure.Context;
+using NorthwindApp.Infrastructure.Helpers;
 
 namespace NorthwindApp.Infrastructure.Repositories;
 
@@ -12,9 +13,11 @@ public class CustomersRepository : ICustomersRepository
         _northwindContext = northwindContext;
     }
 
-    public async Task<List<Customer>> GetCustomers()
+    public async Task<PagedList<Customer>> GetCustomers(UserParams userParams)
     {
-        return await _northwindContext.Customers.ToListAsync();
+        var query = _northwindContext.Customers.AsNoTracking();
+
+        return await PagedList<Customer>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
     }
 
     public async Task<Customer> GetCustomer(int customerId)

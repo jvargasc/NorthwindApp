@@ -2,12 +2,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SupplierListComponent } from './supplier-list/supplier-list.component';
 import { SupplierDetailComponent } from './supplier-detail/supplier-detail.component';
+import { preventUnsavedChangesOnSupplierGuard } from '../_guards/prevent-unsaved-changes.guard';
 
 const routes: Routes = [
   { path: 'suppliers', component: SupplierListComponent},
   { path: 'suppliers/supplier-list', component: SupplierListComponent},
-  { path: 'suppliers/supplier-edit', component: SupplierDetailComponent },
-  { path: 'suppliers/supplier-edit/:supplierId', component: SupplierDetailComponent }
+  { path: 'suppliers/supplier-edit', component: SupplierDetailComponent, canDeactivate: [preventUnsavedChangesOnSupplierGuard] },
+  { path: 'suppliers/supplier-edit/:supplierId', component: SupplierDetailComponent, canDeactivate: [preventUnsavedChangesOnSupplierGuard] }
 ];
 
 @NgModule({

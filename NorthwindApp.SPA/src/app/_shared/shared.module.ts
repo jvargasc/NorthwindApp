@@ -1,6 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { ToastrModule } from 'ngx-toastr';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { FooterComponent } from './footer/footer.component';
 import { NavComponent } from './nav/nav.component';
@@ -11,10 +15,8 @@ import { ModalYesNoComponent } from './modals/modalyesno/modalyesno.component';
 import { ModalSearchComponent } from './modals/modalsearch/modalsearch.component';
 import { ModalMessageComponent } from './modals/modalmessage/modalmessage.component';
 import { PhotoUploadComponent } from './photo-upload/photo-upload.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { NgxSpinnerModule } from 'ngx-spinner';
-import { ToastrModule } from 'ngx-toastr';
 import { ConfirmDialogComponent } from '../modals/confirm-dialog/confirm-dialog.component';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,7 @@ import { ConfirmDialogComponent } from '../modals/confirm-dialog/confirm-dialog.
     ConfirmDialogComponent
   ],
   imports: [
+    FormsModule,
     CommonModule,
     ToolbarsModule,
     RouterLink,
@@ -36,9 +39,12 @@ import { ConfirmDialogComponent } from '../modals/confirm-dialog/confirm-dialog.
     }),
     NgxSpinnerModule.forRoot({
       type: 'line-scale-party'
-    })
+    }),
+    ModalModule.forRoot(),
+    PaginationModule.forRoot()
   ],
   exports: [
+    FormsModule,
     NavComponent,
     FooterComponent,
     ToolbarCrudComponent,
@@ -49,7 +55,9 @@ import { ConfirmDialogComponent } from '../modals/confirm-dialog/confirm-dialog.
     PhotoUploadComponent,
     ToastrModule,
     NgxSpinnerModule,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    ModalModule,
+    PaginationModule
   ],
 })
 export class SharedModule { }

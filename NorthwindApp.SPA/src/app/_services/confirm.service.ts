@@ -10,12 +10,18 @@ export class ConfirmService {
   bsModalRef?: BsModalRef<ConfirmDialogComponent>;
 
   constructor(private modalService: BsModalService) { }
+  public confirmationModalData = {
+    title: '',
+    message: '',
+    btnOkText: '',
+    btnCancelText: ''
+  };
 
   confirm(
-    title = 'Confirmation',
-    message = 'Are you sure you want to do this?',
-    btnOkText = 'Ok',
-    btnCancelText = 'Cancel'
+    title = this.confirmationModalData.title,
+    message = this.confirmationModalData.message,
+    btnOkText = this.confirmationModalData.btnOkText,
+    btnCancelText = this.confirmationModalData.btnCancelText
   ): Observable<boolean> {
 
     const config = {

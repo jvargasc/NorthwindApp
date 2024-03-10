@@ -1,4 +1,6 @@
+using Azure;
 using NorthwindApp.Core.Models;
+using NorthwindApp.Infrastructure.Helpers;
 
 namespace NorthwindApp.Infrastructure.Repositories;
 
@@ -13,7 +15,7 @@ public interface ICategoriesRepository
 
 public interface ICustomersRepository
 {
-    Task<List<Customer>> GetCustomers();
+    Task<PagedList<Customer>> GetCustomers(UserParams userParams);
     Task<Customer> GetCustomer(int customerId);
     void CreateCustomer(Customer customer);
     void UpdateCustomer(Customer customer);
@@ -31,7 +33,7 @@ public interface IEmployeesRepository
 
 public interface IOrdersRepository
 {
-    Task<List<Order>> GetOrders();
+    Task<PagedList<Order>> GetOrders(UserParams userParams);
     Task<Order> GetOrder(int orderId);
     Task<List<OrderDetail>> GetOrderDetails(int orderId);
     void CreateOrder(Order order);
@@ -44,7 +46,7 @@ public interface IOrdersRepository
 
 public interface IProductsRepository
 {
-    Task<List<Product>> GetProducts();
+    Task<PagedList<Product>> GetProducts(UserParams userParams);
     Task<Product> GetProduct(int ProductId);
     void CreateProduct(Product product);
     void UpdateProduct(Product product);

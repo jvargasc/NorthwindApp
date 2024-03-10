@@ -1,7 +1,9 @@
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using NorthwindApp.Core.Models;
 using NorthwindApp.Infrastructure.Context;
+using NorthwindApp.Infrastructure.Helpers;
 
 namespace NorthwindApp.Infrastructure.Repositories;
 
@@ -16,11 +18,11 @@ public class OrdersRepository : IOrdersRepository
         _mapper = mapper;
     }
 
-    public async Task<List<Order>> GetOrders()
+    public async Task<PagedList<Order>> GetOrders(UserParams userParams)
     {
-        return await _northwindContext.Orders
-        .Include(od => od.Order_Details)
-        .ToListAsync();
+        var query = _northwindContext.Orders.AsNoTracking();
+
+        return await PagedList<Order>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
     }
 
     public async Task<Order> GetOrder(int orderId)

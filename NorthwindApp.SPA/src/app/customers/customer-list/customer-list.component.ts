@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Customer } from 'src/app/_models/customer';
+import { Pagination } from 'src/app/_models/pagination';
 import { Region } from 'src/app/_models/region';
 import { CustomersService } from 'src/app/_services/customers.service';
 import { RegionsService } from 'src/app/_services/regions.service';
@@ -15,17 +16,16 @@ export class CustomerListComponent implements OnInit {
 
   customers: Customer[] = [];
   regions: Region[] = [];
+  pagination: Pagination | undefined;
+  pageNumber = 1;
+  pageSize = 10;
 
   constructor(private customersService: CustomersService,
     private regionsService: RegionsService, private router: Router ) { }
 
   ngOnInit() {
-    this.customersService.getCustomers().subscribe(
-      {
-        next: customersResult => { this.customers = customersResult; }
-      }
-    );
-    this.getParameters()
+    this.loadCustomers();
+    this.getParameters();
   }
 
   buttonWasClicked(buttonName: string) {
@@ -57,4 +57,22 @@ export class CustomerListComponent implements OnInit {
     );
   }
 
+  pageChanged(event: any) {
+    if (this.pageNumber !== event.page) {
+      this.pageNumber = event.page;
+      this.loadCustomers();
+    }
+  }
+
+  private loadCustomers() {
+    this.customersService.getCustomers(this.pageNumber, this.pageSize).subscribe({
+      next: response => {
+        if (response.result && response.pagination) {
+          this.customers = response.result;
+          this.pagination = response.pagination;
+        }
+      }
+    });
+
+  }
 }

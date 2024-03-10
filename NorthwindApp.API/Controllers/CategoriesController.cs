@@ -48,5 +48,4 @@ public class CategoriesController : ControllerBase
 
         return BadRequest("Failed to update Category");
     }
-
 }

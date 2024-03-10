@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NorthwindApp.Core.Models;
 using NorthwindApp.Infrastructure.Context;
+using NorthwindApp.Infrastructure.Helpers;
 
 namespace NorthwindApp.Infrastructure.Repositories;
 
@@ -12,9 +13,11 @@ public class ProductsRepository : IProductsRepository
         _northwindContext = northwindContext;
     }
 
-    public async Task<List<Product>> GetProducts()
+    public async Task<PagedList<Product>> GetProducts(UserParams userParams)
     {
-        return await _northwindContext.Products.ToListAsync();
+        var query = _northwindContext.Products.AsNoTracking();
+
+        return await PagedList<Product>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
     }
 
     public async Task<Product> GetProduct(int productid)

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { Order } from 'src/app/_models/order';
+import { Pagination } from 'src/app/_models/pagination';
 
 import { OrdersService } from 'src/app/_services/orders.service';
 
@@ -12,15 +14,14 @@ import { OrdersService } from 'src/app/_services/orders.service';
 export class OrderListComponent implements OnInit {
 
   orders: Order[] = [];
+  pagination: Pagination | undefined;
+  pageNumber = 1;
+  pageSize = 10;
 
   constructor(private ordersService: OrdersService, private router: Router) { }
 
   ngOnInit() {
-    this.ordersService.getOrders().subscribe(
-      {
-        next: ordersResult => { this.orders = ordersResult; }
-      }
-    );
+    this.loadOrders();
   }
 
   buttonWasClicked(buttonName: string) {
@@ -36,6 +37,24 @@ export class OrderListComponent implements OnInit {
         console.log(buttonName);
         break;
     }
+  }
+
+  pageChanged(event: any) {
+    if (this.pageNumber !== event.page) {
+      this.pageNumber = event.page;
+      this.loadOrders();
+    }
+  }
+
+  private loadOrders() {
+    this.ordersService.getOrders(this.pageNumber, this.pageSize).subscribe({
+    next: response => {
+      if (response.result && response.pagination) {
+        this.orders = response.result;
+        this.pagination = response.pagination;
+      }
+    }
+    });
   }
 
 }

@@ -199,13 +199,14 @@ export class OrderEditComponent implements OnInit {
   }
 
   private setCustomers() {
-    this.customersService.getCustomers().subscribe(
-      {
-        next: customersResult => {
-          this.customers = customersResult;
-        }
+    this.customersService.getCustomers(999999, 99999).subscribe({
+    next: response => {
+      if (response.result && response.pagination) {
+        this.customers = response.result;
+        // this.pagination = response.pagination;
       }
-    );
+    }
+    });
   }
 
   private getDate(dateValue: Date): Date {

@@ -129,7 +129,8 @@ export class CustomerEditComponent implements OnInit {
               this.toastr.success(this.bodyToast);
             },
             error: errorResult => {
-              this.modalMessageBody = JSON.stringify(errorResult);
+              console.log(errorResult.error);
+              this.modalMessageBody = JSON.stringify(errorResult.error.statusCode + ' - ' + errorResult.error.message);
               this.displayModalMessage();
             }
           });

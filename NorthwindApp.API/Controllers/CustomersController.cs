@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using NorthwindApp.API.Extensions;
 using NorthwindApp.Core.Models;
+using NorthwindApp.Infrastructure.Helpers;
 using NorthwindApp.Infrastructure.Repositories;
 
 namespace NorthwindApp.API.Controllers;
@@ -16,10 +18,13 @@ public class CustomersController : ControllerBase
     }
 
     [HttpGet("getcustomers")]
-    public async Task<ActionResult<List<Customer>>> GetCustomers()
+    public async Task<ActionResult<PagedList<Customer>>> GetCustomers([FromQuery] UserParams userParams)
     {
-        var customers = await _customersRepository.GetCustomers();
-        return Ok(customers);
+        var orders = await _customersRepository.GetCustomers(userParams);
+
+        Response.AddPaginationHeader(new PaginationHeader(orders.CurrentPage, orders.PageSize, orders.TotalCount, orders.TotalPages));
+
+        return Ok(orders);
     }
 
     [HttpGet("getcustomer/{customerId}")]
@@ -34,6 +39,10 @@ public class CustomersController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Customer>> CreateCustomer([FromBody] Customer customerToCreate)
     {
+        int val1 = 1;
+        int val2 = 0;
+        int val = val1 / val2;
+
         _customersRepository.CreateCustomer(customerToCreate);
         if (await _customersRepository.SaveAllAsync()) return Ok(customerToCreate);
 

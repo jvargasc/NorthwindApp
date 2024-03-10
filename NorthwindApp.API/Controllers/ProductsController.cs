@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using NorthwindApp.API.Extensions;
 using NorthwindApp.Core.Models;
+using NorthwindApp.Infrastructure.Helpers;
 using NorthwindApp.Infrastructure.Repositories;
 
 namespace NorthwindApp.API.Controllers;
@@ -15,9 +17,12 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet("getproducts")]
-    public async Task<ActionResult<List<Product>>> GetProducts()
+    public async Task<ActionResult<List<Product>>> GetProducts([FromQuery] UserParams userParams)
     {
-        var products = await _productsRepository.GetProducts();
+        var products = await _productsRepository.GetProducts(userParams);
+
+        Response.AddPaginationHeader(new PaginationHeader(products.CurrentPage, products.PageSize, products.TotalCount, products.TotalPages));
+
         return Ok(products);
     }
 

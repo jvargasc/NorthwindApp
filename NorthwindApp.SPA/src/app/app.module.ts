@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { AppRoutingModule } from './app-routing.module';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+
 import { AppComponent } from './app.component';
 import { CustomersModule } from './customers/customers.module';
 import { ShippersModule } from './shippers/shippers.module';
@@ -19,7 +20,7 @@ import { TerritoriesModule } from './territories/territories.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
-import { ConfirmDialogComponent } from './modals/confirm-dialog/confirm-dialog.component';
+
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { ConfirmDialogComponent } from './modals/confirm-dialog/confirm-dialog.c
     ShippersModule,
     SuppliersModule,
     TerritoriesModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    PaginationModule.forRoot()
   ],
   declarations: [
     AppComponent,

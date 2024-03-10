@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using NorthwindApp.Core.Models;
 using NorthwindApp.Infrastructure.Repositories;
 using AutoMapper;
+using NorthwindApp.Infrastructure.Helpers;
+using Azure;
+using NorthwindApp.API.Extensions;
 
 namespace NorthwindApp.API.Controllers;
 [ApiController]
@@ -18,9 +21,12 @@ public class OrdersController : ControllerBase
     }
 
     [HttpGet("getorders")]
-    public async Task<ActionResult<List<Order>>> GetOrders()
+    public async Task<ActionResult<PagedList<Order>>> GetOrders([FromQuery] UserParams userParams)
     {
-        var orders = await _ordersRepository.GetOrders();
+        var orders = await _ordersRepository.GetOrders(userParams);
+
+        Response.AddPaginationHeader(new PaginationHeader(orders.CurrentPage, orders.PageSize, orders.TotalCount, orders.TotalPages));
+
         return Ok(orders);
     }
 
