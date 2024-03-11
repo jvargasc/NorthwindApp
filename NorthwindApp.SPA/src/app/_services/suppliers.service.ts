@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Supplier } from '../_models/supplier';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable, map, tap } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { PaginatedResult } from '../_models/pagination';
 
 @Injectable({
   providedIn: 'root'
@@ -10,13 +11,30 @@ import { HttpClient } from '@angular/common/http';
 export class SuppliersService {
 
   private baseUrl = environment.apiUrl + '/api/Suppliers/';
-  private suppliersSource = new BehaviorSubject<Supplier[]>([]);
-  suppliers$ = this.suppliersSource.asObservable();
+  private paginatedResult: PaginatedResult<Supplier[]> = new PaginatedResult<Supplier[]>;
 
   constructor(private http: HttpClient) { }
 
-  getSuppliers(): Observable<Supplier[]> {
-    return this.http.get<Supplier[]>(this.baseUrl + `getsuppliers`);
+  getSuppliers(page?: number, itemsPerPage?: number) : Observable<PaginatedResult<Supplier[]>> {
+    let params = new HttpParams();
+
+    if (page && itemsPerPage) {
+      params = params.append('pageNumber', page);
+      params = params.append('pageSize', itemsPerPage);
+    }
+
+    return this.http.get<Supplier[]>(this.baseUrl + `getsuppliers`, {observe: 'response', params}).pipe(
+      map(response => {
+        if (response.body) {
+          this.paginatedResult.result = response.body;
+        }
+        const pagination = response.headers.get('Pagination');
+        if (pagination) {
+          this.paginatedResult.pagination = JSON.parse(pagination);
+        }
+        return this.paginatedResult;
+      })
+    );
   }
 
   getSupplier(supplierId: number): Observable<Supplier> {

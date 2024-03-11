@@ -27,7 +27,7 @@ export class OrderListComponent implements OnInit {
   buttonWasClicked(buttonName: string) {
     switch(buttonName)
     {
-            case "new":
+      case "new":
         this.router.navigate(['/orders/order-edit']);
         break;
       case "refresh":
@@ -49,11 +49,11 @@ export class OrderListComponent implements OnInit {
   private loadOrders() {
     this.ordersService.getOrders(this.pageNumber, this.pageSize).subscribe({
     next: response => {
-      if (response.result && response.pagination) {
-        this.orders = response.result;
-        this.pagination = response.pagination;
+        if (response.result && response.pagination) {
+          this.orders = response.result;
+          this.pagination = response.pagination;
+        }
       }
-    }
     });
   }
 

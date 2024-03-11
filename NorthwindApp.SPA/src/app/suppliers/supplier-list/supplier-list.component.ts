@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Pagination } from 'src/app/_models/pagination';
 import { Region } from 'src/app/_models/region';
 
 import { Supplier } from 'src/app/_models/supplier';
@@ -15,22 +16,34 @@ export class SupplierListComponent implements OnInit {
 
   suppliers: Supplier[] = [];
   regions: Region[] = [];
+  pagination: Pagination | undefined;
+  pageNumber = 1;
+  pageSize = 10;
 
   constructor(private suppliersService: SuppliersService, private regionsService: RegionsService, private router: Router) {  }
 
   ngOnInit() {
-    this.suppliersService.getSuppliers().subscribe(
-      {
-        next: suppliersService => { this.suppliers = suppliersService; }
-      }
-    );
-    this.regionsService.getRegions().subscribe(
-      {
-        next: regionsResult => {
-              this.regions = regionsResult;
+    this.loadSuppliers();
+  }
+
+  pageChanged(event: any) {
+    if (this.pageNumber !== event.page) {
+      this.pageNumber = event.page;
+      this.loadSuppliers();
+    }
+  }
+
+  private loadSuppliers() {
+
+    this.suppliersService.getSuppliers(this.pageNumber, this.pageSize).subscribe({
+      next: response => {
+        if (response.result && response.pagination) {
+          this.suppliers = response.result;
+          this.pagination = response.pagination;
         }
       }
-    );
+    });
+
   }
 
   buttonWasClicked(buttonName: string) {

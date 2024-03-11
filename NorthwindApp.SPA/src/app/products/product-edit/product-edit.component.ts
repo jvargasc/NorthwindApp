@@ -28,7 +28,7 @@ export class ProductEditComponent implements OnInit {
   bodyToast = "Record successfully saved!!!";
   savingRecord = false;
 
-  constructor( private productsService: ProductsService, private categoriesservice: CategoriesService, private suppliersservice: SuppliersService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService ) { }
+  constructor( private productsService: ProductsService, private categoriesservice: CategoriesService, private suppliersService: SuppliersService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService ) { }
 
   ngOnInit() {
     this.getParameters();
@@ -114,11 +114,13 @@ export class ProductEditComponent implements OnInit {
   }
 
   private getSuppliers() {
-    this.suppliersservice.getSuppliers().subscribe(
-      {
-        next: suppliersResult => { this.suppliers = suppliersResult; }
+    this.suppliersService.getSuppliers(1, 9999).subscribe({
+      next: response => {
+        if (response.result && response.pagination) {
+          this.suppliers = response.result;
+        }
       }
-    );
+    });
   }
 
   private getCategories() {

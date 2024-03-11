@@ -73,7 +73,7 @@ public interface IShippersRepository
 
 public interface ISuppliersRepository
 {
-    Task<List<Supplier>> GetSuppliers();
+    Task<PagedList<Supplier>> GetSuppliers(UserParams userParams);
     Task<Supplier> GetSupplier(int SupplierId);
     void CreateSupplier(Supplier supplier);
     void UpdateSupplier(Supplier supplier);
@@ -82,7 +82,7 @@ public interface ISuppliersRepository
 
 public interface ITerritoriesRepository
 {
-    Task<List<Territory>> GetTerritories();
+    Task<PagedList<Territory>> GetTerritories(UserParams userParams);
     Task<Territory> GetTerritory(int TerritoryId);
     void CreateTerritory(Territory territory);
     void UpdateTerritory(Territory territory);

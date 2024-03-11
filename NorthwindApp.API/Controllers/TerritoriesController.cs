@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using NorthwindApp.API.Extensions;
 using NorthwindApp.Core.Models;
+using NorthwindApp.Infrastructure.Helpers;
 using NorthwindApp.Infrastructure.Repositories;
 
 namespace NorthwindApp.API.Controllers;
@@ -15,9 +17,13 @@ public class TerritoriesController : ControllerBase
     }
 
     [HttpGet("getterritories")]
-    public async Task<ActionResult<List<Territory>>> GetTerritories()
+    public async Task<ActionResult<List<Territory>>> GetTerritories([FromQuery] UserParams userParams)
     {
-        var territories = await _territoriesRepository.GetTerritories();
+
+        var territories = await _territoriesRepository.GetTerritories(userParams);
+
+        Response.AddPaginationHeader(new PaginationHeader(territories.CurrentPage, territories.PageSize, territories.TotalCount, territories.TotalPages));
+
         return Ok(territories);
     }
 

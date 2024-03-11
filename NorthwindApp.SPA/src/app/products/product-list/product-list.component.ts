@@ -21,7 +21,7 @@ export class ProductListComponent implements OnInit {
   pageNumber = 1;
   pageSize = 10;
 
-  constructor(private productsService: ProductsService, private categoriesservice: CategoriesService, private suppliersservice: SuppliersService, private router: Router ) { }
+  constructor(private productsService: ProductsService, private categoriesservice: CategoriesService, private suppliersService: SuppliersService, private router: Router ) { }
 
   ngOnInit() {
     this.loadProducts();
@@ -77,11 +77,13 @@ export class ProductListComponent implements OnInit {
   }
 
   private getSuppliers() {
-    this.suppliersservice.getSuppliers().subscribe(
-      {
-        next: suppliersResult => { this.suppliers = suppliersResult; }
+    this.suppliersService.getSuppliers(1, 9999).subscribe({
+      next: response => {
+        if (response.result && response.pagination) {
+          this.suppliers = response.result;
+        }
       }
-    );
+    });
   }
 
   private getCategories() {

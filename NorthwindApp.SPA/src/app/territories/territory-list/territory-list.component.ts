@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Pagination } from 'src/app/_models/pagination';
 import { Region } from 'src/app/_models/region';
 
 import { Territory } from 'src/app/_models/territory';
@@ -15,25 +16,17 @@ export class TerritoryListComponent implements OnInit {
 
   territories: Territory[] = [];
   regions: Region[] = [];
+  pagination: Pagination | undefined;
+  pageNumber = 1;
+  pageSize = 10;
 
   constructor(private territoriesService: TerritoriesService, private regionsService: RegionsService, private router: Router) {  }
 
   ngOnInit() {
-    this.territoriesService.getTerritories().subscribe(
-      {
-        next: territoriesResult => {
-          this.territories = territoriesResult;
-        }
-      }
-    );
-    this.regionsService.getRegions().subscribe(
-      {
-        next: regionsResult => {
-              this.regions = regionsResult;
-        }
-      }
-    );
+    this.loadTerritories();
+    this.getRegions();
   }
+
 
   buttonWasClicked(buttonName: string) {
     switch(buttonName)
@@ -52,6 +45,35 @@ export class TerritoryListComponent implements OnInit {
 
   getRegionDescription(regionId: number) : string | undefined {
     return this.regions.find(r => r.regionId == regionId)?.regionDescription;
+  }
+
+  pageChanged(event: any) {
+    if (this.pageNumber !== event.page) {
+      this.pageNumber = event.page;
+      this.loadTerritories();
+    }
+  }
+
+  private loadTerritories() {
+    this.territoriesService.getTerritories(this.pageNumber, this.pageSize).subscribe({
+    next: response => {
+      if (response.result && response.pagination) {
+        this.territories = response.result;
+        this.pagination = response.pagination;
+      }
+    }
+    });
+
+  }
+
+  private getRegions() {
+    this.regionsService.getRegions().subscribe(
+      {
+        next: regionsResult => {
+          this.regions = regionsResult;
+        }
+      }
+    );
   }
 
 }

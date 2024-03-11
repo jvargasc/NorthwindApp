@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using NorthwindApp.API.Extensions;
 using NorthwindApp.Core.Models;
+using NorthwindApp.Infrastructure.Helpers;
 using NorthwindApp.Infrastructure.Repositories;
 
 namespace NorthwindApp.API.Controllers;
@@ -15,9 +17,12 @@ public class SuppliersController : ControllerBase
     }
 
     [HttpGet("getsuppliers")]
-    public async Task<ActionResult<List<Supplier>>> GetSuppliers()
+    public async Task<ActionResult<List<Supplier>>> GetSuppliers([FromQuery] UserParams userParams)
     {
-        var shippers = await _suppliersRepository.GetSuppliers();
+        var shippers = await _suppliersRepository.GetSuppliers(userParams);
+
+        Response.AddPaginationHeader(new PaginationHeader(shippers.CurrentPage, shippers.PageSize, shippers.TotalCount, shippers.TotalPages));
+
         return Ok(shippers);
     }
 

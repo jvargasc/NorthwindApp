@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NorthwindApp.Core.Models;
 using NorthwindApp.Infrastructure.Context;
+using NorthwindApp.Infrastructure.Helpers;
 
 namespace NorthwindApp.Infrastructure.Repositories;
 
@@ -12,9 +13,11 @@ public class TerritoriesRepository : ITerritoriesRepository
         _northwindContext = northwindContext;
     }
 
-    public async Task<List<Territory>> GetTerritories()
+    public async Task<PagedList<Territory>> GetTerritories(UserParams userParams)
     {
-        return await _northwindContext.Territories.ToListAsync();
+        var query = _northwindContext.Territories.AsNoTracking();
+
+        return await PagedList<Territory>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
     }
 
     public async Task<Territory> GetTerritory(int territoryId)
