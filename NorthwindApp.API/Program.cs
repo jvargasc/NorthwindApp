@@ -1,7 +1,10 @@
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using NorthwindApp.API.Interfaces;
 using NorthwindApp.API.MiddleWare;
+using NorthwindApp.API.Services;
 using NorthwindApp.Infrastructure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +18,14 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 builder.Services.AddHealthChecks();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddCors();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddAuthentication(JwtBearerDefaults.Authenticationscheme)
+    .AddJwtBearer(Options =>
+    {
+
+    });
 
 var app = builder.Build();
 app.UseMiddleware<ExceptionMiddleWare>();

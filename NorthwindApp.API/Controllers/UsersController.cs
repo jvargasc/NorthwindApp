@@ -1,7 +1,9 @@
 using System.Security.Cryptography;
 using System.Text;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NorthwindApp.API.Interfaces;
 using NorthwindApp.Core.Dtos;
 using NorthwindApp.Core.Models;
 using NorthwindApp.Infrastructure.Context;
@@ -13,23 +15,45 @@ public class UsersController : BaseApiController
 {
     private readonly IUsersRepository _usersRepository;
     private readonly IMapper _mapper;
+    private readonly ITokenService _tokenService;
 
-    public UsersController(IUsersRepository usersRepository, IMapper mapper)
+    public UsersController(IUsersRepository usersRepository, IMapper mapper, ITokenService tokenService)
     {
+        _tokenService = tokenService;
         _usersRepository = usersRepository;
         _mapper = mapper;
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<AppUserDto>> Login([FromBody] UserToCreate userToCreate)
+    public async Task<ActionResult<AppUserDto>> Login(LoginDto login)
     {
+        var user = await _usersRepository.GetUser(login.UserName.ToLower());
+        if (user == null) return Unauthorized("invalid username");
 
+        using var hmac = new HMACSHA512(user.PasswordSalt);
+
+        var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(login.Password));
+
+        for (int i = 0; i < computedHash.Length; i++)
+        {
+            if (computedHash[i] != user.PasswordHash[i])
+                return Unauthorized("invalid password");
+        }
+
+        return new AppUserDto
+        {
+            UserName = user.UserName,
+            Token = _tokenService.CreateToken(user)
+        };
+
+        // var result = await _userManager.CheckPasswordAsync(user, login.Password);
+        // if (!result) return Unauthorized("Invalid password");
     }
 
     [HttpPost("register")]
     public async Task<ActionResult<AppUserDto>> Register([FromBody] UserToCreate userToCreate)
     {
-        if (!(await _usersRepository.UserExists(userToCreate.UserName)))
+        if (await _usersRepository.UserExists(userToCreate.UserName.ToLower()))
             return BadRequest("That user name is taken");
 
         using var hmac = new HMACSHA512();
@@ -44,9 +68,13 @@ public class UsersController : BaseApiController
         _usersRepository.CreateUser(user);
         await _usersRepository.SaveAllAsync();
 
-        AppUserDto userCreated = _mapper.Map<AppUserDto>(user);
+        // AppUserDto userCreated = _mapper.Map<AppUserDto>(user);
 
-        return userCreated;
+        return new AppUserDto
+        {
+            UserName = user.UserName,
+            Token = _tokenService.CreateToken(user)
+        };
     }
 
     [HttpGet("getusers")]
@@ -60,14 +88,14 @@ public class UsersController : BaseApiController
     }
 
     [HttpGet("getuser")]
-    public async Task<ActionResult<List<AppUserDto>>> GetUser([FromHeader] string userName)
+    public async Task<ActionResult<AppUserDto>> GetUser(string userName)
     {
         AppUser user = await _usersRepository.GetUser(userName);
 
-        if (user != null)
+        if (user == null)
             return BadRequest("That user name doesn't exists");
 
-        List<AppUserDto> userDto = _mapper.Map<List<AppUserDto>>(user);
+        AppUserDto userDto = _mapper.Map<AppUserDto>(user);
 
         return Ok(userDto);
     }
