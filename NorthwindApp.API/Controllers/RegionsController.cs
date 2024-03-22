@@ -4,9 +4,7 @@ using NorthwindApp.Infrastructure.Repositories;
 
 namespace NorthwindApp.API.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class RegionsController : ControllerBase
+public class RegionsController : BaseApiController
 {
     private readonly IRegionsRepository _regionsRepository;
     public RegionsController(IRegionsRepository regionsRepository)

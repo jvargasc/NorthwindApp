@@ -4,9 +4,7 @@ using NorthwindApp.Infrastructure.Repositories;
 
 namespace NorthwindApp.API.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class EmployeesController : ControllerBase
+public class EmployeesController : BaseApiController
 {
 
     private readonly IEmployeesRepository _employeesRepository;

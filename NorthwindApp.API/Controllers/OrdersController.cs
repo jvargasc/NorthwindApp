@@ -7,9 +7,8 @@ using Azure;
 using NorthwindApp.API.Extensions;
 
 namespace NorthwindApp.API.Controllers;
-[ApiController]
-[Route("api/[controller]")]
-public class OrdersController : ControllerBase
+
+public class OrdersController : BaseApiController
 {
     private readonly IOrdersRepository _ordersRepository;
     private readonly IMapper _mapper;

@@ -24,6 +24,7 @@ public partial class NorthwindContext : DbContext
     public virtual DbSet<Shipper> Shippers { get; set; }
     public virtual DbSet<Supplier> Suppliers { get; set; }
     public virtual DbSet<Territory> Territories { get; set; }
+    public virtual DbSet<AppUser> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -224,6 +225,13 @@ public partial class NorthwindContext : DbContext
             //     .HasForeignKey(d => d.OrderId)
             //     .OnDelete(DeleteBehavior.ClientSetNull)
             //     .HasConstraintName("FK_Order_Details_Orders");
+        });
+
+        modelBuilder.Entity<AppUser>(entity =>
+        {
+            entity.HasKey(a => a.Id)
+                .HasName("PK_User")
+                .IsClustered(true);
         });
 
         OnModelCreatingPartial(modelBuilder);

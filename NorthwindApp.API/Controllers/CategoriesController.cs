@@ -4,9 +4,7 @@ using NorthwindApp.Infrastructure.Repositories;
 
 namespace NorthwindApp.API.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class CategoriesController : ControllerBase
+public class CategoriesController : BaseApiController
 {
     private readonly ICategoriesRepository _categoriesRepository;
 

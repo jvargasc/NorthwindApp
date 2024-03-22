@@ -30,6 +30,7 @@ namespace NorthwindApp.Infrastructure
             services.AddScoped<IShippersRepository, ShippersRepository>();
             services.AddScoped<ISuppliersRepository, SuppliersRepository>();
             services.AddScoped<ITerritoriesRepository, TerritoriesRepository>();
+            services.AddScoped<IUsersRepository, UsersRepository>();
         }
     }
 }

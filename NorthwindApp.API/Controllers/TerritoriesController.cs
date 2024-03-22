@@ -6,9 +6,7 @@ using NorthwindApp.Infrastructure.Repositories;
 
 namespace NorthwindApp.API.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class TerritoriesController : ControllerBase
+public class TerritoriesController : BaseApiController
 {
     private readonly ITerritoriesRepository _territoriesRepository;
     public TerritoriesController(ITerritoriesRepository territoriesRepository)

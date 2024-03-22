@@ -88,3 +88,13 @@ public interface ITerritoriesRepository
     void UpdateTerritory(Territory territory);
     Task<bool> SaveAllAsync();
 }
+
+public interface IUsersRepository
+{
+    Task<List<AppUser>> GetUsers();
+    Task<AppUser> GetUser(string username);
+    void CreateUser(AppUser user);
+    void UpdateUser(AppUser user);
+    Task<bool> SaveAllAsync();
+    Task<bool> UserExists(string username);
+}

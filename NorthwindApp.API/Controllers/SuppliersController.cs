@@ -6,9 +6,7 @@ using NorthwindApp.Infrastructure.Repositories;
 
 namespace NorthwindApp.API.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class SuppliersController : ControllerBase
+public class SuppliersController : BaseApiController
 {
     private readonly ISuppliersRepository _suppliersRepository;
     public SuppliersController(ISuppliersRepository suppliersRepository)

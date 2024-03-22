@@ -100,6 +100,18 @@ GO
 if exists (select * from sysobjects where id = object_id('dbo.Employees') and sysstat & 0xf = 3)
 	drop table "dbo"."Employees"
 GO
+if exists (select * from sysobjects where id = object_id('dbo.Users') and sysstat & 0xf = 3)
+	drop table "dbo".Users
+GO
+
+CREATE TABLE dbo.Users (
+    Id INT IDENTITY (1, 1) NOT NULL PRIMARY KEY,
+    UserName VARCHAR(100) NOT NULL,
+    PasswordHash VARBINARY(MAX) NOT NULL,
+    PasswordSalt VARBINARY(MAX) NOT NULL
+)
+
+
 CREATE TABLE "Employees" (
 	"EmployeeID" "int" IDENTITY (1, 1) NOT NULL ,
 	"LastName" nvarchar (20) NOT NULL ,
