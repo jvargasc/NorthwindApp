@@ -20,7 +20,8 @@ import { TerritoriesModule } from './territories/territories.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
-
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 
 @NgModule({
   imports: [
@@ -40,7 +41,8 @@ import { ErrorInterceptor } from './_interceptors/error.interceptor';
     SuppliersModule,
     TerritoriesModule,
     BrowserAnimationsModule,
-    PaginationModule.forRoot()
+    PaginationModule.forRoot(),
+    BsDropdownModule.forRoot()
   ],
   declarations: [
     AppComponent,
@@ -48,7 +50,8 @@ import { ErrorInterceptor } from './_interceptors/error.interceptor';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

@@ -16,10 +16,10 @@ export class CategoriesService  {
 
   constructor(private http: HttpClient) {
     this.setCategories();
-    const timeLapse = (1 * 60 * 1000); // minutes * seconds * miliseconds
-    interval(timeLapse).subscribe(
-      t => (this.setCategories())
-      );
+    // const timeLapse = (1 * 60 * 1000); // minutes * seconds * miliseconds
+    // interval(timeLapse).subscribe(
+    //   t => (this.setCategories())
+    //   );
    }
 
   private setCategories() {

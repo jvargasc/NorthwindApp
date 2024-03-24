@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NorthwindApp.API.Extensions;
 using NorthwindApp.Core.Models;
@@ -6,6 +7,7 @@ using NorthwindApp.Infrastructure.Repositories;
 
 namespace NorthwindApp.API.Controllers;
 
+[Authorize]
 public class SuppliersController : BaseApiController
 {
     private readonly ISuppliersRepository _suppliersRepository;

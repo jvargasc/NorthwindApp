@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NorthwindApp.Core.Models;
 using NorthwindApp.Infrastructure.Repositories;
 
 namespace NorthwindApp.API.Controllers;
 
+[Authorize]
 public class RegionsController : BaseApiController
 {
     private readonly IRegionsRepository _regionsRepository;

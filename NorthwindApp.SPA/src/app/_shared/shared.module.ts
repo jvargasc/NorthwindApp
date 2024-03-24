@@ -17,6 +17,7 @@ import { ModalMessageComponent } from './modals/modalmessage/modalmessage.compon
 import { PhotoUploadComponent } from './photo-upload/photo-upload.component';
 import { ConfirmDialogComponent } from '../modals/confirm-dialog/confirm-dialog.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
       type: 'line-scale-party'
     }),
     ModalModule.forRoot(),
-    PaginationModule.forRoot()
+    PaginationModule.forRoot(),
+    BsDropdownModule.forRoot()
   ],
   exports: [
     FormsModule,
@@ -57,7 +59,8 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     NgxSpinnerModule,
     ConfirmDialogComponent,
     ModalModule,
-    PaginationModule
+    PaginationModule,
+    BsDropdownModule
   ],
 })
 export class SharedModule { }

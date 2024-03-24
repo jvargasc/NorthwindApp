@@ -85,9 +85,16 @@
   background-color: #CFD8DC;
 }
 
-
 .logo {
   margin-left: 50px;
   width: 90px;
   height: 45px;
+}
+
+#loginForm {
+  border: solid green
+}
+
+.dropdown-toggle, .dropdown-item {
+  cursor: pointer;
 }

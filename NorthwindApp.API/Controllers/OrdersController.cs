@@ -5,9 +5,11 @@ using AutoMapper;
 using NorthwindApp.Infrastructure.Helpers;
 using Azure;
 using NorthwindApp.API.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NorthwindApp.API.Controllers;
 
+[Authorize]
 public class OrdersController : BaseApiController
 {
     private readonly IOrdersRepository _ordersRepository;
