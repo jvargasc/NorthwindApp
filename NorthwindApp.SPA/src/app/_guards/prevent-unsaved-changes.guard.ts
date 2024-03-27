@@ -16,7 +16,10 @@ export const preventUnsavedChangesOnCategoryGuard: CanDeactivateFn<CategoryEditC
 
   const confirmService = inject(ConfirmService);
 
-  if(component.categoryForm?.dirty || component.savingRecord) {
+  component.throwDirtToControls();
+
+  if(component.categoryForm?.dirty && !component.savingRecord
+     ) {
     let confirmationModalData = {
       title: 'Categories',
       message: 'Are you sure you want to leave this category without saving it?',
@@ -34,7 +37,7 @@ export const preventUnsavedChangesOnCustomerGuard: CanDeactivateFn<CustomerEditC
 
   const confirmService = inject(ConfirmService);
 
-  if(component.customerForm?.dirty || component.savingRecord) {
+  if(component.customerForm?.dirty && !component.savingRecord) {
     let confirmationModalData = {
       title: 'Customers',
       message: 'Are you sure you want to leave this customer without saving it?',
@@ -52,7 +55,7 @@ export const preventUnsavedChangesOnEmployeeGuard: CanDeactivateFn<EmployeeEditC
 
   const confirmService = inject(ConfirmService);
 
-  if(component.employeeForm?.dirty || component.savingRecord) {
+  if(component.employeeForm?.dirty && !component.savingRecord) {
     let confirmationModalData = {
       title: 'Employees',
       message: 'Are you sure you want to leave this employee without saving it?',
@@ -70,7 +73,7 @@ export const preventUnsavedChangesOnOrderGuard: CanDeactivateFn<OrderEditCompone
 
   const confirmService = inject(ConfirmService);
 
-  if(component.orderForm?.dirty || component.savingRecord) {
+  if(component.orderForm?.dirty && !component.savingRecord) {
     let confirmationModalData = {
       title: 'Orders',
       message: 'Are you sure you want to leave this order without saving it?',
@@ -88,7 +91,7 @@ export const preventUnsavedChangesOnProductGuard: CanDeactivateFn<ProductEditCom
 
   const confirmService = inject(ConfirmService);
 
-  if(component.productForm?.dirty || component.savingRecord) {
+  if(component.productForm?.dirty && !component.savingRecord) {
     let confirmationModalData = {
       title: 'Product',
       message: 'Are you sure you want to leave this product without saving it?',
@@ -106,7 +109,7 @@ export const preventUnsavedChangesOnRegionGuard: CanDeactivateFn<RegionEditCompo
 
   const confirmService = inject(ConfirmService);
 
-  if(component.regionForm?.dirty || component.savingRecord) {
+  if(component.regionForm?.dirty && !component.savingRecord) {
     let confirmationModalData = {
       title: 'Regions',
       message: 'Are you sure you want to leave this region without saving it?',
@@ -124,7 +127,7 @@ export const preventUnsavedChangesOnShipperGuard: CanDeactivateFn<ShipperEditCom
 
   const confirmService = inject(ConfirmService);
 
-  if(component.shipperForm?.dirty || component.savingRecord) {
+  if(component.shipperForm?.dirty && !component.savingRecord) {
     let confirmationModalData = {
       title: 'Shippers',
       message: 'Are you sure you want to leave this shipper without saving it?',
@@ -142,7 +145,7 @@ export const preventUnsavedChangesOnSupplierGuard: CanDeactivateFn<SupplierDetai
 
   const confirmService = inject(ConfirmService);
 
-  if(component.supplierForm?.dirty || component.savingRecord) {
+  if(component.supplierForm?.dirty && !component.savingRecord) {
     let confirmationModalData = {
       title: 'Suppliers',
       message: 'Are you sure you want to leave this supplier without saving it?',
@@ -160,7 +163,7 @@ export const preventUnsavedChangesOnTerritoryGuard: CanDeactivateFn<TerritoryEdi
 
   const confirmService = inject(ConfirmService);
 
-  if(component.territoryForm?.dirty || component.savingRecord) {
+  if(component.territoryForm?.dirty && !component.savingRecord) {
     let confirmationModalData = {
       title: 'Territories',
       message: 'Are you sure you want to leave this territory without saving it?',

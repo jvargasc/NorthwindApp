@@ -34,7 +34,6 @@ export class NavComponent implements OnInit {
       next: user => {
         this.loggedIn = !!user;
         this.user = user;
-        console.log(user)
       },
       error: error => console.log(error)
     });
@@ -59,6 +58,14 @@ export class NavComponent implements OnInit {
     this.userService.logout();
     this.loggedIn = false;
     this.router.navigate(['/home']);
+  }
+
+  signUp() {
+    console.log('signUp()');
+  }
+
+  signIn() {
+    console.log('signIn()');
   }
 
   checkboxClicked() {

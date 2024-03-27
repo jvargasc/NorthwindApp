@@ -5,7 +5,7 @@ using NorthwindApp.Infrastructure.Repositories;
 
 namespace NorthwindApp.API.Controllers;
 
-[Authorize]
+// [Authorize]
 public class CategoriesController : BaseApiController
 {
     private readonly ICategoriesRepository _categoriesRepository;

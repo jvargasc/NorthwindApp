@@ -1,11 +1,15 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 
 import { Category } from 'src/app/_models/category';
+import { ModalMessageData } from 'src/app/_models/modalmessagedata';
 import { CategoriesService } from 'src/app/_services/categories.service';
+import { ConfirmService } from 'src/app/_services/confirm.service';
 import { PhotosService } from 'src/app/_services/photos.service';
+import { ModalsShowMessageComponent } from 'src/app/_shared/modals/modalsshowmessage/modalsshowmessage.component';
 
 @Component({
   selector: 'app-category-edit',
@@ -19,39 +23,36 @@ export class CategoryEditComponent implements OnInit {
   picturePrefix: string = "data:image/jpeg;base64,";
   blankPicture: string = '../../../assets/images/Blank.png';
   modalTitle = "Category";
-  modalYesNoBody = "";
   modalMessageBody = "";
   toolbarButtonPressed = "";
-  headerToast = "Category";
   bodyToast = "Record successfully saved!!!";
 
   savingRecord = false;
   pictureAssigned = false;
 
-  constructor( private categoriesService: CategoriesService, private route: ActivatedRoute, private photosService: PhotosService, private router: Router, private toastr: ToastrService ) { }
+  modalRef: BsModalRef;
 
+  constructor( private categoriesService: CategoriesService, private route: ActivatedRoute, private photosService: PhotosService, private router: Router, private toastr: ToastrService, private confirmService: ConfirmService, private modalService: BsModalService) { }
 
   ngOnInit() {
-    // this.toastClick();
     this.photosService.setPhoto(this.blankPicture);
     this.initializeForm();
     this.setCategory();
-    // console.log(this.defaultValues);
-    // this.toastClick();
   }
 
 //#region Buttons
   toolbarButtonWasClicked(buttonName: string) {
     this.toolbarButtonPressed = buttonName;
     let modalBody = "";
+    this.getPicture();
     switch(buttonName) {
       case "new":
         modalBody = "Do you wish to clear this Category and create a new one?";
-        this.displayModalYesNo(modalBody);
+        this.displayModalYesNo(buttonName, modalBody);
         break;
       case "save":
         modalBody = "Do you wish to save this Category?";
-        this.displayModalYesNo(modalBody);
+        this.displayModalYesNo(buttonName, modalBody);
         break;
       case "return":
         this.router.navigate(['/categories/category-list']);
@@ -68,6 +69,8 @@ export class CategoryEditComponent implements OnInit {
         if (this.toolbarButtonPressed == "save")
             if(this.requiredFieldsValid())
               this.createOrUpdateCategory();
+            else
+              this.savingRecord = false;
       break;
       case "btnNo":
         break;
@@ -78,6 +81,23 @@ export class CategoryEditComponent implements OnInit {
 //#endregion
 
 //#region Handle Form
+  throwDirtToControls() {
+
+    if ((this.picture === this.blankPicture))
+      return;
+
+    if(!this.categoryForm.controls['categoryName'].value) {
+      this.categoryForm.markAsDirty();
+      return;
+    }
+
+    if(!this.categoryForm.controls['description'].value) {
+      this.categoryForm.markAsDirty();
+      return;
+    }
+
+  }
+
   private initializeForm() {
     this.savingRecord = false;
     this.pictureAssigned = false;
@@ -105,6 +125,8 @@ export class CategoryEditComponent implements OnInit {
     let tmpValue = false;
     let displayModalMessage = false;
 
+    this.getPicture();
+
     if(!this.categoryForm.valid) displayModalMessage = true;
 
     if ((this.picture == this.blankPicture) || this.picture === undefined) {
@@ -114,8 +136,7 @@ export class CategoryEditComponent implements OnInit {
     }
 
     if(displayModalMessage) {
-      this.modalMessageBody = "There are required fields that you must complete.";
-      this.displayModalMessage();
+      this.displayModalMessage("There are required fields that you must complete.");
     }
 
     return !displayModalMessage;
@@ -135,27 +156,25 @@ export class CategoryEditComponent implements OnInit {
               this.toastr.success(this.bodyToast);
             },
             error: errorResult => {
-              this.modalMessageBody = JSON.stringify(errorResult);
-              this.displayModalMessage();
+              this.displayModalMessage(JSON.stringify(errorResult));
             }
           });
     else
         this.categoriesService.updateCategory(this.category)
         .subscribe({
           next: categoryResult => {
+            this.savingRecord = false;
             this.reloadSavedCategory(categoryResult);
             this.toastr.success(this.bodyToast);
           },
             error: errorResult => {
-              this.modalMessageBody = JSON.stringify(errorResult);
-              this.displayModalMessage();
+              this.displayModalMessage(JSON.stringify(errorResult));
             }
         });
   }
 
   private setValuesForCategory(categoryId: number) {
 
-    this.getPicture();
     if (this.picture != null)
       if (this.picture.length > 0) {
         let prefixPosition = this.picture.includes(this.picturePrefix);
@@ -197,17 +216,39 @@ export class CategoryEditComponent implements OnInit {
 //#endregion
 
 //#region Modals
-  private displayModalYesNo(modalBody: string) {
-    this.modalYesNoBody = modalBody;
-    const btnShowModalYesNo = document.getElementById("showModalYesNo");
-    if(btnShowModalYesNo)
-      btnShowModalYesNo.click();
+  private displayModalYesNo(buttonName: string, modalBody: string) {
+
+    let confirmationModalData = {
+      title: 'Categories',
+      message: modalBody,
+      btnOkText: 'Yes',
+      btnCancelText: 'No'
+    }
+    this.confirmService.confirmationModalData = confirmationModalData;
+
+    this.confirmService.confirm().subscribe({
+      next: buttonPressed => {
+        if (buttonPressed)
+          switch(buttonName) {
+            case "new":
+              this.clearForm();
+              break;
+            case "save":
+              if(this.requiredFieldsValid())
+                this.createOrUpdateCategory();
+              break;
+          }
+        }
+    });
   }
 
-  private displayModalMessage() {
-    const btnShowModalMessage = document.getElementById("showModalMessage");
-    if(btnShowModalMessage)
-      btnShowModalMessage.click();
+  private displayModalMessage(body: string) {
+
+    const modalMessageData: ModalMessageData = {
+      title: 'Categories', body: body, button: 'btn-danger'
+    }
+
+    this.modalRef = this.modalService.show(ModalsShowMessageComponent, { initialState : { modalMessageData } });
   }
 
 //#endregion
@@ -218,6 +259,7 @@ export class CategoryEditComponent implements OnInit {
     if(Object.keys(this.category).length >0) {
       this.highLightPicture(false);
       this.picture = this.picturePrefix + this.category?.picture;
+      this.throwDirtToControls();
     }
     else
       this.picture = this.blankPicture;
@@ -226,7 +268,6 @@ export class CategoryEditComponent implements OnInit {
   }
 
   private getPicture() {
-
     this.photosService.getPhoto().subscribe({
       next: photoResult => {
         if(photoResult.length > 0) {
@@ -235,7 +276,7 @@ export class CategoryEditComponent implements OnInit {
           this.highLightPicture(false);
           this.pictureAssigned = true;
         } else {
-          this.displayModalMessage();
+          this.displayModalMessage("Picture Required");
           this.pictureAssigned = false;
         }
       }

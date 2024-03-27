@@ -1,0 +1,11 @@
+<div class="alert-box">
+  <div class="modal-header">
+    <h4 class="modal-title">{{ modalMessageData.title }}</h4>
+  </div>
+  <div class="modal-body">
+    {{ modalMessageData.body }}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn" [ngClass]="modalMessageData.button" (click)="onConfirm()">Ok</button>
+  </div>
+</div>

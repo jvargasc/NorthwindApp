@@ -3,6 +3,7 @@ using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using NorthwindApp.API.Extensions;
 using NorthwindApp.API.Interfaces;
 using NorthwindApp.API.MiddleWare;
@@ -16,7 +17,31 @@ builder.Services.AddPersistenceInfrastructure(builder.Configuration);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(setupAction =>
+{
+    setupAction.AddSecurityDefinition("bearerAuth",
+    new()
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        Description = "Input your bearer token to access this API"
+    });
+
+    setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "bearerAuth" }
+                        }, new List<string>() }
+                });
+});
+
+/*
+
+*/
 
 builder.Services.AddHealthChecks();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
