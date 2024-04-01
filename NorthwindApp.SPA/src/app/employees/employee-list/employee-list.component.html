@@ -35,7 +35,7 @@
         <td>{{ employee.lastName }}</td>
         <td>{{ employee.firstName }}</td>
         <td>{{ employee.title }}</td>
-        <td>{{ employee.hireDate }}</td>
+        <td>{{ employee.hireDate | date : "dd-MM-yyyy" }}</td>
         <td>{{ employee.address }}</td>
         <td>{{ employee.city }}</td>
         <td>{{ getRegion(employee.regionId) }}</td>

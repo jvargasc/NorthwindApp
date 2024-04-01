@@ -1,19 +1,23 @@
 import { formatDate } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormControl, FormGroup, NgControl, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 
 import { Customer } from 'src/app/_models/customer';
 import { Employee } from 'src/app/_models/employee';
+import { ModalMessageData } from 'src/app/_models/modalmessagedata';
 import { Order } from 'src/app/_models/order';
 import { Region } from 'src/app/_models/region';
 import { Shipper } from 'src/app/_models/shipper';
+import { ConfirmService } from 'src/app/_services/confirm.service';
 import { CustomersService } from 'src/app/_services/customers.service';
 import { EmployeesService } from 'src/app/_services/employees.service';
 import { OrdersService } from 'src/app/_services/orders.service';
 import { RegionsService } from 'src/app/_services/regions.service';
 import { ShippersService } from 'src/app/_services/shippers.service';
+import { ShowMessageComponent } from 'src/app/_shared/modals/show-message/show-message.component';
 
 @Component({
   selector: 'app-order-edit',
@@ -21,23 +25,19 @@ import { ShippersService } from 'src/app/_services/shippers.service';
   styleUrls: ['./order-edit.component.css']
 })
 export class OrderEditComponent implements OnInit {
-
   order: Order = {} as Order;
-
   orderForm: FormGroup = new FormGroup({});
   customers: Customer[]  = [];
   employees: Employee[]  = [];
   regions: Region[]  = [];
   shippers: Shipper[]  = [];
-  modalTitle = "Order";
-  modalYesNoBody = "";
-  modalMessageBody = "";
   toolbarButtonPressed = "";
-  headerToast = "Order";
   bodyToast = "Record successfully saved!!!";
   savingRecord = false;
 
-  constructor( private ordersService: OrdersService, private customersService: CustomersService, private employeesService: EmployeesService, private regionsService: RegionsService, private shippersService: ShippersService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService) { }
+  modalRef: BsModalRef;
+
+  constructor( private ordersService: OrdersService, private customersService: CustomersService, private employeesService: EmployeesService, private regionsService: RegionsService, private shippersService: ShippersService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService, private confirmService: ConfirmService, private modalService: BsModalService ) { }
 
   ngOnInit() {
     this.getParameters();
@@ -50,14 +50,15 @@ export class OrderEditComponent implements OnInit {
   toolbarButtonWasClicked(buttonName: string) {
     this.toolbarButtonPressed = buttonName;
     let modalBody = "";
+
     switch(buttonName){
       case "new":
         modalBody = "Do you wish to clear this Order and create a new one?";
-        this.displayModalYesNo(modalBody);
+        this.displayModalYesNo(buttonName, modalBody);
         break;
       case "save":
         modalBody = "Do you wish to save this Order?";
-        this.displayModalYesNo(modalBody);
+        this.displayModalYesNo(buttonName, modalBody);
         break;
       case "return":
         this.router.navigate(['/orders/order-list']);
@@ -73,6 +74,8 @@ export class OrderEditComponent implements OnInit {
         if (this.toolbarButtonPressed == "save") {
             if(this.requiredFieldsValid())
               this.createOrUpdateOrder();
+            else
+              this.savingRecord = false;
         }
         break;
       case "btnNo":
@@ -109,6 +112,20 @@ export class OrderEditComponent implements OnInit {
 //#endregion
 
 //#region Handle Form
+  private untouchControls() {
+
+    Object.keys(
+      this.orderForm.controls
+    ).forEach((key: string) => {
+      if(key != 'customerId') {
+        if(this.orderForm.controls[key].touched) {
+          this.orderForm.controls[key].markAsUntouched();
+        }
+      }
+    });
+
+  }
+
   private initializeForm() {
     this.savingRecord = false;
     let orderDetails = this.initializeDetailsForm();
@@ -145,20 +162,55 @@ export class OrderEditComponent implements OnInit {
   }
 
   private clearForm() {
+    this.savingRecord = false;
+    this.router.navigate(['/orders/order-edit']);
     this.order = {} as Order;
     this.initializeForm();
-    this.router.navigate(['/orders/order-edit']);
     this.onAddDetail();
   }
 
   private requiredFieldsValid(): boolean {
     this.savingRecord = true;
     if(!this.orderForm.valid) {
-      this.modalMessageBody = "There are required fields that you must complete.";
-      this.displayModalMessage();
+      this.displayModalMessage(
+        "There are required fields that you must complete."
+      );
     }
 
     return this.orderForm.valid;
+  }
+
+  private allFieldsEmpty(): boolean {
+    let returnValue = true;
+
+    Object.keys(
+      this.orderForm.controls
+    ).forEach((key: string) => {
+      const controlValue = this.orderForm.controls[key].value;
+
+      if(controlValue)
+        if(key == 'details') {
+          if(controlValue.length > 1) {
+            returnValue = false;
+            return;
+          } else if(controlValue.length = 1) {
+            if(controlValue[0]['productId'] ||
+               controlValue[0]['unitPrice'] ||
+               controlValue[0]['quantity'] ||
+               controlValue[0]['discount']) {
+              returnValue = false;
+              return;
+            }
+          }
+        }
+      else {
+        returnValue = false;
+        return;
+      }
+
+    });
+
+    return returnValue;
   }
 
   private getParameters() {
@@ -199,7 +251,7 @@ export class OrderEditComponent implements OnInit {
   }
 
   private setCustomers() {
-    this.customersService.getCustomers(999999, 99999).subscribe({
+    this.customersService.getCustomers(1, 99999).subscribe({
     next: response => {
       if (response.result && response.pagination) {
         this.customers = response.result;
@@ -272,8 +324,9 @@ export class OrderEditComponent implements OnInit {
               this.toastr.success(this.bodyToast);
             },
             error: errorResult => {
-              this.modalMessageBody = JSON.stringify(errorResult);
-              this.displayModalMessage();
+              this.displayModalMessage(
+                JSON.stringify(errorResult)
+              );
             }
           });
     else
@@ -284,8 +337,9 @@ export class OrderEditComponent implements OnInit {
             this.toastr.success(this.bodyToast);
           },
             error: errorResult => {
-              this.modalMessageBody = JSON.stringify(errorResult);
-              this.displayModalMessage();
+              this.displayModalMessage(
+                JSON.stringify(errorResult)
+              );
             }
         });
   }
@@ -310,7 +364,6 @@ export class OrderEditComponent implements OnInit {
 
       if (orderId != null)
         this.order.orderId = orderId;
-
   }
 
   private setOrder() {
@@ -335,17 +388,44 @@ export class OrderEditComponent implements OnInit {
 //#endregion
 
 //#region Modals
-  private displayModalYesNo(modalBody: string) {
-    this.modalYesNoBody = modalBody;
-    const btnShowModalYesNo = document.getElementById("showModalYesNo");
-    if(btnShowModalYesNo)
-      btnShowModalYesNo.click();
+  private displayModalYesNo(buttonName: string, modalBody: string) {
+
+    if(buttonName == 'new' && this.allFieldsEmpty()) {
+      this.untouchControls();
+      return;
+    }
+
+    let confirmationModalData = {
+      title: 'Customers',
+      message: modalBody,
+      btnOkText: 'Yes',
+      btnCancelText: 'No'
+    }
+    this.confirmService.confirmationModalData = confirmationModalData;
+
+    this.confirmService.confirm().subscribe({
+      next: buttonPressed => {
+        if (buttonPressed)
+          switch(buttonName) {
+            case "new":
+              this.clearForm();
+              break;
+            case "save":
+              if(this.requiredFieldsValid())
+                this.createOrUpdateOrder();
+              break;
+          }
+        }
+    });
   }
 
-  private displayModalMessage() {
-    const btnShowModalMessage = document.getElementById("showModalMessage");
-    if(btnShowModalMessage)
-      btnShowModalMessage.click();
+  private displayModalMessage(body: string) {
+
+    const modalMessageData: ModalMessageData = {
+      title: 'Orders', body: body, button: 'btn-danger'
+    }
+
+    this.modalRef = this.modalService.show(ShowMessageComponent, { initialState : { modalMessageData } });
   }
 //#endregion
 

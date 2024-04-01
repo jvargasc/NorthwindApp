@@ -1,13 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-modalsshowmessage',
-  templateUrl: './modalsshowmessage.component.html',
-  styleUrls: ['./modalsshowmessage.component.css']
+  selector: 'app-show-message',
+  templateUrl: './show-message.component.html',
+  styleUrls: ['./show-message.component.css']
 })
-export class ModalsShowMessageComponent {
+export class ShowMessageComponent {
   modalMessageData = {
     title: '', body: '', button: ''
   };

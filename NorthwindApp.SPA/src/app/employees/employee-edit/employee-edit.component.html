@@ -4,7 +4,9 @@
       <h4>Employee</h4>
     </div>
     <div class="card-toolbar">
-      <app-toolbarcrud (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"></app-toolbarcrud>
+      <app-toolbarcrud
+        (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"
+      ></app-toolbarcrud>
     </div>
   </div>
   <div class="card-body mx-2">
@@ -13,14 +15,21 @@
         <div class="col-2">
           <div class="form-group">
             <label for="example">Employee Id</label>
-            <input class="form-control" formControlName="employeeId" placeholder="Employee Id" />
+            <input
+              class="form-control"
+              formControlName="employeeId"
+              placeholder="Employee Id"
+            />
           </div>
         </div>
         <div class="col-6">
           <div class="form-group">
             <div class="col-6" id="col-photo-upload">
               <div class="form-group">
-                <div class="form-group lblPicture" [ngClass]="{'ng-touched': savingRecord && !photo}">
+                <div
+                  class="form-group lblPicture"
+                  [ngClass]="{ 'ng-touched': savingRecord && !photo }"
+                >
                   <app-photo-upload></app-photo-upload>
                 </div>
               </div>
@@ -32,80 +41,140 @@
         <div class="col-3">
           <div class="form-group">
             <label for="firstName">Title</label>
-            <input class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="title"
-              placeholder="Title" />
+            <input
+              class="form-control"
+              [ngClass]="{ 'ng-touched': savingRecord }"
+              formControlName="title"
+              placeholder="Title"
+            />
           </div>
         </div>
         <div class="col-3">
           <div class="form-group">
             <label for="firstName">Title Of Courtesy</label>
-            <input class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="titleOfCourtesy"
-              placeholder="Title" />
+            <input
+              class="form-control"
+              [ngClass]="{ 'ng-touched': savingRecord }"
+              formControlName="titleOfCourtesy"
+              placeholder="Title"
+            />
           </div>
         </div>
         <div class="col-3">
           <div class="form-group">
             <label for="firstName">First Name</label>
-            <input class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="firstName"
-              placeholder="First Name" />
+            <input
+              class="form-control"
+              [ngClass]="{ 'ng-touched': savingRecord }"
+              formControlName="firstName"
+              placeholder="First Name"
+            />
           </div>
         </div>
         <div class="col-3">
           <div class="form-group">
             <label for="example">Last Name</label>
-            <input class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="lastName"
-              placeholder="Last Name" />
+            <input
+              class="form-control"
+              [ngClass]="{ 'ng-touched': savingRecord }"
+              formControlName="lastName"
+              placeholder="Last Name"
+            />
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-3 form-group">
           <label for="">Birth Date</label>
-          <input type="date" class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="birthDate"
-            placeholder="Birth Date" />
+          <input
+            type="date"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="birthDate"
+            placeholder="Birth Date"
+          />
         </div>
         <div class="col-3 form-group">
           <label for="">Hire Date</label>
-          <input type="date" class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="hireDate"
-            placeholder="Hire Date" />
+          <input
+            type="date"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="hireDate"
+            placeholder="Hire Date"
+          />
         </div>
         <div class="col-3 form-group">
           <label for="">Address</label>
-          <input type="text" class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="address"
-            placeholder="Address" />
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="address"
+            placeholder="Address"
+          />
         </div>
         <div class="col-3 form-group">
           <label for="">City</label>
-          <input type="text" class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="city"
-            placeholder="City" />
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="city"
+            placeholder="City"
+          />
         </div>
       </div>
       <div class="row">
         <div class="col-3 form-group">
           <label for="">Postal Code</label>
-          <input type="text" class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="postalCode"
-            placeholder="Postal Code" />
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="postalCode"
+            placeholder="Postal Code"
+          />
         </div>
         <div class="col-3 form-group">
           <label for="">Country</label>
-          <input type="text" class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="country"
-            placeholder="Country" />
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="country"
+            placeholder="Country"
+          />
         </div>
         <div class="col-3 form-group">
           <label for="">Home Phone</label>
-          <input type="text" class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="homePhone"
-            placeholder="Home Phone" />
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="homePhone"
+            placeholder="Home Phone"
+          />
         </div>
         <div class="col-3 form-group">
           <label for="">Extension</label>
-          <input type="text" class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="extension"
-            placeholder="Extension" />
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="extension"
+            placeholder="Extension"
+          />
         </div>
       </div>
       <div class="row">
         <div class="col-3 form-group">
           <label for="">Region</label>
-          <select class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="regionId">
+          <select
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="regionId"
+          >
             <option *ngFor="let region of regions" [ngValue]="region.regionId">
               {{ region.regionDescription }}
             </option>
@@ -113,8 +182,13 @@
         </div>
         <div class="col-3 form-group">
           <label for="">Notes</label>
-          <input type="text" class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="notes"
-            placeholder="Notes" />
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="notes"
+            placeholder="Notes"
+          />
         </div>
         <div class="col-3 form-group">
           <label for="">Reports To</label>
@@ -124,32 +198,30 @@
             formControlName="reportsToDescription"
             placeholder="Reports To"
           /> -->
-          <select class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="reportsTo">
-            <option *ngFor="let employeeItem of employees" [ngValue]="employeeItem.employeeId">
+          <select
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="reportsTo"
+          >
+            <option
+              *ngFor="let employeeItem of employees"
+              [ngValue]="employeeItem.employeeId"
+            >
               {{ employeeItem.firstName + " " + employeeItem.lastName }}
             </option>
           </select>
         </div>
         <div class="col-3 form-group">
           <label for="">Photo Path</label>
-          <input type="text" class="form-control" [ngClass]="{'ng-touched': savingRecord}" formControlName="photoPath"
-            placeholder="Photo Path" />
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="photoPath"
+            placeholder="Photo Path"
+          />
         </div>
       </div>
     </form>
   </div>
 </div>
-
-<button style="display: none" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalYesNo"
-  id="showModalYesNo">
-  Open modal
-</button>
-<app-modalyesno [modalTitle]="modalTitle" [modalBody]="modalYesNoBody"
-  (modalButtonWasClicked)="modalButtonWasClicked($event)" id="modalyesno"></app-modalyesno>
-
-<button style="display: none" type="button" class="btn btn-primary" data-bs-toggle="modal"
-  data-bs-target="#modalMessage" id="showModalMessage">
-  Open modal
-</button>
-
-<app-modalmessage [modalTitle]="modalTitle" [modalBody]="modalMessageBody"></app-modalmessage>

@@ -11,23 +11,21 @@ import { NavComponent } from './nav/nav.component';
 import { ToolbarsModule } from './toolbars/toolbars.module';
 import { ToolbarCrudComponent } from './toolbars/toolbarcrud/toolbarcrud.component';
 import { ToolbarlistComponent } from './toolbars/toolbarlist/toolbarlist.component';
-import { ModalYesNoComponent } from './modals/modalyesno/modalyesno.component';
-import { ModalMessageComponent } from './modals/modalmessage/modalmessage.component';
 import { PhotoUploadComponent } from './photo-upload/photo-upload.component';
 import { ConfirmDialogComponent } from './modals/confirm-dialog/confirm-dialog.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { ModalsShowMessageComponent } from './modals/modalsshowmessage/modalsshowmessage.component';
+import { ShowMessageComponent } from './modals/show-message/show-message.component';
+import { SignupLoginComponent } from './modals/signup-login/signup-login.component';
 
 @NgModule({
   declarations: [
     NavComponent,
     FooterComponent,
-    ModalYesNoComponent,
-    ModalMessageComponent,
     PhotoUploadComponent,
     ConfirmDialogComponent,
-    ModalsShowMessageComponent
+    ShowMessageComponent,
+    SignupLoginComponent
   ],
   imports: [
     FormsModule,
@@ -51,8 +49,6 @@ import { ModalsShowMessageComponent } from './modals/modalsshowmessage/modalssho
     FooterComponent,
     ToolbarCrudComponent,
     ToolbarlistComponent,
-    ModalYesNoComponent,
-    ModalMessageComponent,
     PhotoUploadComponent,
     ToastrModule,
     NgxSpinnerModule,

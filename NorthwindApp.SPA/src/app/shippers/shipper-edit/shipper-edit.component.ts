@@ -1,10 +1,14 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
+import { ModalMessageData } from 'src/app/_models/modalmessagedata';
 
 import { Shipper } from 'src/app/_models/shipper';
+import { ConfirmService } from 'src/app/_services/confirm.service';
 import { ShippersService } from 'src/app/_services/shippers.service';
+import { ShowMessageComponent } from 'src/app/_shared/modals/show-message/show-message.component';
 
 @Component({
   selector: 'app-shipper-edit',
@@ -14,15 +18,13 @@ import { ShippersService } from 'src/app/_services/shippers.service';
 export class ShipperEditComponent implements OnInit {
   shipper?: Shipper;
   shipperForm: FormGroup = new FormGroup({});
-  modalTitle = "Shipper";
-  modalYesNoBody = "";
-  modalMessageBody = "";
   toolbarButtonPressed = "";
-  headerToast = "Shipper";
   bodyToast = "Record successfully saved!!!";
   savingRecord = false;
 
-  constructor(private shippersService: ShippersService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService ) { }
+  modalRef: BsModalRef;
+
+  constructor(private shippersService: ShippersService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService, private confirmService: ConfirmService, private modalService: BsModalService ) { }
 
   ngOnInit() {
     this.initializeForm();
@@ -33,14 +35,15 @@ export class ShipperEditComponent implements OnInit {
   toolbarButtonWasClicked(buttonName: string) {
     this.toolbarButtonPressed = buttonName;
     let modalBody = "";
+
     switch(buttonName){
       case "new":
-        modalBody = "Do you wish to clear this Customer and create a new one?";
-        this.displayModalYesNo(modalBody);
+        modalBody = "Do you wish to clear this Shipper and create a new one?";
+        this.displayModalYesNo(buttonName, modalBody);
         break;
       case "save":
-        modalBody = "Do you wish to save this Customer?";
-        this.displayModalYesNo(modalBody);
+        modalBody = "Do you wish to save this Shipper?";
+        this.displayModalYesNo(buttonName, modalBody);
         break;
       case "return":
         this.router.navigate(['/shippers/shipper-list']);
@@ -56,6 +59,8 @@ export class ShipperEditComponent implements OnInit {
         if (this.toolbarButtonPressed == "save") {
             if(this.requiredFieldsValid())
               this.createOrUpdateShipper();
+            else
+              this.savingRecord = false;
         }
       break;
       case "btnNo":
@@ -67,6 +72,20 @@ export class ShipperEditComponent implements OnInit {
 //#endregion
 
 //#region Handle Form
+  private untouchControls() {
+
+    Object.keys(
+      this.shipperForm.controls
+    ).forEach((key: string) => {
+      if(key != 'customerId') {
+        if(this.shipperForm.controls[key].touched) {
+          this.shipperForm.controls[key].markAsUntouched();
+        }
+      }
+    });
+
+  }
+
   private initializeForm() {
     this.savingRecord = false;
     this.shipperForm = new FormGroup({
@@ -78,19 +97,35 @@ export class ShipperEditComponent implements OnInit {
   }
 
   private clearForm() {
+    this.router.navigate(['/shippers/shipper-edit']);
     this.shipper = {} as Shipper;
     this.initializeForm();
-    this.router.navigate(['/shippers/shipper-edit']);
   }
 
   private requiredFieldsValid(): boolean {
     this.savingRecord = true;
     if(!this.shipperForm.valid) {
-      this.modalMessageBody = "There are required fields that you must complete.";
-      this.displayModalMessage();
+      this.displayModalMessage(
+        "There are required fields that you must complete."
+      );
     }
 
     return this.shipperForm.valid;
+  }
+
+  private allFieldsEmpty(): boolean {
+    let returnValue = true;
+
+    Object.keys(
+      this.shipperForm.controls
+    ).forEach((key: string) => {
+      if(this.shipperForm.controls[key].value) {
+        returnValue = false;
+        return;
+      }
+    });
+
+    return returnValue;
   }
 //#endregion
 
@@ -106,8 +141,9 @@ export class ShipperEditComponent implements OnInit {
               this.toastr.success(this.bodyToast);
             },
             error: errorResult => {
-              this.modalMessageBody = JSON.stringify(errorResult);
-              this.displayModalMessage();
+              this.displayModalMessage(
+              JSON.stringify(errorResult)
+              );
             }
           });
     else
@@ -118,8 +154,9 @@ export class ShipperEditComponent implements OnInit {
             this.toastr.success(this.bodyToast);
           },
             error: errorResult => {
-              this.modalMessageBody = JSON.stringify(errorResult);
-              this.displayModalMessage();
+              this.displayModalMessage(
+                              JSON.stringify(errorResult)
+              );
             }
         });
   }
@@ -158,25 +195,44 @@ export class ShipperEditComponent implements OnInit {
 //#endregion
 
 //#region Modals
-  private displayModalYesNo(modalBody: string) {
-    this.modalYesNoBody = modalBody;
-    const btnShowModalYesNo = document.getElementById("showModalYesNo");
-    if(btnShowModalYesNo)
-      btnShowModalYesNo.click();
-  }
+  private displayModalYesNo(buttonName: string, modalBody: string) {
 
-  private displayModalMessage() {
-    const btnShowModalMessage = document.getElementById("showModalMessage");
-    if(btnShowModalMessage)
-      btnShowModalMessage.click();
-  }
-
-  private toastClick() {
-    const btnToast = document.getElementById("liveToastBtn");
-    if(btnToast) {
-      btnToast.click();
-      // btnToast.click();
+    if(buttonName == 'new' && this.allFieldsEmpty()) {
+      this.untouchControls();
+      return;
     }
+
+    let confirmationModalData = {
+      title: 'Customers',
+      message: modalBody,
+      btnOkText: 'Yes',
+      btnCancelText: 'No'
+    }
+    this.confirmService.confirmationModalData = confirmationModalData;
+
+    this.confirmService.confirm().subscribe({
+      next: buttonPressed => {
+        if (buttonPressed)
+          switch(buttonName) {
+            case "new":
+              this.clearForm();
+              break;
+            case "save":
+              if(this.requiredFieldsValid())
+                this.createOrUpdateShipper();
+              break;
+          }
+        }
+    });
+  }
+
+  private displayModalMessage(body: string) {
+
+    const modalMessageData: ModalMessageData = {
+      title: 'Shippers', body: body, button: 'btn-danger'
+    }
+
+    this.modalRef = this.modalService.show(ShowMessageComponent, { initialState : { modalMessageData } });
   }
 //#endregion
 

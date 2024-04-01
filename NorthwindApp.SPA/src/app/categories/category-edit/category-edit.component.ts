@@ -3,13 +3,14 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
 
 import { Category } from 'src/app/_models/category';
 import { ModalMessageData } from 'src/app/_models/modalmessagedata';
 import { CategoriesService } from 'src/app/_services/categories.service';
 import { ConfirmService } from 'src/app/_services/confirm.service';
 import { PhotosService } from 'src/app/_services/photos.service';
-import { ModalsShowMessageComponent } from 'src/app/_shared/modals/modalsshowmessage/modalsshowmessage.component';
+import { ShowMessageComponent } from 'src/app/_shared/modals/show-message/show-message.component';
 
 @Component({
   selector: 'app-category-edit',
@@ -20,10 +21,8 @@ export class CategoryEditComponent implements OnInit {
   category:  Category = {} as Category;
   categoryForm: FormGroup = new FormGroup({});
   picture?: string;
-  picturePrefix: string = "data:image/jpeg;base64,";
-  blankPicture: string = '../../../assets/images/Blank.png';
-  modalTitle = "Category";
-  modalMessageBody = "";
+  picturePrefix: string = environment.picturePrefix;
+  blankPicture: string = environment.blankPicture;
   toolbarButtonPressed = "";
   bodyToast = "Record successfully saved!!!";
 
@@ -45,6 +44,8 @@ export class CategoryEditComponent implements OnInit {
     this.toolbarButtonPressed = buttonName;
     let modalBody = "";
     this.getPicture();
+    this.throwDirtToControls();
+
     switch(buttonName) {
       case "new":
         modalBody = "Do you wish to clear this Category and create a new one?";
@@ -83,18 +84,33 @@ export class CategoryEditComponent implements OnInit {
 //#region Handle Form
   throwDirtToControls() {
 
+    if (this.picture == undefined)
+      return;
+
     if ((this.picture === this.blankPicture))
       return;
 
-    if(!this.categoryForm.controls['categoryName'].value) {
-      this.categoryForm.markAsDirty();
-      return;
-    }
+    Object.keys(
+      this.categoryForm.controls
+    ).forEach((key: string) => {
+      if(key != 'categoryId')
+        if(!this.categoryForm.controls[key].valid)
+          this.categoryForm.controls[key].markAsDirty();
+    });
 
-    if(!this.categoryForm.controls['description'].value) {
-      this.categoryForm.markAsDirty();
-      return;
-    }
+  }
+
+  private untouchControls() {
+
+    Object.keys(
+      this.categoryForm.controls
+    ).forEach((key: string) => {
+      if(key != 'categoryId') {
+        if(this.categoryForm.controls[key].touched) {
+          this.categoryForm.controls[key].markAsUntouched();
+        }
+      }
+    });
 
   }
 
@@ -112,6 +128,8 @@ export class CategoryEditComponent implements OnInit {
   }
 
   private clearForm() {
+    this.savingRecord = false;
+    this.photosService.setPhoto(this.blankPicture);
     this.highLightPicture(false);
     this.router.navigate(['/categories/category-edit']);
     this.category = {} as Category;
@@ -122,7 +140,6 @@ export class CategoryEditComponent implements OnInit {
 
   private requiredFieldsValid(): boolean {
     this.savingRecord = true;
-    let tmpValue = false;
     let displayModalMessage = false;
 
     this.getPicture();
@@ -140,6 +157,32 @@ export class CategoryEditComponent implements OnInit {
     }
 
     return !displayModalMessage;
+  }
+
+  private allFieldsEmpty(): boolean {
+    let returnValue = true;
+
+    Object.keys(
+      this.categoryForm.controls
+    ).forEach((key: string) => {
+      const controlValue = this.categoryForm.controls[key].value;
+
+      if(controlValue) {
+
+        if(
+          (key == 'picture' && (controlValue != this.blankPicture))
+                              ||
+                        (key != 'picture')
+          ) {
+          returnValue = false;
+          return;
+        }
+
+      }
+
+    });
+
+    return returnValue;
   }
 //#endregion
 
@@ -175,6 +218,7 @@ export class CategoryEditComponent implements OnInit {
 
   private setValuesForCategory(categoryId: number) {
 
+    this.getPicture();
     if (this.picture != null)
       if (this.picture.length > 0) {
         let prefixPosition = this.picture.includes(this.picturePrefix);
@@ -218,6 +262,11 @@ export class CategoryEditComponent implements OnInit {
 //#region Modals
   private displayModalYesNo(buttonName: string, modalBody: string) {
 
+    if(buttonName == 'new' && this.allFieldsEmpty()) {
+      this.untouchControls();
+      return;
+    }
+
     let confirmationModalData = {
       title: 'Categories',
       message: modalBody,
@@ -248,9 +297,8 @@ export class CategoryEditComponent implements OnInit {
       title: 'Categories', body: body, button: 'btn-danger'
     }
 
-    this.modalRef = this.modalService.show(ModalsShowMessageComponent, { initialState : { modalMessageData } });
+    this.modalRef = this.modalService.show(ShowMessageComponent, { initialState : { modalMessageData } });
   }
-
 //#endregion
 
 //#region Picture
@@ -259,7 +307,6 @@ export class CategoryEditComponent implements OnInit {
     if(Object.keys(this.category).length >0) {
       this.highLightPicture(false);
       this.picture = this.picturePrefix + this.category?.picture;
-      this.throwDirtToControls();
     }
     else
       this.picture = this.blankPicture;
@@ -285,7 +332,6 @@ export class CategoryEditComponent implements OnInit {
   }
 
   private highLightPicture(show: boolean) {
-    // console.log('highLightPicture');
     const colPhotoUpload = document.getElementById('col-photo-upload');
     const classesList: string[] = [ 'ng-invalid', 'ng-touched' ];
 
@@ -296,5 +342,4 @@ export class CategoryEditComponent implements OnInit {
     }
   }
 //#endregion
-
 }

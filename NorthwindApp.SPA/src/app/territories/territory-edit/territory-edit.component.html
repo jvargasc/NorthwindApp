@@ -56,36 +56,3 @@
     </form>
   </div>
 </div>
-
-<button
-  style="display: none"
-  type="button"
-  class="btn btn-primary"
-  data-bs-toggle="modal"
-  data-bs-target="#modalYesNo"
-  id="showModalYesNo"
->
-  Open modal
-</button>
-<app-modalyesno
-  [modalTitle]="modalTitle"
-  [modalBody]="modalYesNoBody"
-  (modalButtonWasClicked)="modalButtonWasClicked($event)"
-  id="modalyesno"
-></app-modalyesno>
-
-<button
-  style="display: none"
-  type="button"
-  class="btn btn-primary"
-  data-bs-toggle="modal"
-  data-bs-target="#modalMessage"
-  id="showModalMessage"
->
-  Open modal
-</button>
-
-<app-modalmessage
-  [modalTitle]="modalTitle"
-  [modalBody]="modalMessageBody"
-></app-modalmessage>

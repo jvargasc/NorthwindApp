@@ -55,6 +55,8 @@ export const preventUnsavedChangesOnEmployeeGuard: CanDeactivateFn<EmployeeEditC
 
   const confirmService = inject(ConfirmService);
 
+  component.throwDirtToControls();
+
   if(component.employeeForm?.dirty && !component.savingRecord) {
     let confirmationModalData = {
       title: 'Employees',

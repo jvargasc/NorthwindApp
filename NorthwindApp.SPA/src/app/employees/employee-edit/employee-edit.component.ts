@@ -1,14 +1,19 @@
 import { formatDate } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
 
 import { Employee } from 'src/app/_models/employee';
+import { ModalMessageData } from 'src/app/_models/modalmessagedata';
 import { Region } from 'src/app/_models/region';
+import { ConfirmService } from 'src/app/_services/confirm.service';
 import { EmployeesService } from 'src/app/_services/employees.service';
 import { PhotosService } from 'src/app/_services/photos.service';
 import { RegionsService } from 'src/app/_services/regions.service';
+import { ShowMessageComponent } from 'src/app/_shared/modals/show-message/show-message.component';
 
 @Component({
   selector: 'app-employee-edit',
@@ -20,8 +25,8 @@ export class EmployeeEditComponent implements OnInit {
   employeeForm: FormGroup = new FormGroup ({});
   employees: Employee[] = [];
   photo?: string;
-  picturePrefix: string = 'data:image/jpeg;base64,';
-  blankPicture: string = '../../../assets/images/Blank.png';
+  picturePrefix: string = environment.picturePrefix;
+  blankPicture: string = environment.blankPicture;
   regions: Region[] = [];
   modalTitle = "Employee";
   modalYesNoBody = "";
@@ -29,11 +34,16 @@ export class EmployeeEditComponent implements OnInit {
   toolbarButtonPressed = "";
   headerToast = "Employee";
   bodyToast = "Record successfully saved!!!";
-  savingRecord = false;
 
-  constructor(private employeesServices: EmployeesService, private regionsService: RegionsService, private photosService: PhotosService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService ) { }
+  savingRecord = false;
+  pictureAssigned = false;
+
+  modalRef: BsModalRef;
+
+  constructor(private employeesServices: EmployeesService, private regionsService: RegionsService, private photosService: PhotosService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService, private confirmService: ConfirmService, private modalService: BsModalService) { }
 
   ngOnInit() {
+    this.photosService.setPhoto(this.blankPicture);
     this.initializeForm();
     this.getParameters();
     this.setEmployee();
@@ -43,14 +53,17 @@ export class EmployeeEditComponent implements OnInit {
   toolbarButtonWasClicked(buttonName: string) {
     this.toolbarButtonPressed = buttonName;
     let modalBody = "";
+    this.getPicture();
+    this.throwDirtToControls();
+
     switch(buttonName) {
       case "new":
         modalBody = "Do you wish to clear this Employee and create a new one?";
-        this.displayModalYesNo(modalBody);
+        this.displayModalYesNo(buttonName, modalBody);
         break;
       case "save":
         modalBody = "Do you wish to save this Employee?";
-        this.displayModalYesNo(modalBody);
+        this.displayModalYesNo(buttonName, modalBody);
         break;
       case "return":
         this.router.navigate(['/employees/employee-list']);
@@ -67,6 +80,8 @@ export class EmployeeEditComponent implements OnInit {
         if (this.toolbarButtonPressed == "save")
             if(this.requiredFieldsValid())
               this.createOrUpdateEmployee();
+            else
+              this.savingRecord = false;
       break;
       case "btnNo":
         break;
@@ -77,8 +92,41 @@ export class EmployeeEditComponent implements OnInit {
 //#endregion
 
 //#region Handle Form
+  throwDirtToControls() {
+
+    if (this.photo == undefined)
+      return;
+
+    if ((this.photo === this.blankPicture))
+      return;
+
+    Object.keys(
+      this.employeeForm.controls
+    ).forEach((key: string) => {
+      if(key != 'employeeId')
+        if(!this.employeeForm.controls[key].valid)
+          this.employeeForm.controls[key].markAsDirty();
+    });
+
+  }
+
+  private untouchControls() {
+
+    Object.keys(
+      this.employeeForm.controls
+    ).forEach((key: string) => {
+      if(key != 'employeeId') {
+        if(this.employeeForm.controls[key].touched) {
+          this.employeeForm.controls[key].markAsUntouched();
+        }
+      }
+    });
+
+  }
+
   private initializeForm() {
     this.savingRecord = false;
+    this.pictureAssigned = false;
     this.employeeForm = new FormGroup({
       'employeeId' : new FormControl(this.employee?.employeeId, Validators.required),
       'lastName' : new FormControl(this.employee?.lastName, Validators.required),
@@ -118,6 +166,8 @@ export class EmployeeEditComponent implements OnInit {
   }
 
   private clearForm() {
+    this.savingRecord = false;
+    this.photosService.setPhoto(this.blankPicture);
     this.highLightPicture(false);
     this.router.navigate(['/employees/employee-edit']);
     this.employee = {} as Employee;
@@ -127,8 +177,10 @@ export class EmployeeEditComponent implements OnInit {
   }
 
   private requiredFieldsValid(): boolean {
-    let displayModalMessage = false;
     this.savingRecord = true;
+    let displayModalMessage = false;
+
+    this.getPicture();
 
     if(!this.employeeForm.valid) displayModalMessage = true;
 
@@ -138,11 +190,38 @@ export class EmployeeEditComponent implements OnInit {
     }
 
     if(displayModalMessage) {
-      this.modalMessageBody = "There are required fields that you must complete.";
-      this.displayModalMessage();
+      this.displayModalMessage(
+        "There are required fields that you must complete."
+      );
     }
 
     return this.employeeForm.valid;
+  }
+
+  private allFieldsEmpty(): boolean {
+    let returnValue = true;
+
+    Object.keys(
+      this.employeeForm.controls
+    ).forEach((key: string) => {
+      const controlValue = this.employeeForm.controls[key].value;
+
+      if(controlValue) {
+
+        if(
+          (key == 'photo' && (controlValue != this.blankPicture))
+                              ||
+                        (key != 'photo')
+          ) {
+          returnValue = false;
+          return;
+        }
+
+      }
+
+    });
+
+    return returnValue;
   }
 
   private getParameters() {
@@ -213,8 +292,7 @@ export class EmployeeEditComponent implements OnInit {
               this.toastr.success(this.bodyToast);
             },
             error: errorResult => {
-              this.modalMessageBody = JSON.stringify(errorResult);
-              this.displayModalMessage();
+              this.displayModalMessage( JSON.stringify(errorResult));
             }
           });
     else
@@ -225,8 +303,7 @@ export class EmployeeEditComponent implements OnInit {
             this.toastr.success(this.bodyToast);
           },
             error: errorResult => {
-              this.modalMessageBody = JSON.stringify(errorResult);
-              this.displayModalMessage();
+              this.displayModalMessage(JSON.stringify(errorResult));
             }
         });
   }
@@ -289,17 +366,44 @@ export class EmployeeEditComponent implements OnInit {
 //#endregion
 
 //#region Modals
-  private displayModalYesNo(modalBody: string) {
-    this.modalYesNoBody = modalBody;
-    const btnShowModalYesNo = document.getElementById("showModalYesNo");
-    if(btnShowModalYesNo)
-      btnShowModalYesNo.click();
+  private displayModalYesNo(buttonName: string, modalBody: string) {
+
+    if(buttonName == 'new' && this.allFieldsEmpty()) {
+      this.untouchControls();
+      return;
+    }
+
+    let confirmationModalData = {
+      title: 'Employees',
+      message: modalBody,
+      btnOkText: 'Yes',
+      btnCancelText: 'No'
+    }
+    this.confirmService.confirmationModalData = confirmationModalData;
+
+    this.confirmService.confirm().subscribe({
+      next: buttonPressed => {
+        if (buttonPressed)
+          switch(buttonName) {
+            case "new":
+              this.clearForm();
+              break;
+            case "save":
+              if(this.requiredFieldsValid())
+                this.createOrUpdateEmployee();
+              break;
+          }
+        }
+    });
   }
 
-  private displayModalMessage() {
-    const btnShowModalMessage = document.getElementById("showModalMessage");
-    if(btnShowModalMessage)
-      btnShowModalMessage.click();
+  private displayModalMessage(body: string) {
+
+    const modalMessageData: ModalMessageData = {
+      title: 'Employees', body: body, button: 'btn-danger'
+    }
+
+    this.modalRef = this.modalService.show(ShowMessageComponent, { initialState : { modalMessageData } });
   }
 //#endregion
 
@@ -317,22 +421,22 @@ export class EmployeeEditComponent implements OnInit {
   }
 
   private getPicture() {
-
     this.photosService.getPhoto().subscribe({
       next: photoResult => {
         if(photoResult.length > 0) {
           this.photo = photoResult;
           this.employeeForm.controls['photo'].setValue(photoResult);
           this.highLightPicture(false);
-        } else
-            this.displayModalMessage();
+        } else {
+          this.displayModalMessage("Photo Required");
+          this.pictureAssigned = false;
+        }
       }
     })
 
   }
 
   private highLightPicture(show: boolean) {
-
     const colPhotoUpload = document.getElementById('col-photo-upload');
     const classesList: string[] = [ 'ng-invalid', 'ng-touched' ];
 

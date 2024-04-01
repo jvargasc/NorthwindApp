@@ -1,12 +1,16 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 
 import { Customer } from 'src/app/_models/customer';
+import { ModalMessageData } from 'src/app/_models/modalmessagedata';
 import { Region } from 'src/app/_models/region';
+import { ConfirmService } from 'src/app/_services/confirm.service';
 import { CustomersService } from 'src/app/_services/customers.service';
 import { RegionsService } from 'src/app/_services/regions.service';
+import { ShowMessageComponent } from 'src/app/_shared/modals/show-message/show-message.component';
 
 @Component({
   selector: 'app-customer-edit',
@@ -17,15 +21,13 @@ export class CustomerEditComponent implements OnInit {
   customer?: Customer;
   customerForm: FormGroup = new FormGroup({});
   regions: Region[] = [];
-  modalTitle = "Customer";
-  modalYesNoBody = "";
-  modalMessageBody = "";
   toolbarButtonPressed = "";
-  headerToast = "Customer";
   bodyToast = "Record successfully saved!!!";
   savingRecord = false;
 
-  constructor(private customersService: CustomersService, private regionsService: RegionsService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService ) { }
+  modalRef: BsModalRef;
+
+  constructor(private customersService: CustomersService, private regionsService: RegionsService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService, private confirmService: ConfirmService, private modalService: BsModalService ) { }
 
   ngOnInit() {
     this.getParameters();
@@ -37,14 +39,15 @@ export class CustomerEditComponent implements OnInit {
   toolbarButtonWasClicked(buttonName: string) {
     this.toolbarButtonPressed = buttonName;
     let modalBody = "";
+
     switch(buttonName){
       case "new":
         modalBody = "Do you wish to clear this Customer and create a new one?";
-        this.displayModalYesNo(modalBody);
+        this.displayModalYesNo(buttonName, modalBody);
         break;
       case "save":
         modalBody = "Do you wish to save this Customer?";
-        this.displayModalYesNo(modalBody);
+        this.displayModalYesNo(buttonName, modalBody);
         break;
       case "return":
         this.router.navigate(['/customers/customer-list']);
@@ -60,6 +63,8 @@ export class CustomerEditComponent implements OnInit {
         if (this.toolbarButtonPressed == "save") {
             if(this.requiredFieldsValid())
               this.createOrUpdateCustomer();
+            else
+              this.savingRecord = false;
         }
       break;
       case "btnNo":
@@ -71,6 +76,20 @@ export class CustomerEditComponent implements OnInit {
 //#endregion
 
 //#region Handle Form
+  private untouchControls() {
+
+    Object.keys(
+      this.customerForm.controls
+    ).forEach((key: string) => {
+      if(key != 'customerId') {
+        if(this.customerForm.controls[key].touched) {
+          this.customerForm.controls[key].markAsUntouched();
+        }
+      }
+    });
+
+  }
+
   private initializeForm() {
     this.savingRecord = false;
     this.customerForm = new FormGroup({
@@ -91,19 +110,36 @@ export class CustomerEditComponent implements OnInit {
   }
 
   private clearForm() {
+    this.savingRecord = false;
+    this.router.navigate(['/customers/customer-edit']);
     this.customer = {} as Customer;
     this.initializeForm();
-    this.router.navigate(['/customers/customer-edit']);
   }
 
   private requiredFieldsValid(): boolean {
     this.savingRecord = true;
     if(!this.customerForm.valid) {
-      this.modalMessageBody = "There are required fields that you must complete.";
-      this.displayModalMessage();
+      this.displayModalMessage(
+        "There are required fields that you must complete."
+      );
     }
 
     return this.customerForm.valid;
+  }
+
+  private allFieldsEmpty(): boolean {
+    let returnValue = true;
+
+    Object.keys(
+      this.customerForm.controls
+    ).forEach((key: string) => {
+      if(this.customerForm.controls[key].value) {
+        returnValue = false;
+        return;
+      }
+    });
+
+    return returnValue;
   }
 
   private getParameters() {
@@ -129,9 +165,9 @@ export class CustomerEditComponent implements OnInit {
               this.toastr.success(this.bodyToast);
             },
             error: errorResult => {
-              console.log(errorResult.error);
-              this.modalMessageBody = JSON.stringify(errorResult.error.statusCode + ' - ' + errorResult.error.message);
-              this.displayModalMessage();
+              this.displayModalMessage(
+                JSON.stringify(errorResult.error.statusCode + ' - ' + errorResult.error.message)
+              );
             }
           });
     else
@@ -142,8 +178,9 @@ export class CustomerEditComponent implements OnInit {
             this.toastr.success(this.bodyToast);
           },
             error: errorResult => {
-              this.modalMessageBody = JSON.stringify(errorResult);
-              this.displayModalMessage();
+              this.displayModalMessage(
+                JSON.stringify(errorResult)
+              );
             }
         });
   }
@@ -189,17 +226,44 @@ export class CustomerEditComponent implements OnInit {
 //#endregion
 
 //#region Modals
-  private displayModalYesNo(modalBody: string) {
-    this.modalYesNoBody = modalBody;
-    const btnShowModalYesNo = document.getElementById("showModalYesNo");
-    if(btnShowModalYesNo)
-      btnShowModalYesNo.click();
+  private displayModalYesNo(buttonName: string, modalBody: string) {
+
+    if(buttonName == 'new' && this.allFieldsEmpty()) {
+      this.untouchControls();
+      return;
+    }
+
+    let confirmationModalData = {
+      title: 'Customers',
+      message: modalBody,
+      btnOkText: 'Yes',
+      btnCancelText: 'No'
+    }
+    this.confirmService.confirmationModalData = confirmationModalData;
+
+    this.confirmService.confirm().subscribe({
+      next: buttonPressed => {
+        if (buttonPressed)
+          switch(buttonName) {
+            case "new":
+              this.clearForm();
+              break;
+            case "save":
+              if(this.requiredFieldsValid())
+                this.createOrUpdateCustomer();
+              break;
+          }
+        }
+    });
   }
 
-  private displayModalMessage() {
-    const btnShowModalMessage = document.getElementById("showModalMessage");
-    if(btnShowModalMessage)
-      btnShowModalMessage.click();
+  private displayModalMessage(body: string) {
+
+    const modalMessageData: ModalMessageData = {
+      title: 'Customers', body: body, button: 'btn-danger'
+    }
+
+    this.modalRef = this.modalService.show(ShowMessageComponent, { initialState : { modalMessageData } });
   }
 //#endregion
 }

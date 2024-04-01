@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { User } from 'src/app/_models/user';
 import { UsersService } from 'src/app/_services/users.service';
+import { SignupLoginComponent } from '../modals/signup-login/signup-login.component';
 
 @Component({
   selector: 'app-nav',
@@ -19,8 +21,9 @@ export class NavComponent implements OnInit {
  };
 
   loggedIn = false;
+  modalRef: BsModalRef;
 
-  constructor(private userService: UsersService, private router: Router ) {
+  constructor(private userService: UsersService, private router: Router, private modalService: BsModalService ) {
     this.checkboxMenu = false;
   }
 
@@ -61,11 +64,13 @@ export class NavComponent implements OnInit {
   }
 
   signUp() {
-    console.log('signUp()');
+    this.displayModalSign(1);
+    console.log('Show signUp()');
   }
 
   signIn() {
-    console.log('signIn()');
+    this.displayModalSign(2);
+    console.log('Show signIn()');
   }
 
   checkboxClicked() {
@@ -79,5 +84,13 @@ export class NavComponent implements OnInit {
     })
   }
 
+    private displayModalSign(option: number) {
+
+    // const modalMessageData: ModalMessageData = {
+    //   title: 'Categories', body: body, button: 'btn-danger'
+    // }
+
+    this.modalRef = this.modalService.show(SignupLoginComponent);
+  }
 
 }
