@@ -15,6 +15,19 @@ export class UsersService {
 
   constructor(private http: HttpClient) { }
 
+  register(model: any) {
+    return this.http.post<User>(this.baseUrl + 'register', model).pipe(
+      map((response: User) => {
+        console.log(response);
+        const user = response;
+        if (user) {
+          localStorage.setItem('user', JSON.stringify(user));
+          this.currentUserSource.next(user);
+        }
+      })
+    );
+  }
+
   login(model: any) {
     return this.http.post<User>(this.baseUrl + 'login', model).pipe(
       map((response: User) => {
@@ -23,7 +36,8 @@ export class UsersService {
           localStorage.setItem('user', JSON.stringify(user));
           this.currentUserSource.next(user);
         }
-      })
+      }
+      )
     );
   }
 

@@ -1,10 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { User } from 'src/app/_models/user';
 import { UsersService } from 'src/app/_services/users.service';
 import { SignupLoginComponent } from '../modals/signup-login/signup-login.component';
+import { LoginInfo } from 'src/app/_models/logininfo';
+import { ModalMessageData } from 'src/app/_models/modalmessagedata';
+import { ShowMessageComponent } from '../modals/show-message/show-message.component';
 
 @Component({
   selector: 'app-nav',
@@ -15,11 +18,6 @@ export class NavComponent implements OnInit {
   loginForm: FormGroup = new FormGroup({});
   checkboxMenu = true;
   user: User;
-  loginModel: any = {
-    username : '',
-    password : ''
- };
-
   loggedIn = false;
   modalRef: BsModalRef;
 
@@ -38,39 +36,44 @@ export class NavComponent implements OnInit {
         this.loggedIn = !!user;
         this.user = user;
       },
-      error: error => console.log(error)
+      error: error => {
+        this.displayModalMessage(error, 'btn-danger')
+      }
     });
   }
 
-  login() {
-    this.loginModel = {
-    username : this.loginForm.controls['username'].value,
-    password : this.loginForm.controls['password'].value
-      };
-
-    this.userService.login(this.loginModel).subscribe({
+  signUp(loginModel: LoginInfo) {
+    this.userService.register(loginModel).subscribe({
       next: response => {
-        console.log(response);
+        this.modalService.hide();
         this.loggedIn = true;
+        this.router.navigate(['/home']);
+        this.displayModalMessage('User Created Successfully!!!', 'btn-success');
       },
-      error: error => console.log(error)
+      error: loginResult => {
+        let body = JSON.stringify(loginResult.error);
+        this.displayModalMessage(body, 'btn-danger');
+      }
     });
   }
 
-  logout() {
+  signIn(loginModel: LoginInfo) {
+    this.userService.login(loginModel).subscribe({
+      next: response => {
+        this.modalService.hide();
+        this.loggedIn = true;
+        this.router.navigate(['/home']);
+      },
+      error: loginResult => {
+        this.displayModalMessage(JSON.stringify(loginResult.error), 'btn-danger')
+      }
+    });
+  }
+
+  signOut() {
     this.userService.logout();
     this.loggedIn = false;
     this.router.navigate(['/home']);
-  }
-
-  signUp() {
-    this.displayModalSign(1);
-    console.log('Show signUp()');
-  }
-
-  signIn() {
-    this.displayModalSign(2);
-    console.log('Show signIn()');
   }
 
   checkboxClicked() {
@@ -79,18 +82,43 @@ export class NavComponent implements OnInit {
 
   private initializeForm() {
     this.loginForm = new FormGroup({
-    'username' : new FormControl(this.loginModel.username),
-    'password' : new FormControl(this.loginModel.password)
-    })
+    'username' : new FormControl(null),
+    'password' : new FormControl(null)
+    });
   }
 
-    private displayModalSign(option: number) {
+  displayModalSignupLogin(option: number) {
 
-    // const modalMessageData: ModalMessageData = {
-    //   title: 'Categories', body: body, button: 'btn-danger'
-    // }
+    let signOption = option;
+    let modalRef: BsModalRef;
 
-    this.modalRef = this.modalService.show(SignupLoginComponent);
+    modalRef = this.modalService.show(SignupLoginComponent,
+      { initialState: { signOption } } );
+    modalRef.content.onClose.subscribe({
+      next: loginResult => {
+        let signOptionResult = loginResult['signOption'];
+        if(signOptionResult == 'signUp')
+          this.signUp(loginResult);
+        else if(signOptionResult == 'signIn')
+          this.signIn(loginResult);
+        else
+          console.log('ERROR!!!!');
+      },
+      error: errorResult => {
+        let body = JSON.stringify(errorResult.error);
+        this.displayModalMessage(body, 'btn-danger');
+      }
+    });
+
+  }
+
+  private displayModalMessage(body: string, button: string) {
+
+    const modalMessageData: ModalMessageData = {
+      title: 'Sign Up', body: body, button: button
+    }
+
+    this.modalRef = this.modalService.show(ShowMessageComponent, { initialState : { modalMessageData } });
   }
 
 }
