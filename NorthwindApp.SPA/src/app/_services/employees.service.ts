@@ -10,7 +10,7 @@ import { Employee } from '../_models/employee';
 })
 export class EmployeesService {
 
-  private baseUrl = environment.apiUrl + '/api/Employees/';
+  private baseUrl = environment.apiUrl + '/Employees/';
   private employeesSource = new BehaviorSubject<Employee[]>([]);
   employees$ = this.employeesSource.asObservable();
 

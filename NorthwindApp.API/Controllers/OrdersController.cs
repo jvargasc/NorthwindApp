@@ -3,7 +3,6 @@ using NorthwindApp.Core.Models;
 using NorthwindApp.Infrastructure.Repositories;
 using AutoMapper;
 using NorthwindApp.Infrastructure.Helpers;
-using Azure;
 using NorthwindApp.API.Extensions;
 using Microsoft.AspNetCore.Authorization;
 

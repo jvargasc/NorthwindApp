@@ -10,7 +10,7 @@ import { PaginatedResult } from '../_models/pagination';
 })
 export class ProductsService {
 
-  private baseUrl = environment.apiUrl + '/api/Products/';
+  private baseUrl = environment.apiUrl + '/Products/';
   private paginatedResult: PaginatedResult<Product[]> = new PaginatedResult<Product[]>;
 
   constructor(private http: HttpClient) { }

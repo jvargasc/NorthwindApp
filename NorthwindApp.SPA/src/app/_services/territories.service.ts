@@ -10,7 +10,7 @@ import { PaginatedResult } from '../_models/pagination';
 })
 export class TerritoriesService {
 
-  private baseUrl = environment.apiUrl + '/api/Territories/';
+  private baseUrl = environment.apiUrl + '/Territories/';
   private paginatedResult: PaginatedResult<Territory[]> = new PaginatedResult<Territory[]>;
 
   constructor(private http: HttpClient) { }

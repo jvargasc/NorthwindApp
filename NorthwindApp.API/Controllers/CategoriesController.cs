@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NorthwindApp.Core.Models;
 using NorthwindApp.Infrastructure.Repositories;

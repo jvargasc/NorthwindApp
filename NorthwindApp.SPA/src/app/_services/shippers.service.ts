@@ -10,7 +10,7 @@ import { Shipper } from '../_models/shipper';
 })
 export class ShippersService {
 
-  private baseUrl = environment.apiUrl + '/api/Shippers/';
+  private baseUrl = environment.apiUrl + '/Shippers/';
   private shippersSource = new BehaviorSubject<Shipper[]>([]);
   shippers$ = this.shippersSource.asObservable();
 

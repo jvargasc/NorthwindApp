@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class RegionsService {
 
-  private baseUrl = environment.apiUrl + '/api/Regions/';
+  private baseUrl = environment.apiUrl + '/Regions/';
   private regionsSource = new BehaviorSubject<Region[]>([]);
   regions$ = this.regionsSource.asObservable();
 

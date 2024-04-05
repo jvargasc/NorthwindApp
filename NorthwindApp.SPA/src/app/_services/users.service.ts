@@ -9,7 +9,7 @@ import { User } from '../_models/user';
 })
 export class UsersService {
 
-  private baseUrl = environment.apiUrl + '/api/Users/';
+  private baseUrl = environment.apiUrl + '/Users/';
   private currentUserSource = new BehaviorSubject<User | null> (null);
   currentUser$ = this.currentUserSource.asObservable();
 

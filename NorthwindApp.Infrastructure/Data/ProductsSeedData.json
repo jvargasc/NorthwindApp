@@ -1,0 +1,112 @@
+[
+    {
+        "productName": "Chai",
+        "supplierId": 1,
+        "categoryId": 1,
+        "quantityPerUnit": "10 boxes x 20 bags",
+        "unitPrice": 18.0000,
+        "unitsInStock": 39,
+        "unitsOnOrder": 0,
+        "reorderLevel": 10,
+        "discontinued": false
+    },
+    {
+        "productName": "Chang",
+        "supplierId": 1,
+        "categoryId": 1,
+        "quantityPerUnit": "24 - 12 oz bottles",
+        "unitPrice": 19.0000,
+        "unitsInStock": 17,
+        "unitsOnOrder": 40,
+        "reorderLevel": 25,
+        "discontinued": false
+    },
+    {
+        "productName": "Aniseed Syrup",
+        "supplierId": 1,
+        "categoryId": 2,
+        "quantityPerUnit": "12 - 550 ml bottles",
+        "unitPrice": 10.0000,
+        "unitsInStock": 13,
+        "unitsOnOrder": 70,
+        "reorderLevel": 25,
+        "discontinued": false
+    },
+    {
+        "productName": "Chef Anton's Cajun Seasoning",
+        "supplierId": 2,
+        "categoryId": 2,
+        "quantityPerUnit": "48 - 6 oz jars",
+        "unitPrice": 22.0000,
+        "unitsInStock": 53,
+        "unitsOnOrder": 0,
+        "reorderLevel": 0,
+        "discontinued": false
+    },
+    {
+        "productName": "Chef Anton's Gumbo Mix",
+        "supplierId": 2,
+        "categoryId": 2,
+        "quantityPerUnit": "36 boxes",
+        "unitPrice": 21.3500,
+        "unitsInStock": 0,
+        "unitsOnOrder": 0,
+        "reorderLevel": 0,
+        "discontinued": true
+    },
+    {
+        "productName": "Grandma's Boysenberry Spread",
+        "supplierId": 3,
+        "categoryId": 2,
+        "quantityPerUnit": "12 - 8 oz jars",
+        "unitPrice": 25.0000,
+        "unitsInStock": 120,
+        "unitsOnOrder": 0,
+        "reorderLevel": 25,
+        "discontinued": false
+    },
+    {
+        "productName": "Uncle Bob's Organic Dried Pears",
+        "supplierId": 3,
+        "categoryId": 7,
+        "quantityPerUnit": "12 - 1 lb pkgs.",
+        "unitPrice": 30.0000,
+        "unitsInStock": 15,
+        "unitsOnOrder": 0,
+        "reorderLevel": 10,
+        "discontinued": false
+    },
+    {
+        "productName": "Northwoods Cranberry Sauce",
+        "supplierId": 3,
+        "categoryId": 2,
+        "quantityPerUnit": "12 - 12 oz jars",
+        "unitPrice": 40.0000,
+        "unitsInStock": 6,
+        "unitsOnOrder": 0,
+        "reorderLevel": 0,
+        "discontinued": false
+    },
+    {
+        "productName": "Mishi Kobe Niku",
+        "supplierId": 4,
+        "categoryId": 6,
+        "quantityPerUnit": "18 - 500 g pkgs.",
+        "unitPrice": 97.0000,
+        "unitsInStock": 29,
+        "unitsOnOrder": 0,
+        "reorderLevel": 0,
+        "discontinued": true
+    },
+    {
+        "productName": "Ikura",
+        "supplierId": 4,
+        "categoryId": 8,
+        "quantityPerUnit": "12 - 200 ml jars",
+        "unitPrice": 31.0000,
+        "unitsInStock": 31,
+        "unitsOnOrder": 0,
+        "reorderLevel": 0,
+        "discontinued": false
+    }
+]

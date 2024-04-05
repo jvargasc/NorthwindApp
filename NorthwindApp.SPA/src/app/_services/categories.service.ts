@@ -10,7 +10,7 @@ import { Category } from '../_models/category';
 })
 export class CategoriesService  {
 
-  private baseUrl = environment.apiUrl + '/api/Categories/';
+  private baseUrl = environment.apiUrl + '/Categories/';
   private categoriesSource = new BehaviorSubject<Category[]>([]);
   categories$ = this.categoriesSource.asObservable();
 

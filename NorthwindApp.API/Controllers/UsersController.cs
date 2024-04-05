@@ -1,12 +1,10 @@
 using System.Security.Cryptography;
 using System.Text;
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NorthwindApp.API.Interfaces;
 using NorthwindApp.Core.Dtos;
 using NorthwindApp.Core.Models;
-using NorthwindApp.Infrastructure.Context;
 using NorthwindApp.Infrastructure.Repositories;
 
 namespace NorthwindApp.API.Controllers;

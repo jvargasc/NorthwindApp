@@ -11,7 +11,7 @@ import { PaginatedResult } from '../_models/pagination';
 })
 export class CustomersService {
 
-  private baseUrl = environment.apiUrl + '/api/Customers/';
+  private baseUrl = environment.apiUrl + '/Customers/';
   private paginatedResult: PaginatedResult<Customer[]> = new PaginatedResult<Customer[]>;
 
   constructor(private http: HttpClient) { }

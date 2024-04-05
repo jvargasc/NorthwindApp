@@ -1,13 +1,8 @@
-using System.Text;
 using HealthChecks.UI.Client;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NorthwindApp.API.Extensions;
-using NorthwindApp.API.Interfaces;
 using NorthwindApp.API.MiddleWare;
-using NorthwindApp.API.Services;
 using NorthwindApp.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -78,6 +73,11 @@ app.UseHealthChecks("/health", new HealthCheckOptions()
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.MapControllers();
+
+app.MapFallbackToController("Index", "Fallback");
 
 app.Run();
