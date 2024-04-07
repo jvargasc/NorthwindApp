@@ -248,5 +248,20 @@
     "territoryId": 95060,
     "territoryDescription": "Santa Cruz                                        ",
     "regionId": 2
+  },
+  {
+    "territoryId": 98004,
+    "territoryDescription": "Bellevue                                          ",
+    "regionId": 2
+  },
+  {
+    "territoryId": 98052,
+    "territoryDescription": "Redmond                                           ",
+    "regionId": 2
+  },
+  {
+    "territoryId": 98104,
+    "territoryDescription": "Seattle                                           ",
+    "regionId": 2
   }
 ]

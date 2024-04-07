@@ -12,26 +12,36 @@ builder.Services.AddPersistenceInfrastructure(builder.Configuration);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(setupAction =>
-{
-    setupAction.AddSecurityDefinition("bearerAuth",
-    new()
-    {
-        Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
-        Description = "Input your bearer token to access this API"
-    });
 
-    setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
+builder.Services.AddSwaggerGen(option =>
+{
+    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Northwind API", Version = "v1" });
+    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter a valid token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "Bearer"
+    });
+    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
                 {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "bearerAuth" }
-                        }, new List<string>() }
-                });
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                },
+                Scheme = "oauth2",
+                Name = "Bearer",
+                In = ParameterLocation.Header,
+            },
+            new string[]{}
+        }
+    });
 });
 
 /*
@@ -65,6 +75,7 @@ app.UseCors(builder =>
     );
 
 app.UseAuthentication();
+app.UseRouting();
 app.UseAuthorization();
 
 app.UseHealthChecks("/health", new HealthCheckOptions()
