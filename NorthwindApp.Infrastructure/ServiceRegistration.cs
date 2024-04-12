@@ -3,22 +3,26 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NorthwindApp.Infrastructure.Context;
 using NorthwindApp.Infrastructure.Repositories;
+using NorthwindApp.Infrastructure.Data;
+using Microsoft.Extensions.Logging;
+using System.Reflection;
 
 namespace NorthwindApp.Infrastructure
 {
     public static class ServiceRegistration
     {
         public static void AddPersistenceInfrastructure(this IServiceCollection services,
-                                                             IConfiguration configuration)
+                                                             IConfiguration configuration,
+                                                             string connectionString)
         {
-            string NorthwindConnectionsString = Environment.GetEnvironmentVariable("connectionStrings:northwindwebdbconnectionstring");
+            string NorthwindConnectionsString = connectionString;
 
-            services.AddDbContext<NorthwindContext>(options =>
-                options.UseSqlServer(NorthwindConnectionsString,
-                   b => b.MigrationsAssembly(typeof(NorthwindContext).Assembly.FullName))
-            );
+            services.AddDbContext<NorthwindContext>(opt =>
+            {
+                opt.UseNpgsql(connectionString);
+            });
 
-            services.AddHealthChecks().AddSqlServer(NorthwindConnectionsString, "Select 1;", "Northwind");
+            // services.AddHealthChecks().AddSqlServer(NorthwindConnectionsString, "Select 1;", "Northwind");
 
             // Add services to the container.
             services.AddScoped<ICategoriesRepository, CategoriesRepository>();
@@ -31,6 +35,21 @@ namespace NorthwindApp.Infrastructure
             services.AddScoped<ISuppliersRepository, SuppliersRepository>();
             services.AddScoped<ITerritoriesRepository, TerritoriesRepository>();
             services.AddScoped<IUsersRepository, UsersRepository>();
+        }
+
+        public static async void SeedData(this IServiceCollection services, IServiceProvider? servicesScoped)
+        {
+            try
+            {
+                var context = servicesScoped.GetRequiredService<NorthwindContext>();
+                await context.Database.MigrateAsync();
+                await Seed.SeedData(context);
+            }
+            catch (Exception ex)
+            {
+                var logger = servicesScoped.GetService<ILogger<NorthwindContext>>();
+                logger.LogError(ex, "An error occurred during seeding");
+            }
         }
     }
 }

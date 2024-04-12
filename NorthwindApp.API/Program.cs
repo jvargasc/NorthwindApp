@@ -7,8 +7,14 @@ using NorthwindApp.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Creating the Connection String for the postgres DB
+string connectionString = "";
+
+if (builder.Environment.IsDevelopment())
+    connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 // Add services to the container.
-builder.Services.AddPersistenceInfrastructure(builder.Configuration);
+builder.Services.AddPersistenceInfrastructure(builder.Configuration, connectionString);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -90,5 +96,10 @@ app.UseStaticFiles();
 app.MapControllers();
 
 app.MapFallbackToController("Index", "Fallback");
+
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+
+builder.Services.SeedData(services);
 
 app.Run();
