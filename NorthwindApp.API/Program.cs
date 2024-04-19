@@ -14,7 +14,7 @@ if (builder.Environment.IsDevelopment())
     connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 // Add services to the container.
-builder.Services.AddPersistenceInfrastructure(builder.Configuration, connectionString);
+builder.Services.AddPersistenceInfrastructure(builder.Configuration);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

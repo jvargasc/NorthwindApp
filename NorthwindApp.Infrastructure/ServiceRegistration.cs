@@ -12,14 +12,13 @@ namespace NorthwindApp.Infrastructure
     public static class ServiceRegistration
     {
         public static void AddPersistenceInfrastructure(this IServiceCollection services,
-                                                             IConfiguration configuration,
-                                                             string connectionString)
+                                                             IConfiguration configuration)
         {
-            string NorthwindConnectionsString = connectionString;
+            string NorthwindConnectionsString = configuration.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<NorthwindContext>(opt =>
             {
-                opt.UseNpgsql(connectionString);
+                opt.UseNpgsql(NorthwindConnectionsString);
             });
 
             // services.AddHealthChecks().AddSqlServer(NorthwindConnectionsString, "Select 1;", "Northwind");
@@ -42,7 +41,8 @@ namespace NorthwindApp.Infrastructure
             try
             {
                 var context = servicesScoped.GetRequiredService<NorthwindContext>();
-                await context.Database.MigrateAsync();
+                context.Database.EnsureCreated();
+                // await context.Database.MigrateAsync();
                 await Seed.SeedData(context);
             }
             catch (Exception ex)
