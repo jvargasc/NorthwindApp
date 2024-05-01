@@ -1,18 +1,6 @@
-FROM node:14 AS spa-builder
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
 WORKDIR /src
 EXPOSE 8080
-
-COPY NorthwindApp.SPA/*.* ./
-RUN npm install -g @angular/cli
-WORKDIR /src/NorthwindApp.SPA
-RUN ng build --output-path=dist/spa
-COPY --from=builder /dist/spa /app/wwwroot
-# COPY /dist/spa/*.* /app/wwwroot
-# COPY --from=build-env /app .
-# NorthwindApp.API/wwwroot
-
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
-# WORKDIR /app
 
 # copy csproj and restore as distinct layers
 WORKDIR /src
@@ -30,15 +18,11 @@ WORKDIR /src/NorthwindApp.Infrastructure
 RUN dotnet build -c Release -o /app
 
 WORKDIR /src/NorthwindApp.API
-RUN dotnet build -c Release -o /app
-
-#COPY /src/dist/spa/*.* /app/NorthwindApp.API/wwwroot
-# WORKDIR /app
-# COPY --from=spa-builder /src/dist/spa ./NorthwindApp.API/wwwroot
+RUN dotnet publish -c Release -o /app
 
 # build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /app
-# COPY --from=spa-builder /src/dist/spa ./NorthwindApp.API/wwwroot
+
 COPY --from=build-env /app .
 ENTRYPOINT ["dotnet", "NorthwindApp.API.dll"]

@@ -3,10 +3,7 @@
     <div class="col-11">
       <h4 class="area-title">Categories</h4>
     </div>
-    <app-toolbarlist
-      class="toolbarlist"
-      (toolbarButtonWasClicked)="buttonWasClicked($event)"
-    ></app-toolbarlist>
+    <app-toolbarlist class="toolbarlist" (toolbarButtonWasClicked)="buttonWasClicked($event)"></app-toolbarlist>
   </div>
   <table class="table">
     <thead>
@@ -25,10 +22,7 @@
         <td>{{ category.description }}</td>
         <!-- <td>{{ category.picture }}</td> -->
         <td>
-          <img
-            src="{{ 'data:image/jpg;base64,' + category.picture }}"
-            alt="category.picture"
-          />
+          <img src="{{ 'data:image/jpg;base64,' + category.picture }}" alt="category.picture" />
         </td>
         <td>
           <a routerLink="/categories/category-edit/{{ category.categoryId }}">
@@ -40,7 +34,7 @@
     <tfoot>
       Total Records:
       {{
-        categories.length
+      categories.length
       }}
     </tfoot>
   </table>
