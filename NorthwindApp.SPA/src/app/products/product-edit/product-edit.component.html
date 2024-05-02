@@ -1,0 +1,132 @@
+<div class="card shadow">
+  <div class="card-header p-3 bg-white d-flex justify-content-between">
+    <div class="card-title">
+      <h4>Product</h4>
+    </div>
+    <div class="card-toolbar">
+      <app-toolbarcrud
+        (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"
+      ></app-toolbarcrud>
+    </div>
+  </div>
+  <div class="card-body mx-2">
+    <form [formGroup]="productForm">
+      <div class="row">
+        <div class="col-3 form-group">
+          <label for="productId">Product Id</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="productId"
+            placeholder="Product Id"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3 form-group">
+          <label for="productName">Product Name</label
+          ><input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="productName"
+            placeholder="Product Name"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="supplierId">Supplier</label>
+          <select
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="supplierId"
+          >
+            <option
+              *ngFor="let supplier of suppliers"
+              [ngValue]="product.supplierId"
+            >
+              {{ supplier.companyName }}
+            </option>
+          </select>
+        </div>
+        <div class="col-3 form-group">
+          <label for="categoryId">Category Id</label>
+          <select
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="categoryId"
+          >
+            <option
+              *ngFor="let category of categories"
+              [ngValue]="product.categoryId"
+            >
+              {{ category.categoryName }}
+            </option>
+          </select>
+        </div>
+        <div class="col-3 form-group">
+          <label for="quantityPerUnit">Quantity Per Unit</label
+          ><input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="quantityPerUnit"
+            placeholder="Quantity Per Unit"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-2 form-group">
+          <label for="unitPrice">Unit Price</label
+          ><input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="unitPrice"
+            placeholder="Unit Price"
+          />
+        </div>
+        <div class="col-2 form-group">
+          <label for="unitsInStock">Units In Stock</label
+          ><input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="unitsInStock"
+            placeholder="Units In Stock"
+          />
+        </div>
+        <div class="col-2 form-group">
+          <label for="unitsOnOrder">Units On Order</label
+          ><input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="unitsOnOrder"
+            placeholder="Units On Order"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="reorderLevel">ReOrder Level</label
+          ><input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="reorderLevel"
+            placeholder="ReOrder Level"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="discontinued">Discontinued</label
+          ><input
+            type="checkbox"
+            class="form-control form-check-input"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="discontinued"
+            placeholder="Discontinued"
+            [value]="product.discontinued"
+          />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

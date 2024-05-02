@@ -1,0 +1,58 @@
+<div class="card shadow">
+  <div class="card-header p-3 bg-white d-flex justify-content-between">
+    <div class="card-title">
+      <h4>Territory</h4>
+    </div>
+    <div class="card-toolbar">
+      <app-toolbarcrud
+        (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"
+      ></app-toolbarcrud>
+    </div>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="territoryForm">
+      <div class="row">
+        <div class="col-3 form-group">
+          <label for="supplierId">Territory Id</label
+          ><input
+            type="text"
+            class="form-control"
+            formControlName="territoryId"
+            placeholder="Territory Id"
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-3 form-group">
+          <label for="territoryDescription">Territory Description</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="territoryDescription"
+            placeholder="Territory Description"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="regionId">Region Id</label>
+          <select
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="regionId"
+          >
+            <option *ngFor="let region of regions" [ngValue]="region?.regionId">
+              {{ region.regionDescription }}
+            </option>
+          </select>
+          <!-- <input
+            type="text"
+            class="form-control"
+            formControlName="regionId"
+            placeholder="Region Id"
+          /> -->
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

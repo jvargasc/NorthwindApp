@@ -1,0 +1,250 @@
+<div class="card shadow">
+  <div class="card-header p-3 bg-white d-flex justify-content-between">
+    <div class="card-title">
+      <h4>Order</h4>
+    </div>
+    <div class="card-toolbar">
+      <app-toolbarcrud
+        (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"
+      ></app-toolbarcrud>
+    </div>
+  </div>
+  <div class="card-body mx-2">
+    <form [formGroup]="orderForm">
+      <div class="row">
+        <div class="col-3">
+          <div class="form-group">
+            <label for="categoryId">Order Id</label>
+            <input
+              class="form-control"
+              [ngClass]="{ 'ng-touched': savingRecord }"
+              formControlName="orderId"
+              placeholder="orderId"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <div class="form-group">
+            <label for="customerId">Customer</label>
+            <select
+              class="form-control"
+              [ngClass]="{ 'ng-touched': savingRecord }"
+              formControlName="customerId"
+            >
+              <option
+                *ngFor="let customer of customers"
+                [ngValue]="customer.customerId"
+              >
+                {{ customer.companyName }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-3 form-group">
+          <label for="employeeId">Employee</label>
+          <select
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="employeeId"
+          >
+            <option
+              *ngFor="let employee of employees"
+              [ngValue]="employee.employeeId"
+            >
+              {{ employee.firstName + " " + employee.lastName }}
+            </option>
+          </select>
+        </div>
+        <div class="col-3 form-group">
+          <label for="orderDate">Order Date</label>
+          <input
+            type="date"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="orderDate"
+            placeholder="Order Date"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="requiredDate">Required Date</label>
+          <input
+            type="date"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="requiredDate"
+            placeholder="Required Date"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3 form-group">
+          <label for="shippedDate">Shipped Date</label>
+          <input
+            type="date"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="shippedDate"
+            placeholder="Shipped Date"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="shipperId">Shipper Id</label>
+          <select
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="shipperId"
+          >
+            <option
+              *ngFor="let shipper of shippers"
+              [ngValue]="shipper.shipperId"
+            >
+              {{ shipper.companyName }}
+            </option>
+          </select>
+        </div>
+        <div class="col-3 form-group">
+          <label for="freight">Freight</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="freight"
+            placeholder="Freight"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="shipName">Ship Name</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="shipName"
+            placeholder="Ship Name"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3 form-group">
+          <label for="shipAddress">Ship Address</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="shipAddress"
+            placeholder="Ship Address"
+          />
+        </div>
+        <div class="col-2 form-group">
+          <label for="shipCity">Ship City</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="shipCity"
+            placeholder="Ship City"
+          />
+        </div>
+        <div class="col-2 form-group">
+          <label for="shipRegion">Ship Region</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="shipRegion"
+            placeholder="Ship Region"
+          />
+        </div>
+        <div class="col-2 form-group">
+          <label for="shipPostalCode">Ship PostalCode</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="shipPostalCode"
+            placeholder="Ship PostalCode"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="shipCountry">Ship Country</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="shipCountry"
+            placeholder="Ship Country"
+          />
+        </div>
+      </div>
+      <div class="card shadow">
+        <div class="row">
+          <div class="col-11">
+            <h4 class="m-3">Details</h4>
+          </div>
+          <div class="col-1">
+            <button type="button" class="btn" (click)="onAddDetail()">
+              <i class="bi bi-file-plus-fill fa-2x"> </i>
+            </button>
+          </div>
+        </div>
+        <div class="col-xs-12" formArrayName="details">
+          <div
+            class="row m-2"
+            *ngFor="let detailCtrl of detailsControls; let i = index"
+            [formGroupName]="i"
+            style="margin-top: 10px"
+          >
+            <div class="col-2">
+              <label for="productId">Product Id</label>
+              <input
+                type="number"
+                class="form-control"
+                [ngClass]="{ 'ng-touched': savingRecord }"
+                formControlName="productId"
+              />
+            </div>
+            <div class="col-2">
+              <label for="unitPrice">Unit Price</label>
+              <input
+                type="number"
+                class="form-control"
+                [ngClass]="{ 'ng-touched': savingRecord }"
+                formControlName="unitPrice"
+              />
+            </div>
+            <div class="col-2">
+              <label for="quantity">Quantity</label>
+              <input
+                type="number"
+                class="form-control"
+                [ngClass]="{ 'ng-touched': savingRecord }"
+                formControlName="quantity"
+              />
+            </div>
+            <div class="col-2">
+              <label for="discount">Discount</label>
+              <input
+                type="number"
+                class="form-control"
+                [ngClass]="{ 'ng-touched': savingRecord }"
+                formControlName="discount"
+              />
+            </div>
+            <div class="col-2 mt-4">
+              <button
+                type="button"
+                class="btn btn-danger"
+                (click)="onRemoveDetail(i)"
+              >
+                X
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- <app-order-details (removeDetailButtonWasClicked)="removeDetail()" *ngFor="let order_Detail of order.order_Details"
+          [orderDetail]="order_Detail"></app-order-details> -->
+      </div>
+    </form>
+  </div>
+</div>

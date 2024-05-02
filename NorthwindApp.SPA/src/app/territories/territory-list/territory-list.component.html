@@ -1,0 +1,41 @@
+<div class="container mt-3">
+  <div class="page-title mb-2">
+    <div class="col-11">
+      <h4 class="area-title">Territories</h4>
+    </div>
+    <app-toolbarlist (toolbarButtonWasClicked)="buttonWasClicked($event)"></app-toolbarlist>
+  </div>
+  <table class="table">
+    <thead>
+      <tr class="table-success">
+        <th scope="col">Territory Id</th>
+        <th scope="col">Territory Description</th>
+        <th scope="col">Region</th>
+        <th scope="col"><i class="fa-solid fa-gear"></i></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let territory of territories">
+        <th scope="row">{{ territory.territoryId }}</th>
+        <td>{{ territory.territoryDescription }}</td>
+        <td>{{ getRegionDescription(territory.regionId) }}</td>
+        <td>
+          <a routerLink="/territories/territory-edit/{{ territory.territoryId }}">
+            <i class="fas fa-edit"></i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      Total Records:
+      {{
+      territories.length
+      }}
+    </tfoot>
+  </table>
+  <div class="d-flex justify-content-center" *ngIf="pagination">
+    <pagination [boundaryLinks]="true" [totalItems]="pagination.totalItems" [itemsPerPage]="pagination.itemsPerPage"
+      [maxSize]="10" [(ngModel)]="pagination.currentPage" (pageChanged)="pageChanged($event)" previousText="&lsaquo;"
+      nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+  </div>
+</div>

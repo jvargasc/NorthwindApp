@@ -1,0 +1,29 @@
+/* You can add global styles to this file, and also import other style files */
+.area-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.row {
+  margin-bottom: 10px;
+}
+
+/* input.ng-invalid.ng-dirty,
+input.ng-invalid,
+#col-photo-upload.ng-invalid,
+select.ng-invalid {
+  border: solid red
+}
+
+input.ng-invalid {
+  border: solid red
+}
+*/
+
+/* input.ng-invalid,
+select.ng-invalid */
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched,
+select.ng-invalid.ng-touched {
+  border: solid red
+}

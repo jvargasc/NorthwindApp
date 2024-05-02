@@ -1,0 +1,40 @@
+<div class="card shadow">
+  <div class="card-header p-3 bg-white d-flex justify-content-between">
+    <div class="card-title">
+      <h4>Region</h4>
+    </div>
+    <div class="card-toolbar">
+      <app-toolbarcrud
+        (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"
+      ></app-toolbarcrud>
+    </div>
+  </div>
+  <div class="card-body mx-2">
+    <form [formGroup]="regionForm">
+      <div class="row">
+        <div class="col-3 form-group">
+          <label for="regionId">Region</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="regionId"
+            placeholder="Region"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3 form-group">
+          <label for="regionDescription">Region Description</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="supplierId"
+            formControlName="regionDescription"
+            placeholder="Region Description"
+          />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<div class="card shadow">
+  <div class="card-header p-3 bg-white d-flex justify-content-between">
+    <div class="card-title">
+      <h4>Shippers</h4>
+    </div>
+    <div class="card-toolbar">
+      <app-toolbarcrud
+        (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"
+      ></app-toolbarcrud>
+    </div>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="shipperForm">
+      <div class="row">
+        <div class="col-2" id="row-shipperId">
+          <div class="form-group">
+            <label for="exampleShipperId">Shipper Id</label>
+            <input
+              type="text"
+              class="form-control"
+              id="shipperId"
+              formControlName="shipperId"
+              placeholder="Shipper Id"
+            />
+          </div>
+        </div>
+        <div class="col-5">
+          <div class="form-group">
+            <label for="companyName">Company Name</label>
+            <input
+              type="text"
+              class="form-control"
+              [ngClass]="{ 'ng-touched': savingRecord }"
+              id="companyName"
+              formControlName="companyName"
+              placeholder="Company Name"
+            />
+          </div>
+        </div>
+        <div class="col-5">
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input
+              type="phone"
+              class="form-control"
+              [ngClass]="{ 'ng-touched': savingRecord }"
+              id="phone"
+              formControlName="phone"
+              placeholder="Phone Number"
+            />
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="container mt-3">
+  <div class="page-title mb-2">
+    <div class="col-11">
+      <h4 class="area-title">Categories</h4>
+    </div>
+    <app-toolbarlist class="toolbarlist" (toolbarButtonWasClicked)="buttonWasClicked($event)"></app-toolbarlist>
+  </div>
+  <table class="table">
+    <thead>
+      <tr class="table-success">
+        <th scope="col">Category Id</th>
+        <th scope="col">Category Name</th>
+        <th scope="col">Description</th>
+        <th scope="col">Picture</th>
+        <th scope="col"><i class="fa-solid fa-gear"></i></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let category of categories">
+        <th scope="row">{{ category.categoryId }}</th>
+        <td>{{ category.categoryName }}</td>
+        <td>{{ category.description }}</td>
+        <!-- <td>{{ category.picture }}</td> -->
+        <td>
+          <img src="{{ 'data:image/jpg;base64,' + category.picture }}" alt="category.picture" />
+        </td>
+        <td>
+          <a routerLink="/categories/category-edit/{{ category.categoryId }}">
+            <i class="fas fa-edit"></i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      Total Records:
+      {{
+      categories.length
+      }}
+    </tfoot>
+  </table>
+</div>

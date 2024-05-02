@@ -1,0 +1,51 @@
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+
+    <!-- Tabs Titles -->
+    <h2 [ngClass]=" tabVisible == 'signup' ? 'active' : 'inactive underlineHover'" (click)="clickedTitle(0)">Sign Up
+    </h2>
+    <h2 [ngClass]=" tabVisible == 'signin' ? 'active' : 'inactive underlineHover' " (click)="clickedTitle(1)">Sign In
+    </h2>
+
+    <div class="fadeIn first">
+      <i class="bi bi-file-earmark-person"></i>
+    </div>
+
+    <div *ngIf="tabVisible == 'signup'">
+
+      <form [formGroup]="signUpLoginForm">
+        <input type="text" class="fadeIn second" placeholder="Username" formControlName="usernameSignUp" />
+        <input type="password" class="fadeIn third" placeholder="Password" formControlName="passwordSignUp" />
+        <input type="password" class="fadeIn third" placeholder="Password Confirmation"
+          formControlName="passwordConfirmationSignUp" />
+        <span *ngIf="passwordsMath()">
+          <h2>Passwords don't match</h2>
+        </span>
+        <input type="submit" class="fadeIn fourth" (click)="btnSignUp()" value="Sign Up"
+          [disabled]="!signUpLoginForm.valid" />
+
+      </form>
+
+    </div>
+
+    <div *ngIf="tabVisible == 'signin'">
+
+      <!-- Login Form -->
+      <form [formGroup]="signInLoginForm">
+        <input type="text" id="username" class="fadeIn second" name="username" placeholder="Username"
+          formControlName="usernameSignIn" />
+        <input type="password" id="password" class="fadeIn third" name="login" placeholder="Password"
+          formControlName="passwordSignIn" />
+        <input type="submit" class="fadeIn fourth" (click)="btnSignIn()" value="Log In"
+          [disabled]="!signInLoginForm.valid" />
+
+      </form>
+
+    </div>
+
+    <!-- Remind Passowrd -->
+    <div id="formFooter">
+      <a class="underlineHover" href="#">Forgot Password?</a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+<div class="card shadow">
+  <div class="card-header p-3 bg-white d-flex justify-content-between">
+    <div class="card-title">
+      <h4>Category</h4>
+    </div>
+    <div class="card-toolbar">
+      <app-toolbarcrud
+        (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"
+      ></app-toolbarcrud>
+    </div>
+  </div>
+  <div class="card-body mx-2">
+    <form [formGroup]="categoryForm">
+      <div class="row">
+        <div class="col-3">
+          <div class="form-group">
+            <label for="categoryId">Category Id</label>
+            <input
+              class="form-control"
+              formControlName="categoryId"
+              placeholder="Category Id"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group">
+            <label for="categoryName">Category Name</label>
+            <input
+              type="text"
+              class="form-control"
+              [ngClass]="{ 'ng-touched': savingRecord }"
+              formControlName="categoryName"
+              placeholder="Category Name"
+            />
+          </div>
+          <div class="form-group mt-2">
+            <label for="description">Contact Name</label>
+            <input
+              class="form-control"
+              [ngClass]="{ 'ng-touched': savingRecord }"
+              formControlName="description"
+              placeholder="Description"
+            />
+          </div>
+        </div>
+        <div class="col-6" id="col-photo-upload">
+          <div
+            class="form-group lblPicture"
+            [ngClass]="{ 'ng-touched': savingRecord && !pictureAssigned }"
+          >
+            <app-photo-upload></app-photo-upload>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

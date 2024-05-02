@@ -1,0 +1,227 @@
+<div class="card shadow">
+  <div class="card-header p-3 bg-white d-flex justify-content-between">
+    <div class="card-title">
+      <h4>Employee</h4>
+    </div>
+    <div class="card-toolbar">
+      <app-toolbarcrud
+        (toolbarButtonWasClicked)="toolbarButtonWasClicked($event)"
+      ></app-toolbarcrud>
+    </div>
+  </div>
+  <div class="card-body mx-2">
+    <form [formGroup]="employeeForm">
+      <div class="row">
+        <div class="col-2">
+          <div class="form-group">
+            <label for="example">Employee Id</label>
+            <input
+              class="form-control"
+              formControlName="employeeId"
+              placeholder="Employee Id"
+            />
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group">
+            <div class="col-6" id="col-photo-upload">
+              <div class="form-group">
+                <div
+                  class="form-group lblPicture"
+                  [ngClass]="{ 'ng-touched': savingRecord && !photo }"
+                >
+                  <app-photo-upload></app-photo-upload>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <div class="form-group">
+            <label for="firstName">Title</label>
+            <input
+              class="form-control"
+              [ngClass]="{ 'ng-touched': savingRecord }"
+              formControlName="title"
+              placeholder="Title"
+            />
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group">
+            <label for="firstName">Title Of Courtesy</label>
+            <input
+              class="form-control"
+              [ngClass]="{ 'ng-touched': savingRecord }"
+              formControlName="titleOfCourtesy"
+              placeholder="Title"
+            />
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input
+              class="form-control"
+              [ngClass]="{ 'ng-touched': savingRecord }"
+              formControlName="firstName"
+              placeholder="First Name"
+            />
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group">
+            <label for="example">Last Name</label>
+            <input
+              class="form-control"
+              [ngClass]="{ 'ng-touched': savingRecord }"
+              formControlName="lastName"
+              placeholder="Last Name"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3 form-group">
+          <label for="">Birth Date</label>
+          <input
+            type="date"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="birthDate"
+            placeholder="Birth Date"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="">Hire Date</label>
+          <input
+            type="date"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="hireDate"
+            placeholder="Hire Date"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="">Address</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="address"
+            placeholder="Address"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="">City</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="city"
+            placeholder="City"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3 form-group">
+          <label for="">Postal Code</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="postalCode"
+            placeholder="Postal Code"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="">Country</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="country"
+            placeholder="Country"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="">Home Phone</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="homePhone"
+            placeholder="Home Phone"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="">Extension</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="extension"
+            placeholder="Extension"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3 form-group">
+          <label for="">Region</label>
+          <select
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="regionId"
+          >
+            <option *ngFor="let region of regions" [ngValue]="region.regionId">
+              {{ region.regionDescription }}
+            </option>
+          </select>
+        </div>
+        <div class="col-3 form-group">
+          <label for="">Notes</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="notes"
+            placeholder="Notes"
+          />
+        </div>
+        <div class="col-3 form-group">
+          <label for="">Reports To</label>
+          <!-- <input
+            type="text"
+            class="form-control"
+            formControlName="reportsToDescription"
+            placeholder="Reports To"
+          /> -->
+          <select
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="reportsTo"
+          >
+            <option
+              *ngFor="let employeeItem of employees"
+              [ngValue]="employeeItem.employeeId"
+            >
+              {{ employeeItem.firstName + " " + employeeItem.lastName }}
+            </option>
+          </select>
+        </div>
+        <div class="col-3 form-group">
+          <label for="">Photo Path</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'ng-touched': savingRecord }"
+            formControlName="photoPath"
+            placeholder="Photo Path"
+          />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="container mt-3">
+  <div class="page-title mb-2">
+    <div class="col-11">
+      <h4 class="area-title">Shippers</h4>
+    </div>
+    <app-toolbarlist
+      (toolbarButtonWasClicked)="buttonWasClicked($event)"
+    ></app-toolbarlist>
+  </div>
+  <table class="table">
+    <thead>
+      <tr class="table-success">
+        <th scope="col">#</th>
+        <th scope="col">Company Name</th>
+        <th scope="col">Phone</th>
+        <th scope="col"><i class="fa-solid fa-gear"></i></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let shipper of shippers">
+        <th scope="row">{{ shipper.shipperId }}</th>
+        <td>{{ shipper.companyName }}</td>
+        <td>{{ shipper.phone }}</td>
+        <td>
+          <a routerLink="/shippers/shipper-edit/{{ shipper.shipperId }}">
+            <i class="fas fa-edit"></i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      Total Records:
+      {{
+        shippers.length
+      }}
+    </tfoot>
+  </table>
+</div>
