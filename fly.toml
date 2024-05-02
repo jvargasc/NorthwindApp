@@ -9,6 +9,9 @@ primary_region = 'mia'
 [build]
   image = 'jvargasc/northwindapp:latest'
 
+[env]
+  ASPNETCORE_URLS="http://+:8080"
+
 [http_service]
   internal_port = 8080
   force_https = true
