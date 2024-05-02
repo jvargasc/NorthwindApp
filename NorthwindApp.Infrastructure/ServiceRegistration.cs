@@ -15,7 +15,6 @@ namespace NorthwindApp.Infrastructure
                                                              IConfiguration configuration,
                                                              bool IsDevelopment)
         {
-            Console.WriteLine($"AddPersistenceInfrastructure -- IsDevelopment: {IsDevelopment}");
             string NorthwindConnectionsString = "";
 
             if (IsDevelopment)
@@ -23,13 +22,10 @@ namespace NorthwindApp.Infrastructure
             else
             {
                 // Use connection string provided at runtime by FlyIO.
-                Console.WriteLine("connUrl - PRE");
                 var connUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
-                Console.WriteLine("connUrl - Post");
 
                 // Parse connection URL to connection string for Npgsql
                 connUrl = connUrl.Replace("postgres://", string.Empty);
-                Console.WriteLine($"connUrl: {connUrl}");
                 var pgUserPass = connUrl.Split("@")[0];
                 var pgHostPortDb = connUrl.Split("@")[1];
                 var pgHostPort = pgHostPortDb.Split("/")[0];
