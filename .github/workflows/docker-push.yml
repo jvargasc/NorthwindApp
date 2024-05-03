@@ -17,6 +17,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: "{{defaultContext}}:./NorthwindApp.API"
+          context: "{{defaultContext}}:/NorthwindApp.API"
           push: true
           tags: jvargasc/northwindapp:latest
