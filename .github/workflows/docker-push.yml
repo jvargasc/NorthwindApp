@@ -16,5 +16,5 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push Docker image
         run: |
-          docker build . -f Dockerfile -t your-dockerhub-username/northwindapp:latest
-          docker push your-dockerhub-username/northwindapp:latest
+          docker build . -f Dockerfile -t jvargasc/northwindapp:latest
+          docker push jvargasc/northwindapp:latest
