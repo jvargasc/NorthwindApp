@@ -15,7 +15,6 @@ namespace NorthwindApp.Infrastructure
                                                              IConfiguration configuration,
                                                              bool IsDevelopment)
         {
-            Console.WriteLine($"AddPersistenceInfrastructure -- IsDevelopment: {IsDevelopment}");
             string NorthwindConnectionsString = string.Empty;
 
             if (IsDevelopment)
@@ -27,7 +26,6 @@ namespace NorthwindApp.Infrastructure
 
                 // Parse connection URL to connection string for Npgsql
                 connUrl = connUrl.Replace("postgres://", string.Empty);
-
                 var pgUserPass = connUrl.Split("@")[0];
                 var pgHostPortDb = connUrl.Split("@")[1];
                 var pgHostPort = pgHostPortDb.Split("/")[0];
