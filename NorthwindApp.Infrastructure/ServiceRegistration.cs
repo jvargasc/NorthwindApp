@@ -15,7 +15,7 @@ namespace NorthwindApp.Infrastructure
                                                              IConfiguration configuration,
                                                              bool IsDevelopment)
         {
-            string NorthwindConnectionsString = "";
+            string NorthwindConnectionsString = string.Empty;
 
             if (IsDevelopment)
                 NorthwindConnectionsString = configuration.GetConnectionString("DefaultConnection");
